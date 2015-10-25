@@ -1,6 +1,5 @@
 package ru.courses.morozov;
 
-import java.util.Vector;
 
 /**
  * Created by Veyron on 25.10.2015.
@@ -21,7 +20,12 @@ public class Matrix {
     }
 
     public Matrix(Vector[] arrayOfVectors) {
-        this.matrixComponents = new double[arrayOfVectors.length][];
+        this.matrixComponents = new double[arrayOfVectors.length][arrayOfVectors[0].getSize()];
+        for(int i = 0; i < arrayOfVectors.length; ++i){
+            for (int j = 0; j < arrayOfVectors[0].getSize(); ++j){
+                this.matrixComponents[i][j] = arrayOfVectors[i].getVectorComponent(j);
+            }
+        }
     }
 
     public String toString() {
