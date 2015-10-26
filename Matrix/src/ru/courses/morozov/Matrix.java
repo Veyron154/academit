@@ -5,10 +5,13 @@ package ru.courses.morozov;
  * Created by Veyron on 25.10.2015.
  */
 public class Matrix {
-    double[][] matrixComponents;
+    private double[][] matrixComponents;
 
-    public Matrix(int n, int m) {
-        this.matrixComponents = new double[n][m];
+    public Matrix(int countOfStrings, int countOfColumns) {
+        if (countOfStrings <= 0 || countOfColumns <= 0){
+            throw new IllegalArgumentException("Размер матрицы должен быть больше нуля");
+        }
+        this.matrixComponents = new double[countOfStrings][countOfColumns];
     }
 
     public Matrix(Matrix copiedMatrix) {
@@ -44,5 +47,17 @@ public class Matrix {
         builder.append("}");
         builder.deleteCharAt(builder.lastIndexOf(","));
         return builder.toString();
+    }
+
+    public int getCountOfStrings(){
+        return this.matrixComponents.length;
+    }
+
+    public int getCountOfColunms(){
+        return this.matrixComponents[0].length;
+    }
+
+    public Vector getString(int index){
+        return new Vector(this.matrixComponents[0].length, this.matrixComponents[index]);
     }
 }
