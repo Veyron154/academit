@@ -8,7 +8,7 @@ public class Matrix {
     private double[][] matrixComponents;
 
     public Matrix(int countOfStrings, int countOfColumns) {
-        if (countOfStrings <= 0 || countOfColumns <= 0){
+        if (countOfStrings <= 0 || countOfColumns <= 0) {
             throw new IllegalArgumentException("Размер матрицы должен быть больше нуля");
         }
         this.matrixComponents = new double[countOfStrings][countOfColumns];
@@ -24,8 +24,8 @@ public class Matrix {
 
     public Matrix(Vector[] arrayOfVectors) {
         this.matrixComponents = new double[arrayOfVectors.length][arrayOfVectors[0].getSize()];
-        for(int i = 0; i < arrayOfVectors.length; ++i){
-            for (int j = 0; j < arrayOfVectors[0].getSize(); ++j){
+        for (int i = 0; i < arrayOfVectors.length; ++i) {
+            for (int j = 0; j < arrayOfVectors[0].getSize(); ++j) {
                 this.matrixComponents[i][j] = arrayOfVectors[i].getVectorComponent(j);
             }
         }
@@ -49,15 +49,29 @@ public class Matrix {
         return builder.toString();
     }
 
-    public int getCountOfStrings(){
+    public int getCountOfStrings() {
         return this.matrixComponents.length;
     }
 
-    public int getCountOfColunms(){
+    public int getCountOfColumns() {
         return this.matrixComponents[0].length;
     }
 
-    public Vector getString(int index){
+    public Vector getString(int index) {
         return new Vector(this.matrixComponents[0].length, this.matrixComponents[index]);
+    }
+
+    public void setString(int index, Vector newString) {
+        for (int i = 0; i < this.matrixComponents[0].length; ++i) {
+            this.matrixComponents[index][i] = newString.getVectorComponent(i);
+        }
+    }
+
+    public Vector getColumn(int index){
+        double[] auxiliaryVector = new double[this.getCountOfColumns()];
+        for(int i = 0; i < this.getCountOfColumns(); ++i){
+            auxiliaryVector[i] = this.matrixComponents[i][index];
+        }
+        return new Vector(this.getCountOfColumns(), auxiliaryVector);
     }
 }
