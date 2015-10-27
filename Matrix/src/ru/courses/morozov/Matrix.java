@@ -67,11 +67,20 @@ public class Matrix {
         }
     }
 
-    public Vector getColumn(int index){
-        double[] auxiliaryVector = new double[this.getCountOfColumns()];
-        for(int i = 0; i < this.getCountOfColumns(); ++i){
+    public Vector getColumn(int index) {
+        double[] auxiliaryVector = new double[this.getCountOfStrings()];
+        for (int i = 0; i < this.getCountOfStrings(); ++i) {
             auxiliaryVector[i] = this.matrixComponents[i][index];
         }
-        return new Vector(this.getCountOfColumns(), auxiliaryVector);
+        return new Vector(this.getCountOfStrings(), auxiliaryVector);
+    }
+
+    public Matrix transpose() {
+        Matrix auxiliaryMatrix = new Matrix(this.getCountOfColumns(), this.getCountOfStrings());
+        for (int i = 0; i < this.getCountOfColumns(); ++i) {
+            auxiliaryMatrix.setString(i, this.getColumn(i));
+        }
+        this.matrixComponents = auxiliaryMatrix.matrixComponents;
+        return this;
     }
 }
