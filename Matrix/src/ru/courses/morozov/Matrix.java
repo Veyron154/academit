@@ -1,9 +1,5 @@
 package ru.courses.morozov;
 
-
-/**
- * Created by Veyron on 25.10.2015.
- */
 public class Matrix {
     private double[][] matrixComponents;
 
@@ -81,6 +77,15 @@ public class Matrix {
             auxiliaryMatrix.setString(i, this.getColumn(i));
         }
         this.matrixComponents = auxiliaryMatrix.matrixComponents;
+        return this;
+    }
+
+    public Matrix multiplyByScalar(int scalar){
+        for (int i = 0; i < this.matrixComponents.length; ++i){
+            for (int j = 0; j < this.matrixComponents[0].length; ++j){
+                this.matrixComponents[i][j] *= scalar;
+            }
+        }
         return this;
     }
 }
