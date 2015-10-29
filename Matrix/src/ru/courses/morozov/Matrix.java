@@ -177,4 +177,9 @@ public class Matrix {
         this.matrixComponents = Matrix.addition(this, inputMatrix).matrixComponents;
         return this;
     }
+
+    public Matrix subtraction(Matrix inputMatrix) {
+        this.matrixComponents = Matrix.subtraction(this, inputMatrix).matrixComponents;
+        return this;
+    }
 }
