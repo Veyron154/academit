@@ -142,4 +142,19 @@ public class Matrix {
         }
         return new Vector(auxiliaryVector.length, auxiliaryVector);
     }
+
+    public static Matrix addition(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getCountOfStrings() != matrix2.getCountOfStrings() ||
+                matrix1.getCountOfColumns() != matrix2.getCountOfColumns()) {
+            throw new IllegalArgumentException("Сложение возможно только при одинаковых размерах матриц");
+        }
+        Matrix auxiliaryMatrix = new Matrix(matrix1.getCountOfStrings(), matrix1.getCountOfColumns());
+        for (int i = 0; i < matrix1.getCountOfStrings(); ++i) {
+            for (int j = 0; j < matrix1.getCountOfColumns(); ++j) {
+                auxiliaryMatrix.matrixComponents[i][j] = matrix1.matrixComponents[i][j]
+                        + matrix2.matrixComponents[i][j];
+            }
+        }
+        return auxiliaryMatrix;
+    }
 }
