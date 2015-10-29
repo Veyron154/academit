@@ -88,4 +88,11 @@ public class Matrix {
         }
         return this;
     }
+
+    private static double getDeterminantBinaryMatrix(Matrix binaryMatrix){
+        return binaryMatrix.matrixComponents[0][0] * binaryMatrix.matrixComponents[1][1] -
+                binaryMatrix.matrixComponents[1][0] * binaryMatrix.matrixComponents[0][1];
+    }
+
+
 }
