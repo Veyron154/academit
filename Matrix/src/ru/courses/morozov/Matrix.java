@@ -94,5 +94,21 @@ public class Matrix {
                 binaryMatrix.matrixComponents[1][0] * binaryMatrix.matrixComponents[0][1];
     }
 
-
+    public static Matrix getCofactor(Matrix inputMatrix, int index){
+        double[][] auxiliaryMatrix = new double[inputMatrix.getCountOfStrings() - 1]
+                [inputMatrix.getCountOfColumns() - 1];
+        int stringIndex = 0;
+        for(int i = 1; i < inputMatrix.getCountOfStrings(); ++i){
+            int columnIndex = 0;
+            for(int j = 0; j < inputMatrix.getCountOfColumns(); ++j){
+                if(j == index){
+                    continue;
+                }
+                auxiliaryMatrix[stringIndex][columnIndex] = inputMatrix.matrixComponents[i][j];
+                ++columnIndex;
+            }
+            ++stringIndex;
+        }
+        return new Matrix(auxiliaryMatrix);
+    }
 }
