@@ -129,4 +129,17 @@ public class Matrix {
         }
         return determinant;
     }
+
+    public Vector multiplyByVector(Vector inputVector) {
+        if (inputVector.getSize() != this.getCountOfColumns()) {
+            throw new IllegalArgumentException("Длина вектора должна быть равна числу столбцов матрицы");
+        }
+        double[] auxiliaryVector = new double[this.getCountOfStrings()];
+        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+            for (int j = 0; j < this.getCountOfColumns(); ++j) {
+                auxiliaryVector[i] += this.matrixComponents[i][j] * inputVector.getVectorComponent(j);
+            }
+        }
+        return new Vector(auxiliaryVector.length, auxiliaryVector);
+    }
 }
