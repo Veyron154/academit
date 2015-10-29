@@ -80,28 +80,28 @@ public class Matrix {
         return this;
     }
 
-    public Matrix multiplyByScalar(int scalar){
-        for (int i = 0; i < this.matrixComponents.length; ++i){
-            for (int j = 0; j < this.matrixComponents[0].length; ++j){
+    public Matrix multiplyByScalar(int scalar) {
+        for (int i = 0; i < this.matrixComponents.length; ++i) {
+            for (int j = 0; j < this.matrixComponents[0].length; ++j) {
                 this.matrixComponents[i][j] *= scalar;
             }
         }
         return this;
     }
 
-    private static double getDeterminantBinaryMatrix(Matrix binaryMatrix){
+    private static double getDeterminantBinaryMatrix(Matrix binaryMatrix) {
         return binaryMatrix.matrixComponents[0][0] * binaryMatrix.matrixComponents[1][1] -
                 binaryMatrix.matrixComponents[1][0] * binaryMatrix.matrixComponents[0][1];
     }
 
-    public static Matrix getCofactor(Matrix inputMatrix, int index){
+    private static Matrix getCofactor(Matrix inputMatrix, int index) {
         double[][] auxiliaryMatrix = new double[inputMatrix.getCountOfStrings() - 1]
                 [inputMatrix.getCountOfColumns() - 1];
         int stringIndex = 0;
-        for(int i = 1; i < inputMatrix.getCountOfStrings(); ++i){
+        for (int i = 1; i < inputMatrix.getCountOfStrings(); ++i) {
             int columnIndex = 0;
-            for(int j = 0; j < inputMatrix.getCountOfColumns(); ++j){
-                if(j == index){
+            for (int j = 0; j < inputMatrix.getCountOfColumns(); ++j) {
+                if (j == index) {
                     continue;
                 }
                 auxiliaryMatrix[stringIndex][columnIndex] = inputMatrix.matrixComponents[i][j];
@@ -110,5 +110,23 @@ public class Matrix {
             ++stringIndex;
         }
         return new Matrix(auxiliaryMatrix);
+    }
+
+    public double getDeterminant() {
+        if (this.getCountOfColumns() != this.getCountOfStrings()) {
+            throw new IllegalArgumentException("Определитель высчитывается только у квадратной матрицы");
+        }
+        if (this.getCountOfColumns() == 2) {
+            return getDeterminantBinaryMatrix(this);
+        }
+        double determinant = 0;
+        for (int i = 0; i < this.getCountOfColumns(); ++i) {
+            if (i % 2 == 0) {
+                determinant += this.matrixComponents[0][i] * Matrix.getCofactor(this, i).getDeterminant();
+            } else {
+                determinant -= this.matrixComponents[0][i] * Matrix.getCofactor(this, i).getDeterminant();
+            }
+        }
+        return determinant;
     }
 }
