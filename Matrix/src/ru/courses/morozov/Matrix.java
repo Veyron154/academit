@@ -182,4 +182,20 @@ public class Matrix {
         this.matrixComponents = Matrix.subtraction(this, inputMatrix).matrixComponents;
         return this;
     }
+
+    public static Matrix multiply(Matrix matrix1, Matrix matrix2) {
+        if (matrix1.getCountOfColumns() != matrix2.getCountOfStrings()) {
+            throw new IllegalArgumentException
+                    ("Число столбцов в первой матрице должно быть равно числу строк во второй");
+        }
+        double[][] auxiliaryMatrix = new double[matrix1.getCountOfStrings()][matrix2.getCountOfColumns()];
+        for (int i = 0; i < auxiliaryMatrix.length; ++i) {
+            for (int j = 0; j < auxiliaryMatrix[0].length; ++j) {
+                for (int k = 0; k < matrix1.getCountOfColumns(); ++k) {
+                    auxiliaryMatrix[i][j] += matrix1.matrixComponents[i][k] * matrix2.matrixComponents[k][j];
+                }
+            }
+        }
+        return new Matrix(auxiliaryMatrix);
+    }
 }
