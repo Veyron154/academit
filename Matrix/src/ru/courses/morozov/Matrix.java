@@ -29,7 +29,7 @@ public class Matrix {
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("{ ");
+        builder.append("{");
         for (double[] matrixComponent : this.matrixComponents) {
             builder.append("{ ");
             for (int j = 0; j < this.matrixComponents[0].length; ++j) {
@@ -197,5 +197,13 @@ public class Matrix {
             }
         }
         return new Matrix(auxiliaryMatrix);
+    }
+
+    private Matrix extentionMatrix(int countOfString, int countOfColumns, double[][] matrixComponents) {
+        double[][] auxiliaryArray = new double[countOfString][countOfColumns];
+        for (int i = 0; i < matrixComponents.length; ++i) {
+            System.arraycopy(matrixComponents[i], 0, auxiliaryArray[i], 0, matrixComponents[0].length);
+        }
+        return new Matrix(auxiliaryArray);
     }
 }
