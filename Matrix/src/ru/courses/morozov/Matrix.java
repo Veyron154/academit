@@ -159,18 +159,18 @@ public class Matrix {
     }
 
     public static Matrix subtraction(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.getCountOfStrings() != matrix2.getCountOfStrings() ||
-                matrix1.getCountOfColumns() != matrix2.getCountOfColumns()) {
-            throw new IllegalArgumentException("Вычитание возможно только при одинаковых размерах матриц");
-        }
-        Matrix auxiliaryMatrix = new Matrix(matrix1.getCountOfStrings(), matrix1.getCountOfColumns());
-        for (int i = 0; i < matrix1.getCountOfStrings(); ++i) {
-            for (int j = 0; j < matrix1.getCountOfColumns(); ++j) {
-                auxiliaryMatrix.matrixComponents[i][j] = matrix1.matrixComponents[i][j]
-                        - matrix2.matrixComponents[i][j];
+        double[][] auxiliaryMatrix1 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfStrings(),
+                matrix2.getCountOfStrings()), Math.max(matrix1.getCountOfColumns(),
+                matrix2.getCountOfColumns()), matrix1.matrixComponents).matrixComponents;
+        double[][] auxiliaryMatrix2 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfStrings(),
+                matrix2.getCountOfStrings()), Math.max(matrix1.getCountOfColumns(),
+                matrix2.getCountOfColumns()), matrix2.matrixComponents).matrixComponents;
+        for (int i = 0; i < auxiliaryMatrix1.length; ++i) {
+            for (int j = 0; j < auxiliaryMatrix1[0].length; ++j) {
+                auxiliaryMatrix1[i][j] -= auxiliaryMatrix2[i][j];
             }
         }
-        return auxiliaryMatrix;
+        return new Matrix(auxiliaryMatrix1);
     }
 
     public Matrix addition(Matrix inputMatrix) {
