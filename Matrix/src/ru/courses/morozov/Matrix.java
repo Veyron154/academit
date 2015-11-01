@@ -206,4 +206,28 @@ public class Matrix {
         }
         return new Matrix(auxiliaryArray);
     }
+
+    public boolean equals(Matrix comparedMatrix) {
+        if (this == comparedMatrix) {
+            return true;
+        }
+        if (comparedMatrix == null) {
+            return false;
+        }
+        if (this.getClass() != comparedMatrix.getClass()) {
+            return false;
+        }
+        if (this.getCountOfColumns() != comparedMatrix.getCountOfColumns() ||
+                this.getCountOfStrings() != comparedMatrix.getCountOfStrings()) {
+            return false;
+        }
+        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+            for (int j = 0; j < this.getCountOfColumns(); ++j) {
+                if (!UserFunctions.testToEquality(this.matrixComponents[i][j], comparedMatrix.matrixComponents[i][j])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
