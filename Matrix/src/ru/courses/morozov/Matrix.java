@@ -230,4 +230,15 @@ public class Matrix {
         }
         return true;
     }
+
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+            for (int j = 0; j < this.getCountOfColumns(); ++j) {
+                result = result * PRIME + (int) (matrixComponents[i][j] / UserFunctions.EPSILON);
+            }
+        }
+        return result;
+    }
 }
