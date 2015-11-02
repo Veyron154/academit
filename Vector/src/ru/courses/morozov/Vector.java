@@ -57,7 +57,7 @@ class Vector {
         return this;
     }
 
-    public Vector multiplyByScalar(int scalar) {
+    public Vector multiplyByScalar(double scalar) {
         for (int i = 0; i < this.vectorComponents.length; ++i) {
             this.vectorComponents[i] *= scalar;
         }

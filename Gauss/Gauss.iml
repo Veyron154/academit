@@ -8,6 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Matrix" exported="" />
-    <orderEntry type="module" module-name="Gauss" exported="" />
+    <orderEntry type="module" module-name="Vector" exported="" />
   </component>
 </module>

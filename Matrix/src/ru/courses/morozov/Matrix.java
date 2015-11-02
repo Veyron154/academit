@@ -80,7 +80,7 @@ public class Matrix {
         return this;
     }
 
-    public Matrix multiplyByScalar(int scalar) {
+    public Matrix multiplyByScalar(double scalar) {
         for (int i = 0; i < this.matrixComponents.length; ++i) {
             for (int j = 0; j < this.matrixComponents[0].length; ++j) {
                 this.matrixComponents[i][j] *= scalar;
