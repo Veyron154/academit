@@ -29,4 +29,31 @@ public class Gauss {
         }
         return matrix;
     }
+
+    private static Matrix reversal(Matrix matrix) {
+        for (int i = matrix.getCountOfStrings() - 1; i > 0; --i) {
+            for (int j = i - 1; j >= 0; --j) {
+                matrix.setString(j, matrix.getString(j).subtraction(matrix.getString(i).
+                        multiplyByScalar(matrix.getString(j).getVectorComponent(i))));
+            }
+        }
+        return matrix;
+    }
+
+    public static void main(String[] args) {
+        double[][] array1 = {{3, 2, -5}, {2, -1, 3}, {1, 2, -1}};
+        double[] array2 = {-1, 13, 9};
+
+        Matrix matrix = new Matrix(array1);
+        Vector vector = new Vector(3, array2);
+
+        System.out.println(gauss(matrix, vector));
+    }
+
+    private static Vector gauss(Matrix matrix, Vector vector) {
+        Matrix operatingMatrix = new Matrix(augmentedMatrix(matrix, vector));
+        directFlow(operatingMatrix);
+        reversal(operatingMatrix);
+        return new Vector(operatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1));
+    }
 }
