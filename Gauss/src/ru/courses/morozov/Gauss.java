@@ -18,15 +18,27 @@ public class Gauss {
         return auxiliaryVector;
     }
 
-    private static Matrix directFlow(Matrix matrix) {
-        for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
-            matrix.setString(i, matrix.getString(i).multiplyByScalar(1 / matrix.getString(i).getVectorComponent(i)));
-            for (int j = i + 1; j < matrix.getCountOfStrings(); ++j) {
-                matrix.setString(j, matrix.getString(j).subtraction(matrix.getString(i).
-                        multiplyByScalar(matrix.getString(j).getVectorComponent(i))));
+    private static Matrix directFlow(Matrix inputMatrix) {
+        int string = 0;
+        int column = 0;
+        while (string < inputMatrix.getCountOfStrings() && column < inputMatrix.getCountOfColumns()) {
+            if(inputMatrix.getString(string).getVectorComponent(column) == 0){
+                setNonZeroComponent(inputMatrix, string, column);
             }
+            if(inputMatrix.getString(string).getVectorComponent(column) == 0){
+                ++column;
+                continue;
+            }
+            inputMatrix.setString(string, inputMatrix.getString(string).multiplyByScalar
+                    (1 / inputMatrix.getString(string).getVectorComponent(column)));
+            for (int i = string + 1; i < inputMatrix.getCountOfStrings(); ++i) {
+                inputMatrix.setString(i, Vector.subtraction(inputMatrix.getString(i), inputMatrix.getString(string).multiplyByScalar
+                        (inputMatrix.getString(i).getVectorComponent(column))));
+            }
+            ++string;
+            ++column;
         }
-        return matrix;
+        return inputMatrix;
     }
 
     private static Matrix reversal(Matrix matrix) {
@@ -40,21 +52,28 @@ public class Gauss {
     }
 
     public static void main(String[] args) {
-        double[][] array1 = {{0, 2, -5}, {0, -1, 3}, {0, 2, -1}, {4, 5, 9}};
-        double[] array2 = {-1, 13, 9};
+        double[][] array1 = {{1, 3, -2, -2}, {-1, -2, 1, 2}, {-2, -1, 3, 1}, {-3, -2, 3, 3}};
+        double[] array2 = {-3, 2, -2, -1};
 
         Matrix matrix = new Matrix(array1);
-        Vector vector = new Vector(3, array2);
+        Vector vector = new Vector(4, array2);
 
-        //System.out.println(getRang(directFlow(matrix)));
-        System.out.println(setNonZeroComponent(matrix, 0, 0));
+        System.out.println(gauss(matrix, vector));
     }
 
-    private static Vector gauss(Matrix matrix, Vector vector) {
+    private static ResultGauss gauss(Matrix matrix, Vector vector) {
         Matrix operatingMatrix = new Matrix(augmentedMatrix(matrix, vector));
+        //проверка на совместность системы
+
+        if(getRang(directFlow(matrix)) != getRang(directFlow(operatingMatrix))){
+            return new ResultGauss(-1);
+        }
+        if(getRang(directFlow(matrix)) != matrix.getCountOfColumns()){
+            return new ResultGauss(1);
+        }
         directFlow(operatingMatrix);
         reversal(operatingMatrix);
-        return new Vector(operatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1));
+        return new ResultGauss(0,(operatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1)));
     }
 
     private static int getRang(Matrix matrix){
@@ -95,7 +114,6 @@ public class Gauss {
                 break;
             }
         }
-        System.out.println(matrix);
         return matrix;
     }
 }
