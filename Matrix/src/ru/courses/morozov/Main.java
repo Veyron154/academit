@@ -12,10 +12,11 @@ public class Main {
         Matrix matrix1 = new Matrix(array1);
         Matrix matrix2 = new Matrix(array2);
         Matrix matrix3 = new Matrix(array3);
-        Vector vector1 = new Vector(2, vector);
 
+        Matrix matrix4 = new Matrix(12, 12);
+/*
         System.out.println(matrix1.getColumn(1));
-        System.out.println(matrix2.getString(0));
+        System.out.println(matrix2.getRow(0));
         System.out.println(matrix1.getDeterminant());
         System.out.println(Matrix.subtraction(matrix1, matrix2));
         System.out.println(matrix1.equals(matrix3));
@@ -23,6 +24,9 @@ public class Main {
         System.out.println(matrix2.transpose());
         System.out.println(Matrix.multiply(matrix1, matrix2));
         System.out.println(matrix2.multiplyByVector(vector1));
+        */
+
+        System.out.println(matrix4.getDeterminant());
     }
 
 }

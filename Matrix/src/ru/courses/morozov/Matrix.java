@@ -3,11 +3,11 @@ package ru.courses.morozov;
 public class Matrix {
     private double[][] matrixComponents;
 
-    public Matrix(int countOfStrings, int countOfColumns) {
-        if (countOfStrings <= 0 || countOfColumns <= 0) {
+    public Matrix(int countOfRow, int countOfColumns) {
+        if (countOfRow <= 0 || countOfColumns <= 0) {
             throw new IllegalArgumentException("Размер матрицы должен быть больше нуля");
         }
-        this.matrixComponents = new double[countOfStrings][countOfColumns];
+        this.matrixComponents = new double[countOfRow][countOfColumns];
     }
 
     public Matrix(Matrix copiedMatrix) {
@@ -45,7 +45,7 @@ public class Matrix {
         return builder.toString();
     }
 
-    public int getCountOfStrings() {
+    public int getCountOfRows() {
         return this.matrixComponents.length;
     }
 
@@ -53,34 +53,34 @@ public class Matrix {
         return this.matrixComponents[0].length;
     }
 
-    public Vector getString(int index) {
+    public Vector getRow(int index) {
         return new Vector(this.matrixComponents[0].length, this.matrixComponents[index]);
     }
 
-    public void setString(int index, Vector newString) {
-        for (int i = 0; i < this.matrixComponents[0].length && i < newString.getSize(); ++i) {
-            this.matrixComponents[index][i] = newString.getVectorComponent(i);
+    public void setRow(int index, Vector newRow) {
+        for (int i = 0; i < this.matrixComponents[0].length && i < newRow.getSize(); ++i) {
+            this.matrixComponents[index][i] = newRow.getVectorComponent(i);
         }
     }
 
     public void setColumn (Vector newColumn, int index){
-        for(int i = 0; i < this.getCountOfStrings(); ++i){
+        for(int i = 0; i < this.getCountOfRows(); ++i){
             this.matrixComponents[i][index] = newColumn.getVectorComponent(i);
         }
     }
 
     public Vector getColumn(int index) {
-        double[] auxiliaryVector = new double[this.getCountOfStrings()];
-        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+        double[] auxiliaryVector = new double[this.getCountOfRows()];
+        for (int i = 0; i < this.getCountOfRows(); ++i) {
             auxiliaryVector[i] = this.matrixComponents[i][index];
         }
-        return new Vector(this.getCountOfStrings(), auxiliaryVector);
+        return new Vector(this.getCountOfRows(), auxiliaryVector);
     }
 
     public Matrix transpose() {
-        Matrix auxiliaryMatrix = new Matrix(this.getCountOfColumns(), this.getCountOfStrings());
+        Matrix auxiliaryMatrix = new Matrix(this.getCountOfColumns(), this.getCountOfRows());
         for (int i = 0; i < this.getCountOfColumns(); ++i) {
-            auxiliaryMatrix.setString(i, this.getColumn(i));
+            auxiliaryMatrix.setRow(i, this.getColumn(i));
         }
         this.matrixComponents = auxiliaryMatrix.matrixComponents;
         return this;
@@ -101,25 +101,25 @@ public class Matrix {
     }
 
     private static Matrix getCofactor(Matrix inputMatrix, int index) {
-        double[][] auxiliaryMatrix = new double[inputMatrix.getCountOfStrings() - 1]
+        double[][] auxiliaryMatrix = new double[inputMatrix.getCountOfRows() - 1]
                 [inputMatrix.getCountOfColumns() - 1];
-        int stringIndex = 0;
-        for (int i = 1; i < inputMatrix.getCountOfStrings(); ++i) {
+        int rowIndex = 0;
+        for (int i = 1; i < inputMatrix.getCountOfRows(); ++i) {
             int columnIndex = 0;
             for (int j = 0; j < inputMatrix.getCountOfColumns(); ++j) {
                 if (j == index) {
                     continue;
                 }
-                auxiliaryMatrix[stringIndex][columnIndex] = inputMatrix.matrixComponents[i][j];
+                auxiliaryMatrix[rowIndex][columnIndex] = inputMatrix.matrixComponents[i][j];
                 ++columnIndex;
             }
-            ++stringIndex;
+            ++rowIndex;
         }
         return new Matrix(auxiliaryMatrix);
     }
 
     public double getDeterminant() {
-        if (this.getCountOfColumns() != this.getCountOfStrings()) {
+        if (this.getCountOfColumns() != this.getCountOfRows()) {
             throw new IllegalArgumentException("Определитель высчитывается только у квадратной матрицы");
         }
         if (this.getCountOfColumns() == 2) {
@@ -140,8 +140,8 @@ public class Matrix {
         if (inputVector.getSize() != this.getCountOfColumns()) {
             throw new IllegalArgumentException("Длина вектора должна быть равна числу столбцов матрицы");
         }
-        double[] auxiliaryVector = new double[this.getCountOfStrings()];
-        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+        double[] auxiliaryVector = new double[this.getCountOfRows()];
+        for (int i = 0; i < this.getCountOfRows(); ++i) {
             for (int j = 0; j < this.getCountOfColumns(); ++j) {
                 auxiliaryVector[i] += this.matrixComponents[i][j] * inputVector.getVectorComponent(j);
             }
@@ -150,11 +150,11 @@ public class Matrix {
     }
 
     public static Matrix addition(Matrix matrix1, Matrix matrix2) {
-        double[][] auxiliaryMatrix1 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfStrings(),
-                matrix2.getCountOfStrings()), Math.max(matrix1.getCountOfColumns(),
+        double[][] auxiliaryMatrix1 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfRows(),
+                matrix2.getCountOfRows()), Math.max(matrix1.getCountOfColumns(),
                 matrix2.getCountOfColumns()), matrix1.matrixComponents).matrixComponents;
-        double[][] auxiliaryMatrix2 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfStrings(),
-                matrix2.getCountOfStrings()), Math.max(matrix1.getCountOfColumns(),
+        double[][] auxiliaryMatrix2 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfRows(),
+                matrix2.getCountOfRows()), Math.max(matrix1.getCountOfColumns(),
                 matrix2.getCountOfColumns()), matrix2.matrixComponents).matrixComponents;
         for (int i = 0; i < auxiliaryMatrix1.length; ++i) {
             for (int j = 0; j < auxiliaryMatrix1[0].length; ++j) {
@@ -165,11 +165,11 @@ public class Matrix {
     }
 
     public static Matrix subtraction(Matrix matrix1, Matrix matrix2) {
-        double[][] auxiliaryMatrix1 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfStrings(),
-                matrix2.getCountOfStrings()), Math.max(matrix1.getCountOfColumns(),
+        double[][] auxiliaryMatrix1 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfRows(),
+                matrix2.getCountOfRows()), Math.max(matrix1.getCountOfColumns(),
                 matrix2.getCountOfColumns()), matrix1.matrixComponents).matrixComponents;
-        double[][] auxiliaryMatrix2 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfStrings(),
-                matrix2.getCountOfStrings()), Math.max(matrix1.getCountOfColumns(),
+        double[][] auxiliaryMatrix2 = Matrix.extentionMatrix(Math.max(matrix1.getCountOfRows(),
+                matrix2.getCountOfRows()), Math.max(matrix1.getCountOfColumns(),
                 matrix2.getCountOfColumns()), matrix2.matrixComponents).matrixComponents;
         for (int i = 0; i < auxiliaryMatrix1.length; ++i) {
             for (int j = 0; j < auxiliaryMatrix1[0].length; ++j) {
@@ -190,11 +190,11 @@ public class Matrix {
     }
 
     public static Matrix multiply(Matrix matrix1, Matrix matrix2) {
-        if (matrix1.getCountOfColumns() != matrix2.getCountOfStrings()) {
+        if (matrix1.getCountOfColumns() != matrix2.getCountOfRows()) {
             throw new IllegalArgumentException
                     ("Число столбцов в первой матрице должно быть равно числу строк во второй");
         }
-        double[][] auxiliaryMatrix = new double[matrix1.getCountOfStrings()][matrix2.getCountOfColumns()];
+        double[][] auxiliaryMatrix = new double[matrix1.getCountOfRows()][matrix2.getCountOfColumns()];
         for (int i = 0; i < auxiliaryMatrix.length; ++i) {
             for (int j = 0; j < auxiliaryMatrix[0].length; ++j) {
                 for (int k = 0; k < matrix1.getCountOfColumns(); ++k) {
@@ -224,10 +224,10 @@ public class Matrix {
             return false;
         }
         if (this.getCountOfColumns() != comparedMatrix.getCountOfColumns() ||
-                this.getCountOfStrings() != comparedMatrix.getCountOfStrings()) {
+                this.getCountOfRows() != comparedMatrix.getCountOfRows()) {
             return false;
         }
-        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+        for (int i = 0; i < this.getCountOfRows(); ++i) {
             for (int j = 0; j < this.getCountOfColumns(); ++j) {
                 if (!UserFunctions.testToEquality(this.matrixComponents[i][j], comparedMatrix.matrixComponents[i][j])) {
                     return false;
@@ -240,7 +240,7 @@ public class Matrix {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        for (int i = 0; i < this.getCountOfStrings(); ++i) {
+        for (int i = 0; i < this.getCountOfRows(); ++i) {
             for (int j = 0; j < this.getCountOfColumns(); ++j) {
                 result = result * PRIME + (int) (matrixComponents[i][j] / UserFunctions.EPSILON);
             }

@@ -9,10 +9,10 @@ public class Gauss {
         this.vector = vector;
     }
 
-    private static Matrix augmentedMatrix(Matrix matrix, Vector vector) {
-        Matrix augmentedMatrix = new Matrix(matrix.getCountOfStrings(), matrix.getCountOfColumns() + 1);
-        for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
-            augmentedMatrix.setString(i, matrix.getString(i));
+    private Matrix augmentedMatrix() {
+        Matrix augmentedMatrix = new Matrix(matrix.getCountOfRows(), matrix.getCountOfColumns() + 1);
+        for (int i = 0; i < matrix.getCountOfRows(); ++i) {
+            augmentedMatrix.setRow(i, matrix.getRow(i));
         }
         augmentedMatrix.setColumn(vector, augmentedMatrix.getCountOfColumns() - 1);
         return augmentedMatrix;
@@ -21,20 +21,20 @@ public class Gauss {
     private static Matrix directFlow(Matrix inputMatrix) {
         int string = 0;
         int column = 0;
-        while (string < inputMatrix.getCountOfStrings() && column < inputMatrix.getCountOfColumns()) {
-            if (inputMatrix.getString(string).getVectorComponent(column) == 0) {
+        while (string < inputMatrix.getCountOfRows() && column < inputMatrix.getCountOfColumns()) {
+            if (inputMatrix.getRow(string).getVectorComponent(column) == 0) {
                 setNonZeroComponent(inputMatrix, string, column);
             }
-            if (inputMatrix.getString(string).getVectorComponent(column) == 0) {
+            if (inputMatrix.getRow(string).getVectorComponent(column) == 0) {
                 ++column;
                 continue;
             }
-            inputMatrix.setString(string, inputMatrix.getString(string).multiplyByScalar
-                    (1 / inputMatrix.getString(string).getVectorComponent(column)));
-            for (int i = string + 1; i < inputMatrix.getCountOfStrings(); ++i) {
-                inputMatrix.setString
-                        (i, Vector.subtraction(inputMatrix.getString(i), inputMatrix.getString(string).
-                                multiplyByScalar(inputMatrix.getString(i).getVectorComponent(column))));
+            inputMatrix.setRow(string, inputMatrix.getRow(string).multiplyByScalar
+                    (1 / inputMatrix.getRow(string).getVectorComponent(column)));
+            for (int i = string + 1; i < inputMatrix.getCountOfRows(); ++i) {
+                inputMatrix.setRow
+                        (i, Vector.subtraction(inputMatrix.getRow(i), inputMatrix.getRow(string).
+                                multiplyByScalar(inputMatrix.getRow(i).getVectorComponent(column))));
             }
             ++string;
             ++column;
@@ -43,34 +43,40 @@ public class Gauss {
     }
 
     private static Matrix reversal(Matrix matrix) {
-        for (int i = matrix.getCountOfStrings() - 1; i > 0; --i) {
+        for (int i = matrix.getCountOfRows() - 1; i > 0; --i) {
             for (int j = i - 1; j >= 0; --j) {
-                matrix.setString(j, matrix.getString(j).subtraction(matrix.getString(i).
-                        multiplyByScalar(matrix.getString(j).getVectorComponent(i))));
+                matrix.setRow(j, matrix.getRow(j).subtraction(matrix.getRow(i).
+                        multiplyByScalar(matrix.getRow(j).getVectorComponent(i))));
             }
         }
         return matrix;
     }
 
     public ResultGauss gauss() {
-        Matrix operatingMatrix = new Matrix(augmentedMatrix(this.matrix, this.vector));
+        Matrix operatingMatrix = new Matrix(this.augmentedMatrix());
         //проверка на совместность системы
 
-        if (getRank(directFlow(matrix)) != getRank(directFlow(operatingMatrix))) {
+        Matrix directFlowMatrix = new Matrix(directFlow(matrix));
+        Matrix directFlowOperatingMatrix = new Matrix(directFlow(operatingMatrix));
+
+        int rankMatrix = getRank(directFlowMatrix);
+        int rankOperatingMatrix = getRank(directFlowOperatingMatrix);
+
+        if (rankMatrix != rankOperatingMatrix) {
             return new ResultGauss(-1);
         }
-        if (getRank(directFlow(matrix)) != matrix.getCountOfColumns()) {
+        if (rankMatrix != matrix.getCountOfColumns()) {
             return new ResultGauss(1);
         }
-        directFlow(operatingMatrix);
-        reversal(operatingMatrix);
-        return new ResultGauss(0, (operatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1)));
+        reversal(directFlowOperatingMatrix);
+        return new ResultGauss(0, (directFlowOperatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1)));
     }
 
     private static int getRank(Matrix matrix) {
         int rank = 0;
-        for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
-            if (matrix.getString(i).equals(new Vector(matrix.getCountOfColumns()))) {
+        Vector zeroVector = new Vector(matrix.getCountOfColumns());
+        for (int i = 0; i < matrix.getCountOfRows(); ++i) {
+            if (matrix.getRow(i).equals(zeroVector)) {
                 continue;
             }
             ++rank;
@@ -80,21 +86,21 @@ public class Gauss {
 
     public static Matrix setNonZeroComponent(Matrix matrix, int string, int column) {
         //проверка, что в заданном столбце есть не нулевой элемент.
-        for (int i = string; i < matrix.getCountOfStrings(); ++i) {
-            if (matrix.getString(i).getVectorComponent(column) != 0) {
+        for (int i = string; i < matrix.getCountOfRows(); ++i) {
+            if (matrix.getRow(i).getVectorComponent(column) != 0) {
                 //замена строки с нулевым компонентом.
-                for (int j = string; j < matrix.getCountOfStrings(); ++j) {
-                    if (matrix.getString(j).getVectorComponent(column) == 0) {
-                        Vector auxiliaryVector = new Vector(matrix.getString(j));
-                        for (int k = j; k < matrix.getCountOfStrings() - 1; ++k) {
-                            matrix.setString(k, matrix.getString(k + 1));
+                for (int j = string; j < matrix.getCountOfRows(); ++j) {
+                    if (matrix.getRow(j).getVectorComponent(column) == 0) {
+                        Vector auxiliaryVector = new Vector(matrix.getRow(j));
+                        for (int k = j; k < matrix.getCountOfRows() - 1; ++k) {
+                            matrix.setRow(k, matrix.getRow(k + 1));
                         }
-                        matrix.setString(matrix.getCountOfStrings() - 1, auxiliaryVector);
+                        matrix.setRow(matrix.getCountOfRows() - 1, auxiliaryVector);
 
                         //проверка, что все элементы начиная с j-ого равны нулю. (чтобы выйти из бесконечного цикла)
-                        Vector zeroVector = new Vector(matrix.getCountOfStrings() - j);
-                        for (int l = j; l < matrix.getCountOfStrings(); ++l) {
-                            zeroVector.setVectorComponent(l - j, matrix.getString(l).getVectorComponent(column));
+                        Vector zeroVector = new Vector(matrix.getCountOfRows() - j);
+                        for (int l = j; l < matrix.getCountOfRows(); ++l) {
+                            zeroVector.setVectorComponent(l - j, matrix.getRow(l).getVectorComponent(column));
                         }
                         if (zeroVector.equals(new Vector(zeroVector.getSize()))) {
                             break;
