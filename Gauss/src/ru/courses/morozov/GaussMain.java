@@ -12,6 +12,7 @@ public class GaussMain {
         Matrix matrix = new Matrix(array1);
         Vector vector = new Vector(3, array2);
 
-
+        Gauss gauss = new Gauss(matrix, vector);
+        System.out.println(gauss.gauss());
     }
 }

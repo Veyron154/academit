@@ -12,18 +12,10 @@ public class Gauss {
     private static Matrix augmentedMatrix(Matrix matrix, Vector vector) {
         Matrix augmentedMatrix = new Matrix(matrix.getCountOfStrings(), matrix.getCountOfColumns() + 1);
         for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
-            augmentedMatrix.setString(i, augmentedVector(matrix, vector, i));
+            augmentedMatrix.setString(i, matrix.getString(i));
         }
+        augmentedMatrix.setColumn(vector, augmentedMatrix.getCountOfColumns() - 1);
         return augmentedMatrix;
-    }
-
-    private static Vector augmentedVector(Matrix matrix, Vector vector, int index) {
-        Vector auxiliaryVector = new Vector(matrix.getCountOfColumns() + 1);
-        for (int i = 0; i < matrix.getCountOfColumns(); ++i) {
-            auxiliaryVector.setVectorComponent(i, matrix.getString(index).getVectorComponent(i));
-        }
-        auxiliaryVector.setVectorComponent(auxiliaryVector.getSize() - 1, vector.getVectorComponent(index));
-        return auxiliaryVector;
     }
 
     private static Matrix directFlow(Matrix inputMatrix) {
@@ -60,8 +52,8 @@ public class Gauss {
         return matrix;
     }
 
-    public ResultGauss gauss(Matrix matrix, Vector vector) {
-        Matrix operatingMatrix = new Matrix(augmentedMatrix(matrix, vector));
+    public ResultGauss gauss() {
+        Matrix operatingMatrix = new Matrix(augmentedMatrix(this.matrix, this.vector));
         //проверка на совместность системы
 
         if (getRank(directFlow(matrix)) != getRank(directFlow(operatingMatrix))) {

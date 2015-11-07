@@ -58,8 +58,14 @@ public class Matrix {
     }
 
     public void setString(int index, Vector newString) {
-        for (int i = 0; i < this.matrixComponents[0].length; ++i) {
+        for (int i = 0; i < this.matrixComponents[0].length && i < newString.getSize(); ++i) {
             this.matrixComponents[index][i] = newString.getVectorComponent(i);
+        }
+    }
+
+    public void setColumn (Vector newColumn, int index){
+        for(int i = 0; i < this.getCountOfStrings(); ++i){
+            this.matrixComponents[i][index] = newColumn.getVectorComponent(i);
         }
     }
 
