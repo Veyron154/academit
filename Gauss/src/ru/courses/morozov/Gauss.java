@@ -1,7 +1,7 @@
 package ru.courses.morozov;
 
 public class Gauss {
-    public static Matrix augmentedMatrix(Matrix matrix, Vector vector) {
+    private static Matrix augmentedMatrix(Matrix matrix, Vector vector) {
         Matrix augmentedMatrix = new Matrix(matrix.getCountOfStrings(), matrix.getCountOfColumns() + 1);
         for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
             augmentedMatrix.setString(i, augmentedVector(matrix, vector, i));
@@ -22,18 +22,18 @@ public class Gauss {
         int string = 0;
         int column = 0;
         while (string < inputMatrix.getCountOfStrings() && column < inputMatrix.getCountOfColumns()) {
-            if(inputMatrix.getString(string).getVectorComponent(column) == 0){
+            if (inputMatrix.getString(string).getVectorComponent(column) == 0) {
                 setNonZeroComponent(inputMatrix, string, column);
             }
-            if(inputMatrix.getString(string).getVectorComponent(column) == 0){
+            if (inputMatrix.getString(string).getVectorComponent(column) == 0) {
                 ++column;
                 continue;
             }
             inputMatrix.setString(string, inputMatrix.getString(string).multiplyByScalar
                     (1 / inputMatrix.getString(string).getVectorComponent(column)));
-            for (int i = string + 1; i < inputMatrix.getCountOfStrings(); ++i) {
-                inputMatrix.setString(i, Vector.subtraction(inputMatrix.getString(i), inputMatrix.getString(string).multiplyByScalar
-                        (inputMatrix.getString(i).getVectorComponent(column))));
+            for (int i = string + 1; i < inputMatrix.getCountOfStrings(); ++i) {inputMatrix.setString
+                    (i, Vector.subtraction(inputMatrix.getString(i), inputMatrix.getString(string).
+                            multiplyByScalar(inputMatrix.getString(i).getVectorComponent(column))));
             }
             ++string;
             ++column;
@@ -52,11 +52,11 @@ public class Gauss {
     }
 
     public static void main(String[] args) {
-        double[][] array1 = {{1, 3, -2, -2}, {-1, -2, 1, 2}, {-2, -1, 3, 1}, {-3, -2, 3, 3}};
-        double[] array2 = {-3, 2, -2, -1};
+        double[][] array1 = {{7, 3, 1}, {4, 1, 2}, {0, 0, 0}};
+        double[] array2 = {1, 7, 0};
 
         Matrix matrix = new Matrix(array1);
-        Vector vector = new Vector(4, array2);
+        Vector vector = new Vector(3, array2);
 
         System.out.println(gauss(matrix, vector));
     }
@@ -65,35 +65,35 @@ public class Gauss {
         Matrix operatingMatrix = new Matrix(augmentedMatrix(matrix, vector));
         //проверка на совместность системы
 
-        if(getRang(directFlow(matrix)) != getRang(directFlow(operatingMatrix))){
+        if (getRank(directFlow(matrix)) != getRank(directFlow(operatingMatrix))) {
             return new ResultGauss(-1);
         }
-        if(getRang(directFlow(matrix)) != matrix.getCountOfColumns()){
+        if (getRank(directFlow(matrix)) != matrix.getCountOfColumns()) {
             return new ResultGauss(1);
         }
         directFlow(operatingMatrix);
         reversal(operatingMatrix);
-        return new ResultGauss(0,(operatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1)));
+        return new ResultGauss(0, (operatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1)));
     }
 
-    private static int getRang(Matrix matrix){
-        int rang = 0;
-        for(int i = 0; i < matrix.getCountOfStrings(); ++i){
-            if (matrix.getString(i).equals(new Vector(matrix.getCountOfColumns()))){
+    private static int getRank(Matrix matrix) {
+        int rank = 0;
+        for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
+            if (matrix.getString(i).equals(new Vector(matrix.getCountOfColumns()))) {
                 continue;
             }
-            ++rang;
+            ++rank;
         }
-        return rang;
+        return rank;
     }
 
-    public static Matrix setNonZeroComponent(Matrix matrix, int string, int column){
+    public static Matrix setNonZeroComponent(Matrix matrix, int string, int column) {
         //проверка, что в заданном столбце есть не нулевой элемент.
-        for(int i = string; i < matrix.getCountOfStrings(); ++i){
-            if(matrix.getString(i).getVectorComponent(column) != 0){
+        for (int i = string; i < matrix.getCountOfStrings(); ++i) {
+            if (matrix.getString(i).getVectorComponent(column) != 0) {
                 //замена строки с нулевым компонентом.
-                for(int j = string; j < matrix.getCountOfStrings(); ++j){
-                    if(matrix.getString(j).getVectorComponent(column) == 0) {
+                for (int j = string; j < matrix.getCountOfStrings(); ++j) {
+                    if (matrix.getString(j).getVectorComponent(column) == 0) {
                         Vector auxiliaryVector = new Vector(matrix.getString(j));
                         for (int k = j; k < matrix.getCountOfStrings() - 1; ++k) {
                             matrix.setString(k, matrix.getString(k + 1));
@@ -102,10 +102,10 @@ public class Gauss {
 
                         //проверка, что все элементы начиная с j-ого равны нулю. (чтобы выйти из бесконечного цикла)
                         Vector zeroVector = new Vector(matrix.getCountOfStrings() - j);
-                        for(int l = j; l < matrix.getCountOfStrings(); ++l){
+                        for (int l = j; l < matrix.getCountOfStrings(); ++l) {
                             zeroVector.setVectorComponent(l - j, matrix.getString(l).getVectorComponent(column));
                         }
-                        if(zeroVector.equals(new Vector(zeroVector.getSize()))){
+                        if (zeroVector.equals(new Vector(zeroVector.getSize()))) {
                             break;
                         }
                         --j;
