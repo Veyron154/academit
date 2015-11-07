@@ -14,6 +14,14 @@ public class ResultGauss {
         this.code = code;
     }
 
+    public Vector getResultVector(){
+        return this.resultVector;
+    }
+
+    public int getCode(){
+        return this.code;
+    }
+
     public ResultGauss(int code, Vector resultVector) {
         if (code != 0) {
             throw new IllegalArgumentException("Переданны не верные значения");
