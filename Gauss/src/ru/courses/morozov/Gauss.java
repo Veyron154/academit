@@ -19,24 +19,24 @@ public class Gauss {
     }
 
     private static Matrix directFlow(Matrix inputMatrix) {
-        int string = 0;
+        int row = 0;
         int column = 0;
-        while (string < inputMatrix.getCountOfRows() && column < inputMatrix.getCountOfColumns()) {
-            if (inputMatrix.getRow(string).getVectorComponent(column) == 0) {
-                setNonZeroComponent(inputMatrix, string, column);
+        while (row < inputMatrix.getCountOfRows() && column < inputMatrix.getCountOfColumns()) {
+            if (inputMatrix.getRow(row).getVectorComponent(column) == 0) {
+                setNonZeroComponent(inputMatrix, row, column);
             }
-            if (inputMatrix.getRow(string).getVectorComponent(column) == 0) {
+            if (inputMatrix.getRow(row).getVectorComponent(column) == 0) {
                 ++column;
                 continue;
             }
-            inputMatrix.setRow(string, inputMatrix.getRow(string).multiplyByScalar
-                    (1 / inputMatrix.getRow(string).getVectorComponent(column)));
-            for (int i = string + 1; i < inputMatrix.getCountOfRows(); ++i) {
+            inputMatrix.setRow(row, inputMatrix.getRow(row).multiplyByScalar
+                    (1 / inputMatrix.getRow(row).getVectorComponent(column)));
+            for (int i = row + 1; i < inputMatrix.getCountOfRows(); ++i) {
                 inputMatrix.setRow
-                        (i, Vector.subtraction(inputMatrix.getRow(i), inputMatrix.getRow(string).
+                        (i, Vector.subtraction(inputMatrix.getRow(i), inputMatrix.getRow(row).
                                 multiplyByScalar(inputMatrix.getRow(i).getVectorComponent(column))));
             }
-            ++string;
+            ++row;
             ++column;
         }
         return inputMatrix;
@@ -84,12 +84,12 @@ public class Gauss {
         return rank;
     }
 
-    public static Matrix setNonZeroComponent(Matrix matrix, int string, int column) {
+    public static Matrix setNonZeroComponent(Matrix matrix, int row, int column) {
         //проверка, что в заданном столбце есть не нулевой элемент.
-        for (int i = string; i < matrix.getCountOfRows(); ++i) {
+        for (int i = row; i < matrix.getCountOfRows(); ++i) {
             if (matrix.getRow(i).getVectorComponent(column) != 0) {
                 //замена строки с нулевым компонентом.
-                for (int j = string; j < matrix.getCountOfRows(); ++j) {
+                for (int j = row; j < matrix.getCountOfRows(); ++j) {
                     if (matrix.getRow(j).getVectorComponent(column) == 0) {
                         Vector auxiliaryVector = new Vector(matrix.getRow(j));
                         for (int k = j; k < matrix.getCountOfRows() - 1; ++k) {
