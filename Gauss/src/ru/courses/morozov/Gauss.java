@@ -63,13 +63,13 @@ public class Gauss {
         int rankOperatingMatrix = getRank(directFlowOperatingMatrix);
 
         if (rankMatrix != rankOperatingMatrix) {
-            return new ResultGauss(-1);
+            return new ResultGauss(ResultGauss.Code.NO_SOLUTION);
         }
         if (rankMatrix != matrix.getCountOfColumns()) {
-            return new ResultGauss(1);
+            return new ResultGauss(ResultGauss.Code.A_LOT_OF_SOLUTION);
         }
         reversal(directFlowOperatingMatrix);
-        return new ResultGauss(0, (directFlowOperatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1)));
+        return new ResultGauss(directFlowOperatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1));
     }
 
     private static int getRank(Matrix matrix) {

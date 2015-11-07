@@ -4,30 +4,38 @@ package ru.courses.morozov;
  * Created by Veyron on 07.11.2015.
  */
 public class ResultGauss {
-    private Vector resultVector;
-    private int code;
+    public enum Code {
+        A_LOT_OF_SOLUTION(1),
+        NO_SOLUTION(-1);
 
-    public ResultGauss(int code) {
-        if (code != 1 && code != -1) {
-            throw new IllegalArgumentException("Переданы не верные значения");
+        private final int code;
+
+        Code(int code) {
+            this.code = code;
         }
-        this.code = code;
+
+        public int getCode() {
+            return this.code;
+        }
     }
 
-    public Vector getResultVector(){
+    private Vector resultVector;
+    private int code = 0;
+
+    public ResultGauss(Code code) {
+        this.code = code.getCode();
+    }
+
+    public ResultGauss(Vector resultVector) {
+        this.resultVector = resultVector;
+    }
+
+    public Vector getResultVector() {
         return this.resultVector;
     }
 
-    public int getCode(){
+    public int getCode() {
         return this.code;
-    }
-
-    public ResultGauss(int code, Vector resultVector) {
-        if (code != 0) {
-            throw new IllegalArgumentException("Переданны не верные значения");
-        }
-        this.code = code;
-        this.resultVector = resultVector;
     }
 
     public String toString() {
