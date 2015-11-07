@@ -1,6 +1,14 @@
 package ru.courses.morozov;
 
 public class Gauss {
+    private Matrix matrix;
+    private Vector vector;
+
+    public Gauss(Matrix matrix, Vector vector) {
+        this.matrix = matrix;
+        this.vector = vector;
+    }
+
     private static Matrix augmentedMatrix(Matrix matrix, Vector vector) {
         Matrix augmentedMatrix = new Matrix(matrix.getCountOfStrings(), matrix.getCountOfColumns() + 1);
         for (int i = 0; i < matrix.getCountOfStrings(); ++i) {
@@ -31,9 +39,10 @@ public class Gauss {
             }
             inputMatrix.setString(string, inputMatrix.getString(string).multiplyByScalar
                     (1 / inputMatrix.getString(string).getVectorComponent(column)));
-            for (int i = string + 1; i < inputMatrix.getCountOfStrings(); ++i) {inputMatrix.setString
-                    (i, Vector.subtraction(inputMatrix.getString(i), inputMatrix.getString(string).
-                            multiplyByScalar(inputMatrix.getString(i).getVectorComponent(column))));
+            for (int i = string + 1; i < inputMatrix.getCountOfStrings(); ++i) {
+                inputMatrix.setString
+                        (i, Vector.subtraction(inputMatrix.getString(i), inputMatrix.getString(string).
+                                multiplyByScalar(inputMatrix.getString(i).getVectorComponent(column))));
             }
             ++string;
             ++column;
@@ -51,17 +60,7 @@ public class Gauss {
         return matrix;
     }
 
-    public static void main(String[] args) {
-        double[][] array1 = {{7, 3, 1}, {4, 1, 2}, {0, 0, 0}};
-        double[] array2 = {1, 7, 0};
-
-        Matrix matrix = new Matrix(array1);
-        Vector vector = new Vector(3, array2);
-
-        System.out.println(gauss(matrix, vector));
-    }
-
-    private static ResultGauss gauss(Matrix matrix, Vector vector) {
+    public ResultGauss gauss(Matrix matrix, Vector vector) {
         Matrix operatingMatrix = new Matrix(augmentedMatrix(matrix, vector));
         //проверка на совместность системы
 
