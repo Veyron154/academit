@@ -4,26 +4,11 @@ package ru.courses.morozov;
  * Created by Veyron on 07.11.2015.
  */
 public class ResultGauss {
-    public enum Code {
-        A_LOT_OF_SOLUTION(1),
-        NO_SOLUTION(-1);
-
-        private final int code;
-
-        Code(int code) {
-            this.code = code;
-        }
-
-        public int getCode() {
-            return this.code;
-        }
-    }
-
     private Vector resultVector;
-    private int code = 0;
+    private GaussResultCode code = GaussResultCode.ONE_SOLUTION;
 
-    public ResultGauss(Code code) {
-        this.code = code.getCode();
+    public ResultGauss(GaussResultCode code) {
+        this.code = code;
     }
 
     public ResultGauss(Vector resultVector) {
@@ -34,15 +19,15 @@ public class ResultGauss {
         return this.resultVector;
     }
 
-    public int getCode() {
+    public GaussResultCode getCode() {
         return this.code;
     }
 
     public String toString() {
         switch (this.code) {
-            case -1:
+            case NO_SOLUTION:
                 return "Система не имеет решений";
-            case 1:
+            case A_LOT_OF_SOLUTIONS:
                 return "Система имеет бесконечное число решений";
             default:
                 return resultVector.toString();

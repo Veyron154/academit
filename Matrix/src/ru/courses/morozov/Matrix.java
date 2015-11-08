@@ -63,7 +63,7 @@ public class Matrix {
         }
     }
 
-    public void setColumn (Vector newColumn, int index){
+    public void setColumn (int index, Vector newColumn){
         for(int i = 0; i < this.getCountOfRows(); ++i){
             this.matrixComponents[i][index] = newColumn.getVectorComponent(i);
         }

@@ -14,7 +14,7 @@ public class Gauss {
         for (int i = 0; i < matrix.getCountOfRows(); ++i) {
             augmentedMatrix.setRow(i, matrix.getRow(i));
         }
-        augmentedMatrix.setColumn(vector, augmentedMatrix.getCountOfColumns() - 1);
+        augmentedMatrix.setColumn(augmentedMatrix.getCountOfColumns() - 1, vector);
         return augmentedMatrix;
     }
 
@@ -63,10 +63,10 @@ public class Gauss {
         int rankOperatingMatrix = getRank(directFlowOperatingMatrix);
 
         if (rankMatrix != rankOperatingMatrix) {
-            return new ResultGauss(ResultGauss.Code.NO_SOLUTION);
+            return new ResultGauss(GaussResultCode.NO_SOLUTION);
         }
         if (rankMatrix != matrix.getCountOfColumns()) {
-            return new ResultGauss(ResultGauss.Code.A_LOT_OF_SOLUTION);
+            return new ResultGauss(GaussResultCode.A_LOT_OF_SOLUTIONS);
         }
         reversal(directFlowOperatingMatrix);
         return new ResultGauss(directFlowOperatingMatrix.getColumn(operatingMatrix.getCountOfColumns() - 1));

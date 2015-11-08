@@ -32,6 +32,10 @@ class Vector {
 
     }
 
+    public Vector(double[] vectorComponents) {
+        this.vectorComponents = new double[vectorComponents.length];
+            System.arraycopy(vectorComponents, 0, this.vectorComponents, 0, vectorComponents.length);
+    }
     public int getSize() {
         return this.vectorComponents.length;
     }

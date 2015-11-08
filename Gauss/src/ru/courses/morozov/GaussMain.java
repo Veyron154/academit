@@ -15,10 +15,10 @@ public class GaussMain {
         double[] vector3 = {-1, 13, 9};
         double[] vector4 = {20, 11, 40, 37};
 
-        Gauss gauss1 = new Gauss(new Matrix(matrix1), new Vector(3, vector1));
-        Gauss gauss2 = new Gauss(new Matrix(matrix2), new Vector(3, vector2));
-        Gauss gauss3 = new Gauss(new Matrix(matrix3), new Vector(3, vector3));
-        Gauss gauss4 = new Gauss(new Matrix(matrix4), new Vector(4, vector4));
+        Gauss gauss1 = new Gauss(new Matrix(matrix1), new Vector(vector1));
+        Gauss gauss2 = new Gauss(new Matrix(matrix2), new Vector(vector2));
+        Gauss gauss3 = new Gauss(new Matrix(matrix3), new Vector(vector3));
+        Gauss gauss4 = new Gauss(new Matrix(matrix4), new Vector(vector4));
 
         System.out.println(gauss1.gauss());
         System.out.println(gauss2.gauss());
