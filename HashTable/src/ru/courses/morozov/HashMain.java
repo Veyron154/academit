@@ -9,6 +9,9 @@ public class HashMain {
         System.out.println(ht.getCountOfElements());
         ht.add("qwe");
         System.out.println(ht.getCountOfElements());
+        ht.add('r');
+        System.out.println(ht.getCountOfElements());
+        System.out.println(ht.remove(128));
 
         System.out.println(ht.checkAvailability("qwe"));
     }
