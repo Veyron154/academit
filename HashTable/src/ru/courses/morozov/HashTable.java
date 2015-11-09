@@ -37,4 +37,17 @@ public class HashTable<T> {
         int index = object.hashCode() % this.tableSize;
         hashTable[index].remove(object);
     }
+
+    public boolean checkAvailability(T object) {
+        int index = object.hashCode() % this.tableSize;
+        if (this.hashTable[index] == null) {
+            return false;
+        }
+        for (int i = 0; i < this.hashTable[index].size(); ++i) {
+            if (object.equals(this.hashTable[index].get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
