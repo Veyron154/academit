@@ -15,8 +15,12 @@ public class HashTable<T> {
         this.hashTable = new ArrayList[arraySize];
     }
 
-    public void setObject(T object) {
-        int index = object.hashCode() % this.tableSize;
+    private int getIndex(T object) {
+        return object.hashCode() % this.tableSize;
+    }
+
+    public void add(T object) {
+        int index = getIndex(object);
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList();
         }
@@ -34,12 +38,12 @@ public class HashTable<T> {
     }
 
     public void deleteObject(T object) {
-        int index = object.hashCode() % this.tableSize;
+        int index = getIndex(object);
         hashTable[index].remove(object);
     }
 
     public boolean checkAvailability(T object) {
-        int index = object.hashCode() % this.tableSize;
+        int index = getIndex(object);
         if (this.hashTable[index] == null) {
             return false;
         }
