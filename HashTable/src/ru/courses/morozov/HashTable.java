@@ -34,14 +34,23 @@ public class HashTable<T> {
         this.size += 1;
     }
 
+    public boolean removeAll(){
+        for (ArrayList<T> aHashTable : this.hashTable) {
+            if (aHashTable != null) {
+                aHashTable.clear();
+            }
+        }
+        this.size = 0;
+        return true;
+    }
+
     public int getSize() {
         return this.size;
     }
 
     public boolean remove(T object) {
         if (contains(object)) {
-            int index = getIndex(object);
-            hashTable[index].remove(object);
+            hashTable[getIndex(object)].remove(object);
             this.size -= 1;
             return true;
         }
