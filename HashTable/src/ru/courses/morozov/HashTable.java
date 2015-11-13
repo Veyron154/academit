@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class HashTable<T> {
     private ArrayList<T>[] hashTable;
     private int tableSize = 128;
+    private int size = 0;
 
     public HashTable() {
         //noinspection unchecked
@@ -13,7 +14,7 @@ public class HashTable<T> {
 
     public HashTable(int tableSize) {
         if (tableSize <= 0) {
-            throw new IllegalArgumentException("Размер массива должен быть больше единицы");
+            throw new IllegalArgumentException("Размер массива должен быть больше нуля");
         }
         this.tableSize = tableSize;
         //noinspection unchecked
@@ -30,28 +31,24 @@ public class HashTable<T> {
             hashTable[index] = new ArrayList<T>();
         }
         hashTable[index].add(object);
+        this.size += 1;
     }
 
-    public int getCountOfElements() {
-        int countOfElements = 0;
-        for (ArrayList hashTable : this.hashTable) {
-            if (hashTable != null) {
-                countOfElements += hashTable.size();
-            }
-        }
-        return countOfElements;
+    public int getSize() {
+        return this.size;
     }
 
     public boolean remove(T object) {
-        if (checkAvailability(object)) {
+        if (contains(object)) {
             int index = getIndex(object);
             hashTable[index].remove(object);
+            this.size -= 1;
             return true;
         }
         return false;
     }
 
-    public boolean checkAvailability(T object) {
+    public boolean contains(T object) {
         int index = getIndex(object);
         if (this.hashTable[index] == null) {
             return false;
