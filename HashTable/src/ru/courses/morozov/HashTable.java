@@ -1,6 +1,6 @@
 package ru.courses.morozov;
-
 import java.util.ArrayList;
+
 
 public class HashTable<T> {
     private ArrayList<T>[] hashTable;
@@ -25,16 +25,17 @@ public class HashTable<T> {
         return object.hashCode() % this.tableSize;
     }
 
-    public void add(T object) {
+    public boolean add(T object) {
         int index = getIndex(object);
         if (hashTable[index] == null) {
             hashTable[index] = new ArrayList<T>();
         }
         hashTable[index].add(object);
         this.size += 1;
+        return true;
     }
 
-    public boolean removeAll(){
+    public boolean clear() {
         for (ArrayList<T> aHashTable : this.hashTable) {
             if (aHashTable != null) {
                 aHashTable.clear();
@@ -49,24 +50,15 @@ public class HashTable<T> {
     }
 
     public boolean remove(T object) {
-        if (contains(object)) {
-            hashTable[getIndex(object)].remove(object);
-            this.size -= 1;
-            return true;
+        if (this.hashTable[getIndex(object)] == null){
+            return false;
         }
-        return false;
+        this.size -= 1;
+        return hashTable[getIndex(object)].remove(object);
     }
 
     public boolean contains(T object) {
         int index = getIndex(object);
-        if (this.hashTable[index] == null) {
-            return false;
-        }
-        for (int i = 0; i < this.hashTable[index].size(); ++i) {
-            if (object.equals(this.hashTable[index].get(i))) {
-                return true;
-            }
-        }
-        return false;
+        return this.hashTable[index] != null && this.hashTable[index].contains(object);
     }
 }
