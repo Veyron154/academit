@@ -63,28 +63,34 @@ public class HashTable<T> implements Iterable{
 
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private int index1 = 0;
-            private int index2 = 0;
+            private int countOfObjects = 0;
+            private int indexOfList = 0;
+            private int indexOfArray = 0;
 
             public boolean hasNext() {
-                return index1 < size;
+                return countOfObjects < size;
             }
 
             public T next() {
-                for (ArrayList<T> aHashTable : hashTable) {
-                    if (aHashTable != null) {
-                        if (!hasNext()) {
-                            throw new NoSuchElementException();
-                        }
-                        T object = aHashTable.get(index2);
-                        index2++;
-                        if (index2 >= aHashTable.size()) {
-                            index1 += index2;
-                            index2 = 0;
-                        }
-                        return object;
-                    }
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
                 }
+                T object = null;
+                for (int i = indexOfArray; i < hashTable.length; ++i) {
+                    if (hashTable[i] == null) {
+                        continue;
+                    }
+                    object = hashTable[i].get(indexOfList);
+                    indexOfList++;
+                    if (indexOfList >= hashTable[i].size()) {
+                        indexOfList = 0;
+                        ++i;
+                    }
+                    countOfObjects++;
+                    indexOfArray = i;
+                    break;
+                }
+                return object;
             }
         };
     }
