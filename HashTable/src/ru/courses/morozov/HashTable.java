@@ -2,7 +2,7 @@ package ru.courses.morozov;
 import java.util.*;
 
 
-public class HashTable<T> implements Iterable{
+public class HashTable<T> implements Collection<T>{
     private ArrayList<T>[] hashTable;
     private int tableSize = 128;
     private int size = 0;
@@ -21,7 +21,7 @@ public class HashTable<T> implements Iterable{
         this.hashTable = new ArrayList[tableSize];
     }
 
-    private int getIndex(T object) {
+    private int getIndex(Object object) {
         return object.hashCode() % this.tableSize;
     }
 
@@ -48,7 +48,7 @@ public class HashTable<T> implements Iterable{
         return this.size;
     }
 
-    public boolean remove(T object) {
+    public boolean remove(Object object) {
         if (this.hashTable[getIndex(object)] == null){
             return false;
         }
@@ -56,16 +56,63 @@ public class HashTable<T> implements Iterable{
         return hashTable[getIndex(object)].remove(object);
     }
 
-    public boolean contains(T object) {
+    public boolean contains(Object object) {
         int index = getIndex(object);
         return this.hashTable[index] != null && this.hashTable[index].contains(object);
     }
 
+    @SuppressWarnings("NullableProblems")
+    public Object[] toArray(){
+        Object[] tmpArray = new Object[size];
+        int index = 0;
+        for(int i = 0; i < tableSize; ++i){
+            if(this.hashTable[i] == null){
+                continue;
+            }
+            if(this.hashTable[i].size() == 0){
+                continue;
+            }
+            for(int j = 0; j < this.hashTable[i].size(); ++j){
+                tmpArray[index] = this.hashTable[i].get(j);
+                ++index;
+            }
+        }
+        return tmpArray;
+    }
+
+    @SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType"})
+    public <T> T[] toArray(T[] a){
+        int index = 0;
+        for (T anA : a) {
+            if (anA == null) {
+                break;
+            }
+            index += 1;
+        }
+
+        System.out.println(a.length);
+        System.out.println(index);
+        System.out.println(this.size);
+        if((index + this.size) > a.length){
+            T[] newA = a;
+            a = (T[])new Object[(index + this.size)];
+            System.arraycopy(newA, 0, a, 0, newA.length);
+        }
+
+        System.out.println(a.length);
+        System.out.println(Arrays.toString(a));
+        for(int i = 0; i < this.size; ++i){
+            a[(index + i)] = (T)this.toArray()[i];
+        }
+        return a;
+    }
+
+    @SuppressWarnings("NullableProblems")
     public Iterator<T> iterator() {
         return new Iterator<T>() {
             private int countOfObjects = 0;
-            private int indexOfList = 0;
-            private int indexOfArray = 0;
+            private int indexInList = 0;
+            private int indexInArray = 0;
 
             public boolean hasNext() {
                 return countOfObjects < size;
@@ -76,18 +123,21 @@ public class HashTable<T> implements Iterable{
                     throw new NoSuchElementException();
                 }
                 T object = null;
-                for (int i = indexOfArray; i < hashTable.length; ++i) {
+                for (int i = indexInArray; i < hashTable.length; ++i) {
                     if (hashTable[i] == null) {
                         continue;
                     }
-                    object = hashTable[i].get(indexOfList);
-                    indexOfList++;
-                    if (indexOfList >= hashTable[i].size()) {
-                        indexOfList = 0;
+                    if (hashTable[i].size() == 0){
+                        continue;
+                    }
+                    object = hashTable[i].get(indexInList);
+                    indexInList++;
+                    if (indexInList >= hashTable[i].size()) {
+                        indexInList = 0;
                         ++i;
                     }
                     countOfObjects++;
-                    indexOfArray = i;
+                    indexInArray = i;
                     break;
                 }
                 return object;
