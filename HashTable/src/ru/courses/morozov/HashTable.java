@@ -1,8 +1,9 @@
 package ru.courses.morozov;
+
 import java.util.*;
 
 
-public class HashTable<T> implements Collection<T>{
+public class HashTable<T> implements Collection<T> {
     private ArrayList<T>[] hashTable;
     private int tableSize = 128;
     private int size = 0;
@@ -44,12 +45,16 @@ public class HashTable<T> implements Collection<T>{
         this.size = 0;
     }
 
-    public int getSize() {
+    public int size() {
         return this.size;
     }
 
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
     public boolean remove(Object object) {
-        if (this.hashTable[getIndex(object)] == null){
+        if (this.hashTable[getIndex(object)] == null) {
             return false;
         }
         this.size -= 1;
@@ -62,17 +67,17 @@ public class HashTable<T> implements Collection<T>{
     }
 
     @SuppressWarnings("NullableProblems")
-    public Object[] toArray(){
+    public Object[] toArray() {
         Object[] tmpArray = new Object[size];
         int index = 0;
-        for(int i = 0; i < tableSize; ++i){
-            if(this.hashTable[i] == null){
+        for (int i = 0; i < tableSize; ++i) {
+            if (this.hashTable[i] == null) {
                 continue;
             }
-            if(this.hashTable[i].size() == 0){
+            if (this.hashTable[i].size() == 0) {
                 continue;
             }
-            for(int j = 0; j < this.hashTable[i].size(); ++j){
+            for (int j = 0; j < this.hashTable[i].size(); ++j) {
                 tmpArray[index] = this.hashTable[i].get(j);
                 ++index;
             }
@@ -80,31 +85,73 @@ public class HashTable<T> implements Collection<T>{
         return tmpArray;
     }
 
-    @SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType"})
-    public <T> T[] toArray(T[] a){
+    @SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType", "NullableProblems"})
+    public <T> T[] toArray(T[] inputArray) {
         int index = 0;
-        for (T anA : a) {
+        for (T anA : inputArray) {
             if (anA == null) {
                 break;
             }
             index += 1;
         }
 
-        System.out.println(a.length);
-        System.out.println(index);
-        System.out.println(this.size);
-        if((index + this.size) > a.length){
-            T[] newA = a;
-            a = (T[])new Object[(index + this.size)];
-            System.arraycopy(newA, 0, a, 0, newA.length);
+        if ((index + this.size) > inputArray.length) {
+            T[] tmpArray = inputArray;
+            inputArray = (T[]) new Object[(index + this.size)];
+            System.arraycopy(tmpArray, 0, inputArray, 0, tmpArray.length);
         }
 
-        System.out.println(a.length);
-        System.out.println(Arrays.toString(a));
-        for(int i = 0; i < this.size; ++i){
-            a[(index + i)] = (T)this.toArray()[i];
+        for (int i = 0; i < this.size; ++i) {
+            inputArray[(index + i)] = (T) this.toArray()[i];
         }
-        return a;
+        return inputArray;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    public boolean removeAll(Collection<?> inputCollection) {
+        if (inputCollection == null) {
+            return false;
+        }
+        for (Object element : inputCollection) {
+            if (this.contains(element)) {
+                this.remove(element);
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    public boolean retainAll(Collection<?> inputCollection) {
+        if (inputCollection == null) {
+            return false;
+        }
+        for (Object element : this) {
+            if (!inputCollection.contains(element)) {
+                this.remove(element);
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    public boolean containsAll(Collection<?> inputCollection) {
+        for (Object element : inputCollection) {
+            if (!this.contains(element)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    public boolean addAll(Collection<? extends T> inputCollection) {
+        if (inputCollection == null) {
+            return false;
+        }
+        for (T element : inputCollection) {
+            this.add(element);
+        }
+        return true;
     }
 
     @SuppressWarnings("NullableProblems")
@@ -127,7 +174,7 @@ public class HashTable<T> implements Collection<T>{
                     if (hashTable[i] == null) {
                         continue;
                     }
-                    if (hashTable[i].size() == 0){
+                    if (hashTable[i].size() == 0) {
                         continue;
                     }
                     object = hashTable[i].get(indexInList);
