@@ -1,7 +1,5 @@
 package ru.courses.morozov;
-
 import java.util.*;
-
 
 public class HashTable<T> implements Collection<T> {
     private ArrayList<T>[] hashTable;

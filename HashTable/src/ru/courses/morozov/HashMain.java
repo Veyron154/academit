@@ -13,14 +13,24 @@ public class HashMain {
         ht.add("asd");
         ht.add("zxc");
 
+        ht.remove("asd");
+
         HashTable<String> ht2 = new HashTable<String>();
         ht2.add("123");
-        ht2.add("qwe");
+        ht2.add("456");
 
         System.out.println(ht.containsAll(ht2));
-
-
+        ht.removeAll(ht2);
+        System.out.println(Arrays.toString(ht.toArray()));
+        ht.addAll(ht2);
+        System.out.println(Arrays.toString(ht.toArray()));
+        //ht.retainAll(ht2);
         System.out.println(Arrays.toString(ht.toArray()));
 
+        String[] u = {"hj", "op", "]["};
+
+        System.out.println(Arrays.toString(ht.toArray(u)));
+
+        System.out.println(ht.contains("123"));
     }
 }
