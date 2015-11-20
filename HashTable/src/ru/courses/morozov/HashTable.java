@@ -125,9 +125,10 @@ public class HashTable<T> implements Collection<T> {
         if (inputCollection == null) {
             return false;
         }
-        for (Object element : this) {
-            if (!inputCollection.contains(element)) {
-                this.remove(element);
+        Object[] tmpArray = this.toArray();
+        for (Object aTmpArray : tmpArray) {
+            if (!inputCollection.contains(aTmpArray)) {
+                this.remove(aTmpArray);
             }
         }
         return true;
