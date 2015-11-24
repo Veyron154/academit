@@ -1,8 +1,11 @@
 package ru.courses.morozov;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
-public class HashTable<T> implements Collection<T> {
-    private ArrayList<T>[] hashTable;
+public class HashTable<E> implements Collection<E> {
+    private ArrayList<E>[] hashTable;
     private int tableSize = 128;
     private int size = 0;
 
@@ -24,10 +27,10 @@ public class HashTable<T> implements Collection<T> {
         return object.hashCode() % this.tableSize;
     }
 
-    public boolean add(T object) {
+    public boolean add(E object) {
         int index = getIndex(object);
         if (hashTable[index] == null) {
-            hashTable[index] = new ArrayList<T>();
+            hashTable[index] = new ArrayList<E>();
         }
         hashTable[index].add(object);
         this.size += 1;
@@ -35,7 +38,7 @@ public class HashTable<T> implements Collection<T> {
     }
 
     public void clear() {
-        for (ArrayList<T> aHashTable : this.hashTable) {
+        for (ArrayList<E> aHashTable : this.hashTable) {
             if (aHashTable != null) {
                 aHashTable.clear();
             }
@@ -55,7 +58,9 @@ public class HashTable<T> implements Collection<T> {
         if (this.hashTable[getIndex(object)] == null) {
             return false;
         }
-        this.size -= 1;
+        if (this.contains(object)) {
+            this.size -= 1;
+        }
         return hashTable[getIndex(object)].remove(object);
     }
 
@@ -64,7 +69,7 @@ public class HashTable<T> implements Collection<T> {
         return this.hashTable[index] != null && this.hashTable[index].contains(object);
     }
 
-    @SuppressWarnings("NullableProblems")
+    @NotNull
     public Object[] toArray() {
         Object[] tmpArray = new Object[size];
         int index = 0;
@@ -83,8 +88,9 @@ public class HashTable<T> implements Collection<T> {
         return tmpArray;
     }
 
-    @SuppressWarnings({"unchecked", "TypeParameterHidesVisibleType", "NullableProblems"})
-    public <T> T[] toArray(T[] inputArray) {
+    @SuppressWarnings("unchecked")
+    @NotNull
+    public <T> T[] toArray(@NotNull T[] inputArray) {
         int index = 0;
         for (T anA : inputArray) {
             if (anA == null) {
@@ -105,35 +111,26 @@ public class HashTable<T> implements Collection<T> {
         return inputArray;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public boolean removeAll(Collection<?> inputCollection) {
-        if (inputCollection == null) {
-            return false;
-        }
+    public boolean removeAll(@NotNull Collection<?> inputCollection) {
+        int tmpSize = this.size;
         for (Object element : inputCollection) {
-            if (this.contains(element)) {
-                this.remove(element);
-            }
+            this.remove(element);
         }
-        return true;
+        return tmpSize != this.size;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public boolean retainAll(Collection<?> inputCollection) {
-        if (inputCollection == null) {
-            return false;
-        }
+    public boolean retainAll(@NotNull Collection<?> inputCollection) {
         Object[] tmpArray = this.toArray();
+        int tmpSize = this.size;
         for (Object aTmpArray : tmpArray) {
             if (!inputCollection.contains(aTmpArray)) {
                 this.remove(aTmpArray);
             }
         }
-        return true;
+        return tmpSize != this.size;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public boolean containsAll(Collection<?> inputCollection) {
+    public boolean containsAll(@NotNull Collection<?> inputCollection) {
         for (Object element : inputCollection) {
             if (!this.contains(element)) {
                 return false;
@@ -142,20 +139,17 @@ public class HashTable<T> implements Collection<T> {
         return true;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public boolean addAll(Collection<? extends T> inputCollection) {
-        if (inputCollection == null) {
-            return false;
-        }
-        for (T element : inputCollection) {
+    public boolean addAll(@NotNull Collection<? extends E> inputCollection) {
+        int tmpSize = this.size;
+        for (E element : inputCollection) {
             this.add(element);
         }
-        return true;
+        return tmpSize != this.size;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public Iterator<T> iterator() {
-        return new Iterator<T>() {
+    @NotNull
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
             private int countOfObjects = 0;
             private int indexInList = 0;
             private int indexInArray = 0;
@@ -164,11 +158,11 @@ public class HashTable<T> implements Collection<T> {
                 return countOfObjects < size;
             }
 
-            public T next() {
+            public E next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                T object = null;
+                E object = null;
                 for (int i = indexInArray; i < hashTable.length; ++i) {
                     if (hashTable[i] == null) {
                         continue;
