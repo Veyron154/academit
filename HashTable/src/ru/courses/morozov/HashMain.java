@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class HashMain {
     public static void main(String[] args) {
-        HashTable<String> ht = new HashTable<String>();
+        HashTable<String> ht = new HashTable<>();
 
         ht.add("qwe");
         ht.add("123");
@@ -15,7 +15,7 @@ public class HashMain {
 
         ht.remove("asd");
 
-        HashTable<String> ht2 = new HashTable<String>();
+        HashTable<String> ht2 = new HashTable<>();
         ht2.add("123");
         ht2.add("asd");
 
@@ -33,7 +33,7 @@ public class HashMain {
 
         System.out.println(ht.contains("123"));
 
-        HashTable<String> ht3 = new HashTable<String>();
+        HashTable<String> ht3 = new HashTable<>();
 
         System.out.println(ht.addAll(ht3));
     }
