@@ -83,26 +83,27 @@ public class HashTable<E> implements Collection<E> {
     @SuppressWarnings("unchecked")
     @NotNull
     public <T> T[] toArray(@NotNull T[] inputArray) {
-        int tmpSize = inputArray.length;
-
         if (this.size > inputArray.length) {
-            tmpSize = this.size;
+            T[] tmpArray = (T[]) new Object[this.size];
+
+            int index = 0;
+            for (E element : this) {
+                tmpArray[index] = (T) element;
+                ++index;
+            }
+            return tmpArray;
+        } else {
+            int index = 0;
+            for (E element : this) {
+                inputArray[index] = (T) element;
+                ++index;
+            }
+
+            if (inputArray.length > this.size) {
+                inputArray[this.size] = null;
+            }
+            return inputArray;
         }
-
-        T[] tmpArray = (T[]) new Object[tmpSize];
-        int index = 0;
-
-        for (E element : this) {
-            tmpArray[index] = (T) element;
-            ++index;
-        }
-
-        if (inputArray.length > this.size) {
-            tmpArray[this.size] = null;
-        }
-
-        System.arraycopy(inputArray, this.size + 1, tmpArray, this.size + 1, tmpSize - (this.size + 1));
-        return tmpArray;
     }
 
     public boolean removeAll(@NotNull Collection<?> inputCollection) {
