@@ -57,7 +57,7 @@ public class HashTable<E> implements Collection<E> {
         if (this.hashTable[getIndex(object)] == null) {
             return false;
         }
-        if (hashTable[getIndex(object)].remove(object)){
+        if (hashTable[getIndex(object)].remove(object)) {
             this.size -= 1;
             return true;
         }
@@ -73,17 +73,9 @@ public class HashTable<E> implements Collection<E> {
     public Object[] toArray() {
         Object[] tmpArray = new Object[size];
         int index = 0;
-        for (ArrayList<E> list : hashTable) {
-            if (list == null) {
-                continue;
-            }
-            if (list.size() == 0) {
-                continue;
-            }
-            for (E element : list) {
-                tmpArray[index] = element;
-                ++index;
-            }
+        for (E element : this) {
+            tmpArray[index] = element;
+            ++index;
         }
         return tmpArray;
     }
@@ -91,26 +83,34 @@ public class HashTable<E> implements Collection<E> {
     @SuppressWarnings("unchecked")
     @NotNull
     public <T> T[] toArray(@NotNull T[] inputArray) {
+        int tmpSize = inputArray.length;
+
         if (this.size > inputArray.length) {
-            inputArray = (T[]) new Object[this.size];
+            tmpSize = this.size;
         }
 
-        for (int i = 0; i < this.size; ++i) {
-            inputArray[i] = (T) this.toArray()[i];
+        T[] tmpArray = (T[]) new Object[tmpSize];
+        int index = 0;
+
+        for (E element : this) {
+            tmpArray[index] = (T) element;
+            ++index;
         }
 
-        if (inputArray.length > this.size){
-            inputArray[this.size] = null;
+        if (inputArray.length > this.size) {
+            tmpArray[this.size] = null;
         }
-        return inputArray;
+
+        System.arraycopy(inputArray, this.size + 1, tmpArray, this.size + 1, tmpSize - (this.size + 1));
+        return tmpArray;
     }
 
     public boolean removeAll(@NotNull Collection<?> inputCollection) {
         int tmpSize = this.size;
-        for (Object element : inputCollection) {
-            this.remove(element);
-            if(this.contains(element)){
-                return removeAll(inputCollection);
+        Object[] tmpArray = this.toArray();
+        for (Object element : tmpArray) {
+            if (inputCollection.contains(element)) {
+                this.remove(element);
             }
         }
         return tmpSize != this.size;
