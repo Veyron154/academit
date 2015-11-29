@@ -127,28 +127,28 @@ class Vector {
     }
 
     public static Vector subtraction(Vector vector1, Vector vector2) {
-        double[] auxiliaryArray1 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
-                vector1.vectorComponents :
-                Vector.extensionVector(vector1.vectorComponents, vector2.vectorComponents.length);
-        double[] auxiliaryArray2 = vector2.vectorComponents.length > vector1.vectorComponents.length ?
-                vector2.vectorComponents :
-                Vector.extensionVector(vector2.vectorComponents, vector1.vectorComponents.length);
-        for (int i = 0; i < auxiliaryArray1.length; ++i) {
-            auxiliaryArray1[i] -= auxiliaryArray2[i];
+        Vector auxiliaryVector1 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
+                new Vector(vector1) :
+                new Vector(Vector.extensionVector(vector1.vectorComponents, vector2.vectorComponents.length));
+        Vector auxiliaryVector2 = vector2.vectorComponents.length > vector1.vectorComponents.length ?
+                new Vector(vector2) :
+                new Vector(Vector.extensionVector(vector2.vectorComponents, vector1.vectorComponents.length));
+        for (int i = 0; i < auxiliaryVector1.vectorComponents.length; ++i) {
+            auxiliaryVector1.vectorComponents[i] -= auxiliaryVector2.vectorComponents[i];
         }
-        return new Vector(auxiliaryArray1.length, auxiliaryArray1);
+        return auxiliaryVector1;
     }
 
     public static Vector addition(Vector vector1, Vector vector2) {
-        double[] auxiliaryArray1 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
-                vector1.vectorComponents : vector2.vectorComponents;
-        double[] auxiliaryArray2 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
-                Vector.extensionVector(vector2.vectorComponents, vector1.vectorComponents.length) :
-                Vector.extensionVector(vector1.vectorComponents, vector2.vectorComponents.length);
-        for (int i = 0; i < auxiliaryArray1.length; ++i) {
-            auxiliaryArray1[i] += auxiliaryArray2[i];
+        Vector auxiliaryVector1 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
+               new Vector(vector1) : new Vector(vector2);
+        Vector auxiliaryVector2 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
+                new Vector(Vector.extensionVector(vector2.vectorComponents, vector1.vectorComponents.length)) :
+                new Vector(Vector.extensionVector(vector1.vectorComponents, vector2.vectorComponents.length));
+        for (int i = 0; i < auxiliaryVector1.vectorComponents.length; ++i) {
+            auxiliaryVector1.vectorComponents[i] += auxiliaryVector2.vectorComponents[i];
         }
-        return new Vector(auxiliaryArray1.length, auxiliaryArray1);
+        return auxiliaryVector1;
     }
 
     public static double scalarMultiply(Vector vector1, Vector vector2) {
