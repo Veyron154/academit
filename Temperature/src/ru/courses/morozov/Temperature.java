@@ -2,8 +2,10 @@ package ru.courses.morozov;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Arc2D;
 
 public class Temperature extends JFrame {
 
@@ -45,17 +47,22 @@ public class Temperature extends JFrame {
         inputLabel.setPreferredSize(switchLabel1.getPreferredSize());
         outLabel.setPreferredSize(switchLabel1.getPreferredSize());
 
-        JButton transfer = new JButton("Перевести");
+        final JButton transfer = new JButton("Перевести");
         transfer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                outField.setText(transfer(Double.valueOf(inputField.getText()), comboBox1.getSelectedIndex(),
-                        comboBox2.getSelectedIndex()));
+                if (!inputField.getText().matches("^\\d*\\.\\d*$")) {
+                    JOptionPane.showMessageDialog(transfer, "Введите числовое значение", "Введите число",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    outField.setText(transfer(Double.valueOf(inputField.getText()), comboBox1.getSelectedIndex(),
+                            comboBox2.getSelectedIndex()));
+                }
             }
         });
 
         Box mainBox = Box.createVerticalBox();
-        this.add(mainBox);
+        add(mainBox);
 
         mainBox.setBorder(new EmptyBorder(12, 12, 12, 12));
         mainBox.add(inputBox);
@@ -66,7 +73,11 @@ public class Temperature extends JFrame {
         mainBox.add(Box.createVerticalStrut(6));
         mainBox.add(transfer);
 
-        this.pack();
+        pack();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height - this.getHeight()) / 2);
+
+        setMinimumSize(new Dimension(getWidth(), getHeight()));
     }
 
     private String transfer(double inputTemperature, int switch1, int switch2) {
