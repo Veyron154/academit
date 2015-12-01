@@ -9,7 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Temperature {
-    private static TemperatureConverter[][] arrayOfConverters = new TemperatureConverter[3][3];
+    private final static TemperatureConverter[][] arrayOfConverters = new TemperatureConverter
+            [TemperatureScale.values().length][TemperatureScale.values().length];
+
     static {
         arrayOfConverters[0][0] = new TemperatureConverterSame();
         arrayOfConverters[0][1] = new TemperatureConverterCK();
@@ -22,51 +24,31 @@ public class Temperature {
         arrayOfConverters[2][2] = new TemperatureConverterSame();
     }
 
+    private JLabel inputLabel = new JLabel("Введите температуру: ");
+    private JLabel outLabel = new JLabel("Значение: ");
+    private JLabel switchLabel1 = new JLabel("Выберите вариант перевода: ");
+    private JLabel switchLabel2 = new JLabel("=>");
+    private JTextField inputField = new JTextField(10);
+    private JTextField outField = new JTextField(10);
+    private JComboBox<TemperatureScale> comboBox1 = new JComboBox<>(TemperatureScale.values());
+    private JComboBox<TemperatureScale> comboBox2 = new JComboBox<>(TemperatureScale.values());
+    private JButton convert = new JButton("Перевести");
+    private int strut = 12;
+
     public Temperature() {
         JFrame temperatureFrame = new JFrame();
-        temperatureFrame.setVisible(true);
         temperatureFrame.setTitle("Перевод температур");
         temperatureFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        final Box inputBox = Box.createHorizontalBox();
-        JLabel inputLabel = new JLabel("Введите температуру: ");
-        final JTextField inputField = new JTextField(10);
-        inputBox.add(inputLabel);
-        inputBox.add(Box.createHorizontalStrut(12));
-        inputBox.add(inputField);
-
-        Box outBox = Box.createHorizontalBox();
-        JLabel outLabel = new JLabel("Значение: ");
-        final JTextField outField = new JTextField(10);
-        outField.setEditable(false);
-        outBox.add(outLabel);
-        outBox.add(Box.createHorizontalStrut(12));
-        outBox.add(outField);
-
-        Box switchBox = Box.createHorizontalBox();
-        JLabel switchLabel1 = new JLabel("Выберите вариант перевода: ");
-        final JComboBox<TemperatureScale> comboBox1 = new JComboBox<>(TemperatureScale.values());
-        comboBox1.setSelectedIndex(0);
-        JLabel switchLabel2 = new JLabel("=>");
-        final JComboBox<TemperatureScale> comboBox2 = new JComboBox<>(TemperatureScale.values());
-        comboBox2.setSelectedIndex(1);
-        switchBox.add(switchLabel1);
-        switchBox.add(Box.createHorizontalStrut(12));
-        switchBox.add(comboBox1);
-        switchBox.add(Box.createHorizontalStrut(12));
-        switchBox.add(switchLabel2);
-        switchBox.add(Box.createHorizontalStrut(12));
-        switchBox.add(comboBox2);
+        temperatureFrame.add(createMainBox());
 
         inputLabel.setPreferredSize(switchLabel1.getPreferredSize());
         outLabel.setPreferredSize(switchLabel1.getPreferredSize());
 
-        final JButton transfer = new JButton("Перевести");
-        transfer.addMouseListener(new MouseAdapter() {
+        convert.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (!inputField.getText().matches("^\\d*\\.?\\d*$")) {
-                    JOptionPane.showMessageDialog(transfer, "Введите числовое значение", "Введите число",
+                    JOptionPane.showMessageDialog(convert, "Введите числовое значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     outField.setText(Double.toString(arrayOfConverters[comboBox1.getSelectedIndex()]
@@ -75,23 +57,52 @@ public class Temperature {
             }
         });
 
-        Box mainBox = Box.createVerticalBox();
-        temperatureFrame.add(mainBox);
-
-        mainBox.setBorder(new EmptyBorder(12, 12, 12, 12));
-        mainBox.add(inputBox);
-        mainBox.add(Box.createVerticalStrut(6));
-        mainBox.add(outBox);
-        mainBox.add(Box.createVerticalStrut(6));
-        mainBox.add(switchBox);
-        mainBox.add(Box.createVerticalStrut(6));
-        mainBox.add(transfer);
-        transfer.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         temperatureFrame.pack();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         temperatureFrame.setLocationRelativeTo(null);
-
         temperatureFrame.setMinimumSize(new Dimension(temperatureFrame.getWidth(), temperatureFrame.getHeight()));
+        temperatureFrame.setVisible(true);
+    }
+
+    private Box createInputBox(){
+        final Box inputBox = Box.createHorizontalBox();
+        inputBox.add(inputLabel);
+        inputBox.add(Box.createHorizontalStrut(strut));
+        inputBox.add(inputField);
+        return inputBox;
+    }
+
+    private Box createOutBox(){
+        Box outBox = Box.createHorizontalBox();
+        outField.setEditable(false);
+        outBox.add(outLabel);
+        outBox.add(Box.createHorizontalStrut(strut));
+        outBox.add(outField);
+        return outBox;
+    }
+
+    private Box createSwitchBox(){
+        Box switchBox = Box.createHorizontalBox();
+        switchBox.add(switchLabel1);
+        switchBox.add(Box.createHorizontalStrut(strut));
+        switchBox.add(comboBox1);
+        switchBox.add(Box.createHorizontalStrut(strut));
+        switchBox.add(switchLabel2);
+        switchBox.add(Box.createHorizontalStrut(strut));
+        switchBox.add(comboBox2);
+        return switchBox;
+    }
+
+    private Box createMainBox(){
+        Box mainBox = Box.createVerticalBox();
+        mainBox.setBorder(new EmptyBorder(strut, strut, strut, strut));
+        mainBox.add(createInputBox());
+        mainBox.add(Box.createVerticalStrut(strut));
+        mainBox.add(createOutBox());
+        mainBox.add(Box.createVerticalStrut(strut));
+        mainBox.add(createSwitchBox());
+        mainBox.add(Box.createVerticalStrut(strut));
+        mainBox.add(convert);
+        convert.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return mainBox;
     }
 }
