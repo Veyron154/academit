@@ -1,11 +1,12 @@
 package ru.courses.morozov;
 
+import ru.courses.morozov.model.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Arc2D;
 
 public class Temperature extends JFrame {
 
@@ -13,7 +14,7 @@ public class Temperature extends JFrame {
         super("Перевод температур");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        Box inputBox = Box.createHorizontalBox();
+        final Box inputBox = Box.createHorizontalBox();
         JLabel inputLabel = new JLabel("Введите температуру: ");
         final JTextField inputField = new JTextField(10);
         inputBox.add(inputLabel);
@@ -47,16 +48,27 @@ public class Temperature extends JFrame {
         inputLabel.setPreferredSize(switchLabel1.getPreferredSize());
         outLabel.setPreferredSize(switchLabel1.getPreferredSize());
 
+        final TemperatureConverter[][] arrayOfConverters = new TemperatureConverter[3][3];
+        arrayOfConverters[0][0] = new TemperatureConverterSame();
+        arrayOfConverters[0][1] = new TemperatureConverterCK();
+        arrayOfConverters[0][2] = new TemperatureConverterCF();
+        arrayOfConverters[1][0] = new TemperatureConverterKC();
+        arrayOfConverters[1][1] = new TemperatureConverterSame();
+        arrayOfConverters[1][2] = new TemperatureConverterKF();
+        arrayOfConverters[2][0] = new TemperatureConverterFC();
+        arrayOfConverters[2][1] = new TemperatureConverterFK();
+        arrayOfConverters[2][2] = new TemperatureConverterSame();
+
         final JButton transfer = new JButton("Перевести");
         transfer.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!inputField.getText().matches("^\\d*\\.\\d*$")) {
+                if (!inputField.getText().matches("^\\d*\\.?\\d*$")) {
                     JOptionPane.showMessageDialog(transfer, "Введите числовое значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    outField.setText(transfer(Double.valueOf(inputField.getText()), comboBox1.getSelectedIndex(),
-                            comboBox2.getSelectedIndex()));
+                    outField.setText(Double.toString(arrayOfConverters[comboBox1.getSelectedIndex()]
+                            [comboBox2.getSelectedIndex()].convert(Double.valueOf(inputField.getText()))));
                 }
             }
         });
@@ -78,42 +90,5 @@ public class Temperature extends JFrame {
         setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height - this.getHeight()) / 2);
 
         setMinimumSize(new Dimension(getWidth(), getHeight()));
-    }
-
-    private String transfer(double inputTemperature, int switch1, int switch2) {
-        final double KELVIN_COEFFICIENT = 273.15;
-        final double FAHRENHEIT_COEFFICIENT_1 = 1.8;
-        final double FAHRENHEIT_COEFFICIENT_2 = 32;
-
-        if (switch1 == 0) {
-            switch (switch2) {
-                case 0:
-                    return Double.toString(inputTemperature);
-                case 1:
-                    return Double.toString(inputTemperature + KELVIN_COEFFICIENT);
-                case 2:
-                    return Double.toString((inputTemperature * FAHRENHEIT_COEFFICIENT_1) + FAHRENHEIT_COEFFICIENT_2);
-            }
-        }
-        if (switch1 == 1) {
-            switch (switch2) {
-                case 0:
-                    return Double.toString(inputTemperature - KELVIN_COEFFICIENT);
-                case 1:
-                    return Double.toString(inputTemperature);
-                case 2:
-                    return Double.toString((inputTemperature - KELVIN_COEFFICIENT) * FAHRENHEIT_COEFFICIENT_1 +
-                            FAHRENHEIT_COEFFICIENT_2);
-            }
-        }
-        switch (switch2) {
-            case 0:
-                return Double.toString((inputTemperature - FAHRENHEIT_COEFFICIENT_2) * (1 / FAHRENHEIT_COEFFICIENT_1));
-            case 1:
-                return Double.toString((inputTemperature - FAHRENHEIT_COEFFICIENT_2) * (1 / FAHRENHEIT_COEFFICIENT_1) +
-                        KELVIN_COEFFICIENT);
-            default:
-                return Double.toString(inputTemperature);
-        }
     }
 }
