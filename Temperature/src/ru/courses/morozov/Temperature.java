@@ -31,11 +31,10 @@ public class Temperature extends JFrame {
 
         Box switchBox = Box.createHorizontalBox();
         JLabel switchLabel1 = new JLabel("Выберите вариант перевода: ");
-        String[] elementsOfComboBox = {"Цельсий", "Кельвин", "Фаренгейт"};
-        final JComboBox<String> comboBox1 = new JComboBox<>(elementsOfComboBox);
+        final JComboBox<TemperatureScale> comboBox1 = new JComboBox<>(TemperatureScale.values());
         comboBox1.setSelectedIndex(0);
         JLabel switchLabel2 = new JLabel("=>");
-        final JComboBox<String> comboBox2 = new JComboBox<>(elementsOfComboBox);
+        final JComboBox<TemperatureScale> comboBox2 = new JComboBox<>(TemperatureScale.values());
         comboBox2.setSelectedIndex(1);
         switchBox.add(switchLabel1);
         switchBox.add(Box.createHorizontalStrut(12));
