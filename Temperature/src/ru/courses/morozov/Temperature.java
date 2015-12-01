@@ -8,11 +8,25 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Temperature extends JFrame {
+public class Temperature {
+    private static TemperatureConverter[][] arrayOfConverters = new TemperatureConverter[3][3];
+    static {
+        arrayOfConverters[0][0] = new TemperatureConverterSame();
+        arrayOfConverters[0][1] = new TemperatureConverterCK();
+        arrayOfConverters[0][2] = new TemperatureConverterCF();
+        arrayOfConverters[1][0] = new TemperatureConverterKC();
+        arrayOfConverters[1][1] = new TemperatureConverterSame();
+        arrayOfConverters[1][2] = new TemperatureConverterKF();
+        arrayOfConverters[2][0] = new TemperatureConverterFC();
+        arrayOfConverters[2][1] = new TemperatureConverterFK();
+        arrayOfConverters[2][2] = new TemperatureConverterSame();
+    }
 
     public Temperature() {
-        super("Перевод температур");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        JFrame temperatureFrame = new JFrame();
+        temperatureFrame.setVisible(true);
+        temperatureFrame.setTitle("Перевод температур");
+        temperatureFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         final Box inputBox = Box.createHorizontalBox();
         JLabel inputLabel = new JLabel("Введите температуру: ");
@@ -47,17 +61,6 @@ public class Temperature extends JFrame {
         inputLabel.setPreferredSize(switchLabel1.getPreferredSize());
         outLabel.setPreferredSize(switchLabel1.getPreferredSize());
 
-        final TemperatureConverter[][] arrayOfConverters = new TemperatureConverter[3][3];
-        arrayOfConverters[0][0] = new TemperatureConverterSame();
-        arrayOfConverters[0][1] = new TemperatureConverterCK();
-        arrayOfConverters[0][2] = new TemperatureConverterCF();
-        arrayOfConverters[1][0] = new TemperatureConverterKC();
-        arrayOfConverters[1][1] = new TemperatureConverterSame();
-        arrayOfConverters[1][2] = new TemperatureConverterKF();
-        arrayOfConverters[2][0] = new TemperatureConverterFC();
-        arrayOfConverters[2][1] = new TemperatureConverterFK();
-        arrayOfConverters[2][2] = new TemperatureConverterSame();
-
         final JButton transfer = new JButton("Перевести");
         transfer.addMouseListener(new MouseAdapter() {
             @Override
@@ -73,7 +76,7 @@ public class Temperature extends JFrame {
         });
 
         Box mainBox = Box.createVerticalBox();
-        add(mainBox);
+        temperatureFrame.add(mainBox);
 
         mainBox.setBorder(new EmptyBorder(12, 12, 12, 12));
         mainBox.add(inputBox);
@@ -83,11 +86,12 @@ public class Temperature extends JFrame {
         mainBox.add(switchBox);
         mainBox.add(Box.createVerticalStrut(6));
         mainBox.add(transfer);
+        transfer.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        pack();
+        temperatureFrame.pack();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - this.getWidth()) / 2, (screenSize.height - this.getHeight()) / 2);
+        temperatureFrame.setLocationRelativeTo(null);
 
-        setMinimumSize(new Dimension(getWidth(), getHeight()));
+        temperatureFrame.setMinimumSize(new Dimension(temperatureFrame.getWidth(), temperatureFrame.getHeight()));
     }
 }

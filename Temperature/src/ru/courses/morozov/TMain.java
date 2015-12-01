@@ -7,8 +7,7 @@ public class TMain {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Temperature temperature = new Temperature();
-                temperature.setVisible(true);
+                new Temperature();
             }
         });
     }
