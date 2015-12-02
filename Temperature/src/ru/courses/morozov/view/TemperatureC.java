@@ -1,6 +1,6 @@
 package ru.courses.morozov.view;
 
-import ru.courses.morozov.controller.TemperatureController;
+import ru.courses.morozov.Controller.TemperatureController;
 import ru.courses.morozov.model.TemperatureScale;
 
 import java.util.Locale;
