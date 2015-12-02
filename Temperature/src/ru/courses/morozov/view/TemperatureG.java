@@ -1,5 +1,6 @@
-package ru.courses.morozov;
+package ru.courses.morozov.view;
 
+import ru.courses.morozov.controller.TemperatureController;
 import ru.courses.morozov.model.*;
 
 import javax.swing.*;
@@ -7,16 +8,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Temperature {
-    private static Map<TemperatureScale, TemperatureConverter> mapOfConverters = new HashMap<>();
-
-    static {
-        mapOfConverters.put(TemperatureScale.KELVIN, new TemperatureConverterK());
-        mapOfConverters.put(TemperatureScale.FAHRENHEIT, new TemperatureConverterF());
-    }
+public class TemperatureG {
 
     private JLabel inputLabel = new JLabel("Введите температуру: ");
     private JLabel outLabel = new JLabel("Результат: ");
@@ -29,7 +22,7 @@ public class Temperature {
     private JButton convertButton = new JButton("Перевести");
     static final int STRUT = 12;
 
-    public Temperature() {
+    public TemperatureG() {
         JFrame temperatureFrame = new JFrame();
         temperatureFrame.setTitle("Перевод температур");
         temperatureFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -53,12 +46,13 @@ public class Temperature {
                 if (inputField.getText().equals("")) {
                     JOptionPane.showMessageDialog(convertButton, "Введите значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
-                } else if (!inputField.getText().matches("^\\d*\\.?\\d*$")) {
+                } else if (!inputField.getText().matches("^\\-?\\d*\\.?\\d*$")) {
                     JOptionPane.showMessageDialog(convertButton, "Введите числовое значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    outField.setText(Double.toString(convert(comboBox1.getItemAt(comboBox1.getSelectedIndex()),
-                            comboBox2.getItemAt(comboBox2.getSelectedIndex()), Double.valueOf(inputField.getText()))));
+                    outField.setText(Double.toString(TemperatureController.controller(comboBox1.getItemAt
+                                    (comboBox1.getSelectedIndex()), comboBox2.getItemAt(comboBox2.getSelectedIndex()),
+                            Double.valueOf(inputField.getText()))));
                 }
             }
         });
@@ -110,19 +104,5 @@ public class Temperature {
         mainBox.add(convertButton);
         convertButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         return mainBox;
-    }
-
-    private double convert(TemperatureScale scale1, TemperatureScale scale2, double inputTemperature) {
-        if (scale1.equals(scale2)) {
-            return inputTemperature;
-        }
-        if (scale1.equals(TemperatureScale.CELSIUS)) {
-            return mapOfConverters.get(scale2).convertFromCelsius(inputTemperature);
-        }
-        if (scale2.equals(TemperatureScale.CELSIUS)) {
-            return mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
-        }
-        double tmpTemperature = mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
-        return mapOfConverters.get(scale2).convertFromCelsius(tmpTemperature);
     }
 }
