@@ -28,12 +28,13 @@ public class Temperature {
     private JLabel outLabel = new JLabel("Значение: ");
     private JLabel switchLabel1 = new JLabel("Выберите вариант перевода: ");
     private JLabel switchLabel2 = new JLabel("=>");
-    private JTextField inputField = new JTextField(10);
-    private JTextField outField = new JTextField(10);
+    private JTextField inputField = new JTextField();
+    private JTextField outField = new JTextField();
     private JComboBox<TemperatureScale> comboBox1 = new JComboBox<>(TemperatureScale.values());
     private JComboBox<TemperatureScale> comboBox2 = new JComboBox<>(TemperatureScale.values());
+    private JButton swap = new JButton("<=>");
     private JButton convert = new JButton("Перевести");
-    private int strut = 12;
+    static final int STRUT = 12;
 
     public Temperature() {
         JFrame temperatureFrame = new JFrame();
@@ -44,10 +45,22 @@ public class Temperature {
         inputLabel.setPreferredSize(switchLabel1.getPreferredSize());
         outLabel.setPreferredSize(switchLabel1.getPreferredSize());
 
+        swap.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int tmpIndex = comboBox1.getSelectedIndex();
+                comboBox1.setSelectedIndex(comboBox2.getSelectedIndex());
+                comboBox2.setSelectedIndex(tmpIndex);
+            }
+        });
+
         convert.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!inputField.getText().matches("^\\d*\\.?\\d*$")) {
+                if (inputField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(convert, "Введите значение", "Введите число",
+                            JOptionPane.ERROR_MESSAGE);
+                } else if (!inputField.getText().matches("^\\d*\\.?\\d*$")) {
                     JOptionPane.showMessageDialog(convert, "Введите числовое значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -64,9 +77,9 @@ public class Temperature {
     }
 
     private Box createInputBox(){
-        final Box inputBox = Box.createHorizontalBox();
+        Box inputBox = Box.createHorizontalBox();
         inputBox.add(inputLabel);
-        inputBox.add(Box.createHorizontalStrut(strut));
+        inputBox.add(Box.createHorizontalStrut(STRUT));
         inputBox.add(inputField);
         return inputBox;
     }
@@ -75,7 +88,7 @@ public class Temperature {
         Box outBox = Box.createHorizontalBox();
         outField.setEditable(false);
         outBox.add(outLabel);
-        outBox.add(Box.createHorizontalStrut(strut));
+        outBox.add(Box.createHorizontalStrut(STRUT));
         outBox.add(outField);
         return outBox;
     }
@@ -83,24 +96,24 @@ public class Temperature {
     private Box createSwitchBox(){
         Box switchBox = Box.createHorizontalBox();
         switchBox.add(switchLabel1);
-        switchBox.add(Box.createHorizontalStrut(strut));
+        switchBox.add(Box.createHorizontalStrut(STRUT));
         switchBox.add(comboBox1);
-        switchBox.add(Box.createHorizontalStrut(strut));
-        switchBox.add(switchLabel2);
-        switchBox.add(Box.createHorizontalStrut(strut));
+        switchBox.add(Box.createHorizontalStrut(STRUT));
+        switchBox.add(swap);
+        switchBox.add(Box.createHorizontalStrut(STRUT));
         switchBox.add(comboBox2);
         return switchBox;
     }
 
     private Box createMainBox(){
         Box mainBox = Box.createVerticalBox();
-        mainBox.setBorder(new EmptyBorder(strut, strut, strut, strut));
+        mainBox.setBorder(new EmptyBorder(STRUT, STRUT, STRUT, STRUT));
         mainBox.add(createInputBox());
-        mainBox.add(Box.createVerticalStrut(strut));
+        mainBox.add(Box.createVerticalStrut(STRUT));
         mainBox.add(createOutBox());
-        mainBox.add(Box.createVerticalStrut(strut));
+        mainBox.add(Box.createVerticalStrut(STRUT));
         mainBox.add(createSwitchBox());
-        mainBox.add(Box.createVerticalStrut(strut));
+        mainBox.add(Box.createVerticalStrut(STRUT));
         mainBox.add(convert);
         convert.setAlignmentX(Component.CENTER_ALIGNMENT);
         return mainBox;
