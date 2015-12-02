@@ -7,33 +7,26 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Temperature {
-    private final static TemperatureConverter[][] arrayOfConverters = new TemperatureConverter
-            [TemperatureScale.values().length][TemperatureScale.values().length];
+    private static Map<TemperatureScale, TemperatureConverter> mapOfConverters = new HashMap<>();
 
     static {
-        arrayOfConverters[0][0] = new TemperatureConverterSame();
-        arrayOfConverters[0][1] = new TemperatureConverterCK();
-        arrayOfConverters[0][2] = new TemperatureConverterCF();
-        arrayOfConverters[1][0] = new TemperatureConverterKC();
-        arrayOfConverters[1][1] = new TemperatureConverterSame();
-        arrayOfConverters[1][2] = new TemperatureConverterKF();
-        arrayOfConverters[2][0] = new TemperatureConverterFC();
-        arrayOfConverters[2][1] = new TemperatureConverterFK();
-        arrayOfConverters[2][2] = new TemperatureConverterSame();
+        mapOfConverters.put(TemperatureScale.KELVIN, new TemperatureConverterK());
+        mapOfConverters.put(TemperatureScale.FAHRENHEIT, new TemperatureConverterF());
     }
 
     private JLabel inputLabel = new JLabel("Введите температуру: ");
-    private JLabel outLabel = new JLabel("Значение: ");
+    private JLabel outLabel = new JLabel("Результат: ");
     private JLabel switchLabel1 = new JLabel("Выберите вариант перевода: ");
-    private JLabel switchLabel2 = new JLabel("=>");
     private JTextField inputField = new JTextField();
     private JTextField outField = new JTextField();
     private JComboBox<TemperatureScale> comboBox1 = new JComboBox<>(TemperatureScale.values());
     private JComboBox<TemperatureScale> comboBox2 = new JComboBox<>(TemperatureScale.values());
     private JButton swap = new JButton("<=>");
-    private JButton convert = new JButton("Перевести");
+    private JButton convertButton = new JButton("Перевести");
     static final int STRUT = 12;
 
     public Temperature() {
@@ -54,18 +47,18 @@ public class Temperature {
             }
         });
 
-        convert.addMouseListener(new MouseAdapter() {
+        convertButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (inputField.getText().equals("")) {
-                    JOptionPane.showMessageDialog(convert, "Введите значение", "Введите число",
+                    JOptionPane.showMessageDialog(convertButton, "Введите значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
                 } else if (!inputField.getText().matches("^\\d*\\.?\\d*$")) {
-                    JOptionPane.showMessageDialog(convert, "Введите числовое значение", "Введите число",
+                    JOptionPane.showMessageDialog(convertButton, "Введите числовое значение", "Введите число",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    outField.setText(Double.toString(arrayOfConverters[comboBox1.getSelectedIndex()]
-                            [comboBox2.getSelectedIndex()].convert(Double.valueOf(inputField.getText()))));
+                    outField.setText(Double.toString(convert(comboBox1.getItemAt(comboBox1.getSelectedIndex()),
+                            comboBox2.getItemAt(comboBox2.getSelectedIndex()), Double.valueOf(inputField.getText()))));
                 }
             }
         });
@@ -76,7 +69,7 @@ public class Temperature {
         temperatureFrame.setVisible(true);
     }
 
-    private Box createInputBox(){
+    private Box createInputBox() {
         Box inputBox = Box.createHorizontalBox();
         inputBox.add(inputLabel);
         inputBox.add(Box.createHorizontalStrut(STRUT));
@@ -84,7 +77,7 @@ public class Temperature {
         return inputBox;
     }
 
-    private Box createOutBox(){
+    private Box createOutBox() {
         Box outBox = Box.createHorizontalBox();
         outField.setEditable(false);
         outBox.add(outLabel);
@@ -93,7 +86,7 @@ public class Temperature {
         return outBox;
     }
 
-    private Box createSwitchBox(){
+    private Box createSwitchBox() {
         Box switchBox = Box.createHorizontalBox();
         switchBox.add(switchLabel1);
         switchBox.add(Box.createHorizontalStrut(STRUT));
@@ -105,7 +98,7 @@ public class Temperature {
         return switchBox;
     }
 
-    private Box createMainBox(){
+    private Box createMainBox() {
         Box mainBox = Box.createVerticalBox();
         mainBox.setBorder(new EmptyBorder(STRUT, STRUT, STRUT, STRUT));
         mainBox.add(createInputBox());
@@ -114,8 +107,22 @@ public class Temperature {
         mainBox.add(Box.createVerticalStrut(STRUT));
         mainBox.add(createSwitchBox());
         mainBox.add(Box.createVerticalStrut(STRUT));
-        mainBox.add(convert);
-        convert.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainBox.add(convertButton);
+        convertButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         return mainBox;
+    }
+
+    private double convert(TemperatureScale scale1, TemperatureScale scale2, double inputTemperature) {
+        if (scale1.equals(scale2)) {
+            return inputTemperature;
+        }
+        if (scale1.equals(TemperatureScale.CELSIUS)) {
+            return mapOfConverters.get(scale2).convertFromCelsius(inputTemperature);
+        }
+        if (scale2.equals(TemperatureScale.CELSIUS)) {
+            return mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
+        }
+        double tmpTemperature = mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
+        return mapOfConverters.get(scale2).convertFromCelsius(tmpTemperature);
     }
 }

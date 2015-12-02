@@ -5,5 +5,7 @@ public interface TemperatureConverter {
     double FAHRENHEIT_COEFFICIENT_1 = 1.8;
     double FAHRENHEIT_COEFFICIENT_2 = 32;
 
-    double convert(double inputTemperature);
+    double convertToCelsius(double inputTemperature);
+
+    double convertFromCelsius(double outputTemperature);
 }
