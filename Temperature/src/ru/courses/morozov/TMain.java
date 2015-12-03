@@ -1,4 +1,4 @@
-package ru.courses.morozov.model;
+package ru.courses.morozov;
 
 import ru.courses.morozov.view.TemperatureConsole;
 import ru.courses.morozov.view.TemperatureGraphic;

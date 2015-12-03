@@ -7,17 +7,17 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class TemperatureConsole {
-    Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+    private Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
 
 
     public void run() {
         System.out.println("Введите температуру: ");
         double inputTemperature = scanner.nextDouble();
 
-        TemperatureScale scaleFrom = TemperatureScale.values()[scanScale
-                ("Выберите номер шкалы, из которой надо перевести: ")];
-        TemperatureScale scaleTo = TemperatureScale.values()[scanScale
-                ("Выберите номер шкалы, в которую надо перевести: ")];
+        TemperatureScale scaleFrom = TemperatureScale
+                .values()[scanScale("Выберите номер шкалы, из которой надо перевести: ")];
+        TemperatureScale scaleTo = TemperatureScale
+                .values()[scanScale("Выберите номер шкалы, в которую надо перевести: ")];
 
         System.out.println("*****");
         System.out.println("Начальное значение: " + inputTemperature);
