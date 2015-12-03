@@ -3,7 +3,7 @@ package ru.courses.morozov.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TemperatureController {
+public class DeterminantConverter {
     private static Map<TemperatureScale, TemperatureConverter> mapOfConverters = new HashMap<>();
 
     static {
@@ -11,7 +11,7 @@ public class TemperatureController {
         mapOfConverters.put(TemperatureScale.FAHRENHEIT, new TemperatureConverterF());
     }
 
-    public static double controller(TemperatureScale scale1, TemperatureScale scale2, double inputTemperature) {
+    public static double determine(TemperatureScale scale1, TemperatureScale scale2, double inputTemperature) {
         if (scale1.equals(scale2)) {
             return inputTemperature;
         }

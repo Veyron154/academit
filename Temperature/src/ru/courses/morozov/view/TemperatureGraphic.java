@@ -1,6 +1,6 @@
 package ru.courses.morozov.view;
 
-import ru.courses.morozov.model.TemperatureController;
+import ru.courses.morozov.model.DeterminantConverter;
 import ru.courses.morozov.model.*;
 
 import javax.swing.*;
@@ -53,7 +53,7 @@ public class TemperatureGraphic {
                             JOptionPane.showMessageDialog(convertButton, "Введите числовое значение", "Введите число",
                                     JOptionPane.ERROR_MESSAGE);
                         } else {
-                            outField.setText(Double.toString(TemperatureController.controller(comboBox1.getItemAt
+                            outField.setText(Double.toString(DeterminantConverter.determine(comboBox1.getItemAt
                                             (comboBox1.getSelectedIndex()), comboBox2.getItemAt(comboBox2.getSelectedIndex()),
                                     Double.valueOf(inputField.getText()))));
                         }

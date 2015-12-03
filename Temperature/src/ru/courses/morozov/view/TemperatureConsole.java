@@ -1,6 +1,6 @@
 package ru.courses.morozov.view;
 
-import ru.courses.morozov.model.TemperatureController;
+import ru.courses.morozov.model.DeterminantConverter;
 import ru.courses.morozov.model.TemperatureScale;
 
 import java.util.Locale;
@@ -26,7 +26,7 @@ public class TemperatureConsole {
         System.out.println("Начальное значение: " + inputTemperature);
         System.out.println("Начальная шкала:    " + scale1);
         System.out.println("Конечная шкала:     " + scale2);
-        System.out.println("Результат:          " + TemperatureController.controller(scale1, scale2, inputTemperature));
+        System.out.println("Результат:          " + DeterminantConverter.determine(scale1, scale2, inputTemperature));
         System.out.println("*****");
     }
 
