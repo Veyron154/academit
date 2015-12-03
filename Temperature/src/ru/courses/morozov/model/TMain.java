@@ -6,8 +6,8 @@ import ru.courses.morozov.view.TemperatureGraphic;
 public class TMain {
     public static void main(String[] args) {
         TemperatureGraphic tg = new TemperatureGraphic();
-        tg.run();
+        //tg.run();
         TemperatureConsole tc = new TemperatureConsole();
-        //tc.run();
+        tc.run();
     }
 }

@@ -11,19 +11,21 @@ public class DeterminantConverter {
         mapOfConverters.put(TemperatureScale.FAHRENHEIT, new TemperatureConverterF());
     }
 
-    public static double determine(TemperatureScale scale1, TemperatureScale scale2, double inputTemperature) {
-        if (scale1.equals(scale2)) {
+    private DeterminantConverter(){}
+
+    public static double determine(TemperatureScale scaleFrom, TemperatureScale scaleTo, double inputTemperature) {
+        if (scaleFrom.equals(scaleTo)) {
             return inputTemperature;
         }
-        if (scale1.equals(TemperatureScale.CELSIUS)) {
-            return mapOfConverters.get(scale2).convertFromCelsius(inputTemperature);
+        if (scaleFrom.equals(TemperatureScale.CELSIUS)) {
+            return mapOfConverters.get(scaleTo).convertFromCelsius(inputTemperature);
         }
-        if (scale2.equals(TemperatureScale.CELSIUS)) {
-            return mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
+        if (scaleTo.equals(TemperatureScale.CELSIUS)) {
+            return mapOfConverters.get(scaleFrom).convertToCelsius(inputTemperature);
         }
 
 
-        double tmpTemperature = mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
-        return mapOfConverters.get(scale2).convertFromCelsius(tmpTemperature);
+        double tmpTemperature = mapOfConverters.get(scaleFrom).convertToCelsius(inputTemperature);
+        return mapOfConverters.get(scaleTo).convertFromCelsius(tmpTemperature);
     }
 }
