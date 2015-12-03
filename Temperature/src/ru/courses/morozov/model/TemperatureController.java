@@ -1,9 +1,4 @@
-package ru.courses.morozov.Controller;
-
-import ru.courses.morozov.model.TemperatureConverter;
-import ru.courses.morozov.model.TemperatureConverterF;
-import ru.courses.morozov.model.TemperatureConverterK;
-import ru.courses.morozov.model.TemperatureScale;
+package ru.courses.morozov.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +21,6 @@ public class TemperatureController {
         if (scale2.equals(TemperatureScale.CELSIUS)) {
             return mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
         }
-
 
 
         double tmpTemperature = mapOfConverters.get(scale1).convertToCelsius(inputTemperature);
