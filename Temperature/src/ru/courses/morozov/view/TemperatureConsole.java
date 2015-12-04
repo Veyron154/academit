@@ -30,8 +30,6 @@ public class TemperatureConsole {
 
     private int scanScale(String printedString) {
         System.out.println(printedString);
-        Scanner scanner = new Scanner(System.in);
-        scanner.useLocale(Locale.US);
         for (int i = 0; i < TemperatureScale.values().length; ++i) {
             System.out.println(i + " - " + TemperatureScale.values()[i]);
         }
