@@ -213,16 +213,18 @@ public class Matrix {
         return new Matrix(auxiliaryArray);
     }
 
-    public boolean equals(Matrix comparedMatrix) {
-        if (this == comparedMatrix) {
+    @Override
+    public boolean equals(Object comparedObject) {
+        if (this == comparedObject) {
             return true;
         }
-        if (comparedMatrix == null) {
+        if (comparedObject == null) {
             return false;
         }
-        if (this.getClass() != comparedMatrix.getClass()) {
+        if (this.getClass() != comparedObject.getClass()) {
             return false;
         }
+        Matrix comparedMatrix = (Matrix)comparedObject;
         if (this.getCountOfColumns() != comparedMatrix.getCountOfColumns() ||
                 this.getCountOfRows() != comparedMatrix.getCountOfRows()) {
             return false;
