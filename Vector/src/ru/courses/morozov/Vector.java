@@ -34,8 +34,9 @@ class Vector {
 
     public Vector(double[] vectorComponents) {
         this.vectorComponents = new double[vectorComponents.length];
-            System.arraycopy(vectorComponents, 0, this.vectorComponents, 0, vectorComponents.length);
+        System.arraycopy(vectorComponents, 0, this.vectorComponents, 0, vectorComponents.length);
     }
+
     public int getSize() {
         return this.vectorComponents.length;
     }
@@ -89,16 +90,18 @@ class Vector {
         return this.vectorComponents[numberOfComponent];
     }
 
-    public boolean equals(Vector comparedVector) {
-        if (this == comparedVector) {
+    @Override
+    public boolean equals(Object comparedObject) {
+        if (this == comparedObject) {
             return true;
         }
-        if (comparedVector == null) {
+        if (comparedObject == null) {
             return false;
         }
-        if (this.getClass() != comparedVector.getClass()) {
+        if (this.getClass() != comparedObject.getClass()) {
             return false;
         }
+        Vector comparedVector = (Vector) comparedObject;
         if (this.vectorComponents.length != comparedVector.vectorComponents.length) {
             return false;
         }
@@ -141,7 +144,7 @@ class Vector {
 
     public static Vector addition(Vector vector1, Vector vector2) {
         Vector auxiliaryVector1 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
-               new Vector(vector1) : new Vector(vector2);
+                new Vector(vector1) : new Vector(vector2);
         Vector auxiliaryVector2 = vector1.vectorComponents.length > vector2.vectorComponents.length ?
                 new Vector(Vector.extensionVector(vector2.vectorComponents, vector1.vectorComponents.length)) :
                 new Vector(Vector.extensionVector(vector1.vectorComponents, vector2.vectorComponents.length));
