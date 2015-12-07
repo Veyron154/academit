@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.Formatter;
 
 public class SymmetricMatrix implements Serializable {
     private int[][] matrixElements;
@@ -22,8 +22,18 @@ public class SymmetricMatrix implements Serializable {
         }
     }
 
+    @Override
     public String toString() {
-        return Arrays.deepToString(matrixElements);
+        StringBuilder builder = new StringBuilder();
+        for (int[] matrixElement : matrixElements) {
+            for (int j = 0; j < matrixElements.length; ++j) {
+                Formatter formatter = new Formatter();
+                formatter.format("%3d", matrixElement[j]);
+                builder.append(formatter.toString());
+            }
+            builder.append('\n');
+        }
+        return builder.toString();
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
