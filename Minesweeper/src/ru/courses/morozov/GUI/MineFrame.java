@@ -27,7 +27,7 @@ public class MineFrame {
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel buttonsPanel = new JPanel();
     private final int SIZE_OF_BUTTON = 25;
-    private JLabel label = new JLabel();
+    private JLabel label;
     private final int BORDER = 10;
 
     public MineFrame() {
@@ -335,6 +335,7 @@ public class MineFrame {
         mineButtons[i][j].setVisible(false);
         gbc.gridx = i;
         gbc.gridy = j;
+        label = new JLabel();
         label.setVerticalAlignment(JLabel.CENTER);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setPreferredSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
@@ -351,7 +352,8 @@ public class MineFrame {
                 }
                 if (isWin()) {
                     timer.stop();
-                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!", JOptionPane.PLAIN_MESSAGE);
+                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
+                            JOptionPane.PLAIN_MESSAGE);
                     MineFrame mineFrame = new MineFrame(countOfColumns, countOfRows, countOfMines);
                     mineFrame.run();
                     MineFrame.this.mineFrame.setVisible(false);
