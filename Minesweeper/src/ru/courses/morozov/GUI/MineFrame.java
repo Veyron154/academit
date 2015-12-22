@@ -1,4 +1,4 @@
-package ru.courses.morozov.GUI;
+package ru.courses.morozov.gui;
 
 import ru.courses.morozov.controller.Controller;
 import ru.courses.morozov.model.GridOfMines;
@@ -194,7 +194,7 @@ public class MineFrame {
     private boolean isWin() {
         for (int i = 0; i < this.countOfColumns; ++i) {
             for (int j = 0; j < this.countOfRows; ++j) {
-                if (grid.getIndex(i, j) != -1 && !grid.isOpened(i, j)) {
+                if (grid.getIndex(i, j) == -1 && !grid.isOpened(i, j)) {
                     return false;
                 }
             }
@@ -208,7 +208,7 @@ public class MineFrame {
                 if (grid.isOpened(i, j) && mineButtons[i][j].isVisible()) {
                     setLabel(i, j);
                     int index = grid.getIndex(i, j);
-                    if (index == -1) {
+                    if (grid.getIndex(i, j) == -1) {
                         timer.stop();
                         mineReveal();
                         label.setIcon(new ImageIcon
@@ -363,3 +363,4 @@ public class MineFrame {
         buttonsPanel.add(label, gbc);
     }
 }
+
