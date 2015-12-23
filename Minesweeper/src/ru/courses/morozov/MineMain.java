@@ -11,4 +11,3 @@ public class MineMain {
         mineFrame.run();
     }
 }
-

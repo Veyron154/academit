@@ -16,39 +16,39 @@ public class GridOfMines {
         for (int i = 1; i <= countOfMines; ++i) {
             int row = (int) (Math.random() * this.grid.length);
             int column = (int) (Math.random() * this.grid[0].length);
-            if (this.grid[row][column].getIndex() == -1) {
+            if (this.grid[row][column].isMined()) {
                 --i;
                 continue;
             }
-            this.grid[row][column].setIndex(-1);
+            this.grid[row][column].setMined(true);
         }
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {
-                if (grid[i][j].getIndex() == -1) {
+                if (grid[i][j].isMined()) {
                     continue;
                 }
-                if (i != 0 && grid[i - 1][j].getIndex() == -1) {
+                if (i != 0 && grid[i - 1][j].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (j != 0 && grid[i][j - 1].getIndex() == -1) {
+                if (j != 0 && grid[i][j - 1].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (i != (grid.length - 1) && grid[i + 1][j].getIndex() == -1) {
+                if (i != (grid.length - 1) && grid[i + 1][j].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (j != (grid[0].length - 1) && grid[i][j + 1].getIndex() == -1) {
+                if (j != (grid[0].length - 1) && grid[i][j + 1].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (i != 0 && j != 0 && grid[i - 1][j - 1].getIndex() == -1) {
+                if (i != 0 && j != 0 && grid[i - 1][j - 1].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (i != 0 && j != (grid[0].length - 1) && grid[i - 1][j + 1].getIndex() == -1) {
+                if (i != 0 && j != (grid[0].length - 1) && grid[i - 1][j + 1].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (i != (grid.length - 1) && j != 0 && grid[i + 1][j - 1].getIndex() == -1) {
+                if (i != (grid.length - 1) && j != 0 && grid[i + 1][j - 1].isMined()) {
                     grid[i][j].upIndex();
                 }
-                if (i != (grid.length - 1) && j != (grid[0].length - 1) && grid[i + 1][j + 1].getIndex() == -1) {
+                if (i != (grid.length - 1) && j != (grid[0].length - 1) && grid[i + 1][j + 1].isMined()) {
                     grid[i][j].upIndex();
                 }
             }
@@ -87,6 +87,8 @@ public class GridOfMines {
         return this.grid[row][column].isMarked();
     }
 
+    public boolean isMined(int row, int column){return this.grid[row][column].isMined();}
+
     public void setMark(int row, int column, boolean mark) {
         this.grid[row][column].setMarked(mark);
     }
@@ -94,4 +96,7 @@ public class GridOfMines {
     public void setOpened(int row, int column, boolean opened) {
         this.grid[row][column].setOpened(opened);
     }
+
+    public void setMined(int row, int column, boolean mined){this.grid[row][column].setMined(mined);}
 }
+

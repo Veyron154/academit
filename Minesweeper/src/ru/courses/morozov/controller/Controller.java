@@ -19,7 +19,7 @@ public class Controller {
         while (!queue.isEmpty()) {
             Cell cell = queue.remove();
 
-            if (cell.getIndex() == 0) {
+            if (cell.getIndex() == 0 && !cell.isMined()) {
                 int countOfRows = grid.getCountOfRows();
                 int countOfColumns = grid.getCountOfColumns();
                 int rowIndex = cell.getRowIndex();
@@ -69,3 +69,4 @@ public class Controller {
         }
     }
 }
+

@@ -5,6 +5,7 @@ public class Cell {
     private boolean flagged;
     private boolean opened;
     private boolean marked;
+    private boolean mined;
     private int rowIndex;
     private int columnIndex;
 
@@ -37,6 +38,10 @@ public class Cell {
         return this.marked;
     }
 
+    public boolean isMined(){
+        return this.mined;
+    }
+
     public void upIndex() {
         this.index += 1;
     }
@@ -56,4 +61,7 @@ public class Cell {
     public void setMarked(boolean marked) {
         this.marked = marked;
     }
+
+    public void setMined(boolean mined){this.mined = mined;}
 }
+
