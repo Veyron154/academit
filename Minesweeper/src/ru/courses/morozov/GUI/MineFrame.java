@@ -23,12 +23,15 @@ public class MineFrame {
     private JTextField mineCounterField;
     private JFrame mineFrame = new JFrame("Сапёр");
     private JButton[][] mineButtons;
+    private JLabel[][] mineLabels = new JLabel[countOfColumns][countOfRows];
     private GridOfMines grid;
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel buttonsPanel = new JPanel();
     private final int SIZE_OF_BUTTON = 25;
     private JLabel label;
     private final int BORDER = 10;
+    private final int TEXT_COLUMNS = 3;
+    private JTextField timerField = new JTextField(TEXT_COLUMNS);
 
     public MineFrame() {
     }
@@ -79,9 +82,7 @@ public class MineFrame {
         mineCounterLabel.setIcon(new ImageIcon("Minesweeper/src/ru/courses/morozov/resources/mine.png"));
         topPanel.add(mineCounterLabel);
 
-        mineCounter = countOfMines;
-        final int TEXT_COLUMNS = 3;
-        mineCounterField = new JTextField(Integer.toString(mineCounter), TEXT_COLUMNS);
+        mineCounterField = new JTextField(TEXT_COLUMNS);
         mineCounterField.setEditable(false);
         int SIZE_OF_FONT = 17;
         mineCounterField.setFont(new Font("font", Font.BOLD, SIZE_OF_FONT));
@@ -95,14 +96,12 @@ public class MineFrame {
         smile.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                MineFrame mineFrame = new MineFrame(countOfColumns, countOfRows, countOfMines);
-                mineFrame.run();
-                MineFrame.this.mineFrame.dispose();
+                clean();
+                fill();
             }
         });
         topPanel.add(smile);
 
-        JTextField timerField = new JTextField(Integer.toString(timerText), TEXT_COLUMNS);
         timerField.setFont(new Font("F", Font.BOLD, SIZE_OF_FONT));
         timerField.setEditable(false);
         timerField.setHorizontalAlignment(JTextField.RIGHT);
@@ -120,7 +119,6 @@ public class MineFrame {
         gbc.weighty = (screenSize.getHeight() / countOfColumns) - SIZE_OF_BUTTON;
 
         grid = new GridOfMines(this.countOfColumns, this.countOfRows);
-        grid.mine(this.countOfMines);
 
         timer = new Timer(1000, e -> {
             timerText += 1;
@@ -143,6 +141,17 @@ public class MineFrame {
         mineFrame.setMinimumSize(new Dimension(mineFrame.getSize()));
         mineFrame.setLocationRelativeTo(null);
         mineFrame.setResizable(false);
+        fill();
+    }
+
+    private void fill(){
+        timer.stop();
+        timerText = 0;
+        timerField.setText(Integer.toString(timerText));
+        mineCounter = countOfMines;
+        mineCounterField.setText(Integer.toString(mineCounter));
+        grid.clean();
+        grid.mine(countOfMines);
     }
 
     private void setMark(int row, int column) {
@@ -215,9 +224,8 @@ public class MineFrame {
                                 ("Minesweeper/src/ru/courses/morozov/resources/active_mine.png"));
                         JOptionPane.showMessageDialog(mineFrame, "Поражение!", "Поражение!",
                                 JOptionPane.PLAIN_MESSAGE);
-                        MineFrame mineFrame = new MineFrame(countOfColumns, countOfRows, countOfMines);
-                        mineFrame.run();
-                        MineFrame.this.mineFrame.dispose();
+                        clean();
+                        fill();
                     } else if (index != 0) {
                         label.setText(Integer.toString(index));
                     }
@@ -293,7 +301,7 @@ public class MineFrame {
 
         MouseListener listener = new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 timer.start();
                 if (SwingUtilities.isLeftMouseButton(e) && !grid.isFlagged(finalI, finalJ))
                     Controller.open(finalI, finalJ, grid);
@@ -316,9 +324,8 @@ public class MineFrame {
                     }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
-                    MineFrame mineFrame = new MineFrame(countOfColumns, countOfRows, countOfMines);
-                    mineFrame.run();
-                    MineFrame.this.mineFrame.dispose();
+                    clean();
+                    fill();
                 }
                 if (SwingUtilities.isRightMouseButton(e)) {
                     setMark(finalI, finalJ);
@@ -345,7 +352,7 @@ public class MineFrame {
         final int finalJ1 = j;
         label.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isMiddleMouseButton(e)) {
                     openLabel(finalI1, finalJ1);
                     openButtons();
@@ -354,13 +361,26 @@ public class MineFrame {
                     timer.stop();
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
-                    MineFrame mineFrame = new MineFrame(countOfColumns, countOfRows, countOfMines);
-                    mineFrame.run();
-                    MineFrame.this.mineFrame.setVisible(false);
+                    clean();
+                    fill();
                 }
             }
         });
         buttonsPanel.add(label, gbc);
+        mineLabels[i][j] = label;
+    }
+
+    private void clean(){
+        for (int i = 0; i < countOfColumns; ++i) {
+            for (int j = 0; j < countOfRows; ++j) {
+                mineButtons[i][j].setIcon(null);
+                mineButtons[i][j].setVisible(true);
+                if(mineLabels[i][j] != null){
+                    mineLabels[i][j].setText(null);
+                    mineLabels[i][j].setIcon(null);
+                }
+            }
+        }
     }
 }
 

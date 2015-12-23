@@ -2,8 +2,12 @@ package ru.courses.morozov.model;
 
 public class GridOfMines {
     private Cell[][] grid;
+    private int countOfColumns;
+    private int countOfRows;
 
     public GridOfMines(int countOfColumns, int countOfRows) {
+        this.countOfColumns = countOfColumns;
+        this.countOfRows = countOfRows;
         this.grid = new Cell[countOfColumns][countOfRows];
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {
@@ -51,6 +55,18 @@ public class GridOfMines {
                 if (i != (grid.length - 1) && j != (grid[0].length - 1) && grid[i + 1][j + 1].isMined()) {
                     grid[i][j].upIndex();
                 }
+            }
+        }
+    }
+
+    public void clean(){
+        for (int i = 0; i < countOfColumns; ++i){
+            for(int j = 0; j < countOfRows; ++j){
+                grid[i][j].setMarked(false);
+                grid[i][j].setMined(false);
+                grid[i][j].setFlagged(false);
+                grid[i][j].setOpened(false);
+                grid[i][j].setIndex(0);
             }
         }
     }
