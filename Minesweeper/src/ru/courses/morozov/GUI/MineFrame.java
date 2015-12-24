@@ -14,9 +14,9 @@ import java.util.Date;
 import java.util.TreeMap;
 
 public class MineFrame {
-    private int countOfColumns = 9;
+    private int countOfColumns = 25;
     private int countOfRows = 9;
-    private int countOfMines = 10;
+    private int countOfMines = 38;
     private int mineCounter;
     private int timerText = 0;
     private Timer timer;
@@ -144,7 +144,7 @@ public class MineFrame {
         fill();
     }
 
-    private void fill(){
+    private void fill() {
         timer.stop();
         timerText = 0;
         timerField.setText(Integer.toString(timerText));
@@ -353,7 +353,7 @@ public class MineFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (SwingUtilities.isMiddleMouseButton(e)) {
+                if (SwingUtilities.isMiddleMouseButton(e) && checkFlags(finalI1, finalJ1)) {
                     openLabel(finalI1, finalJ1);
                     openButtons();
                 }
@@ -370,17 +370,45 @@ public class MineFrame {
         mineLabels[i][j] = label;
     }
 
-    private void clean(){
+    private void clean() {
         for (int i = 0; i < countOfColumns; ++i) {
             for (int j = 0; j < countOfRows; ++j) {
                 mineButtons[i][j].setIcon(null);
                 mineButtons[i][j].setVisible(true);
-                if(mineLabels[i][j] != null){
+                if (mineLabels[i][j] != null) {
                     mineLabels[i][j].setText(null);
                     mineLabels[i][j].setIcon(null);
                 }
             }
         }
+    }
+
+    private boolean checkFlags(int i, int j) {
+        int columnStart = i - 1;
+        int columnEnd = i + 1;
+        int rowStart = j - 1;
+        int rowEnd = j + 1;
+        int countOfFlags = 0;
+        if (i == 0) {
+            columnStart = i;
+        }
+        if (i == countOfColumns - 1) {
+            columnEnd = i;
+        }
+        if (j == 0) {
+            rowStart = j;
+        }
+        if (j == countOfRows - 1) {
+            rowEnd = j;
+        }
+        for (int k = rowStart; k <= rowEnd; ++k) {
+            for (int l = columnStart; l <= columnEnd; ++l) {
+                if (grid.isFlagged(l, k)) {
+                    countOfFlags++;
+                }
+            }
+        }
+        return grid.getIndex(i, j) == countOfFlags;
     }
 }
 
