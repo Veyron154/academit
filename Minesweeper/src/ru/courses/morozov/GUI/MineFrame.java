@@ -348,6 +348,9 @@ public class MineFrame {
         label.setPreferredSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
         label.setMinimumSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
         label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        final int SIZE_OF_TEXT = 18;
+        label.setFont(new Font("Verdana", Font.BOLD, SIZE_OF_TEXT));
+        label.setForeground(getColorOfText(i, j));
         final int finalI1 = i;
         final int finalJ1 = j;
         label.addMouseListener(new MouseAdapter() {
@@ -409,6 +412,27 @@ public class MineFrame {
             }
         }
         return grid.getIndex(i, j) == countOfFlags;
+    }
+
+    private Color getColorOfText(int i, int j) {
+        switch (grid.getIndex(i, j)) {
+            case 1:
+                return Color.blue;
+            case 2:
+                return Color.green;
+            case 3:
+                return Color.red;
+            case 4:
+                return Color.magenta;
+            case 5:
+                return Color.gray;
+            case 6:
+                return Color.cyan;
+            case 7:
+                return Color.yellow;
+            default:
+                return Color.black;
+        }
     }
 }
 
