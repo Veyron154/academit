@@ -50,6 +50,8 @@ public class MineFrame {
 
         JMenuItem newGame = new JMenuItem("Новая игра");
         newGame.addActionListener(e -> showNewGameFrame());
+        newGame.setMnemonic('в');
+        newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
         gameMenu.add(newGame);
 
         JMenuItem highScore = new JMenuItem("Таблица рекордов");
@@ -61,17 +63,25 @@ public class MineFrame {
                 e.printStackTrace();
             }
         });
+        highScore.setMnemonic('а');
+        highScore.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
         gameMenu.add(highScore);
+
+        JMenuItem exit = new JMenuItem("Выход");
+        exit.addActionListener(e -> mineFrame.dispose());
+        exit.setMnemonic('ы');
+        gameMenu.add(exit);
+
+        JMenu aboutMenu = new JMenu("Справка");
+        menuBar.add(aboutMenu);
 
         JMenuItem about = new JMenuItem("О программе");
         about.addActionListener(e1 -> JOptionPane.showMessageDialog
                 (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 1.0", "О программе",
                         JOptionPane.INFORMATION_MESSAGE));
-        gameMenu.add(about);
-
-        JMenuItem exit = new JMenuItem("Выход");
-        exit.addActionListener(e -> mineFrame.dispose());
-        gameMenu.add(exit);
+        about.setMnemonic('м');
+        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+        aboutMenu.add(about);
 
         mineFrame.setJMenuBar(menuBar);
         mineFrame.setLayout(new BorderLayout());
