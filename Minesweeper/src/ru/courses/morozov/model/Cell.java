@@ -47,6 +47,9 @@ public class Cell {
     }
 
     public void setIndex(int index) {
+        if (index < 0 || index > 8){
+            throw new IllegalArgumentException("Индекс ячейки должен лежать в пределах от 0 до 8");
+        }
         this.index = index;
     }
 
