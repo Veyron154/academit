@@ -35,12 +35,12 @@ public class Controller {
                     queue.add(grid.getCell(rowIndex, columnIndex - 1));
                     grid.setOpened(rowIndex, columnIndex - 1, true);
                 }
-                if (rowIndex != countOfRows - 1 && !grid.isOpened(rowIndex + 1, columnIndex)
+                if (rowIndex != countOfColumns - 1 && !grid.isOpened(rowIndex + 1, columnIndex)
                         && !grid.isFlagged(rowIndex + 1, columnIndex)) {
                     queue.add(grid.getCell(rowIndex + 1, columnIndex));
                     grid.setOpened(rowIndex + 1, columnIndex, true);
                 }
-                if (columnIndex != countOfColumns - 1 && !grid.isOpened(rowIndex, columnIndex + 1)
+                if (columnIndex != countOfRows - 1 && !grid.isOpened(rowIndex, columnIndex + 1)
                         && !grid.isFlagged(rowIndex, columnIndex + 1)) {
                     queue.add(grid.getCell(rowIndex, columnIndex + 1));
                     grid.setOpened(rowIndex, columnIndex + 1, true);
@@ -50,17 +50,17 @@ public class Controller {
                     queue.add(grid.getCell(rowIndex - 1, columnIndex - 1));
                     grid.setOpened(rowIndex - 1, columnIndex - 1, true);
                 }
-                if (rowIndex != countOfRows - 1 && columnIndex != countOfColumns - 1 && !grid.isOpened(rowIndex + 1,
+                if (rowIndex != countOfColumns - 1 && columnIndex != countOfRows - 1 && !grid.isOpened(rowIndex + 1,
                         columnIndex + 1) && !grid.isFlagged(rowIndex + 1, columnIndex + 1)) {
                     queue.add(grid.getCell(rowIndex + 1, columnIndex + 1));
                     grid.setOpened(rowIndex + 1, columnIndex + 1, true);
                 }
-                if (rowIndex != 0 && columnIndex != countOfColumns - 1 && !grid.isOpened(rowIndex - 1, columnIndex + 1)
+                if (rowIndex != 0 && columnIndex != countOfRows - 1 && !grid.isOpened(rowIndex - 1, columnIndex + 1)
                         && !grid.isFlagged(rowIndex - 1, columnIndex + 1)) {
                     queue.add(grid.getCell(rowIndex - 1, columnIndex + 1));
                     grid.setOpened(rowIndex - 1, columnIndex + 1, true);
                 }
-                if (rowIndex != countOfRows - 1 && columnIndex != 0 && !grid.isOpened(rowIndex + 1, columnIndex - 1)
+                if (rowIndex != countOfColumns - 1 && columnIndex != 0 && !grid.isOpened(rowIndex + 1, columnIndex - 1)
                         && !grid.isFlagged(rowIndex + 1, columnIndex - 1)) {
                     queue.add(grid.getCell(rowIndex + 1, columnIndex - 1));
                     grid.setOpened(rowIndex + 1, columnIndex - 1, true);

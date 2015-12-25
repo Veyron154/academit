@@ -16,7 +16,7 @@ public class GridOfMines {
         }
     }
 
-    public void mine(int countOfMines) {
+    public void mining(int countOfMines) {
         for (int i = 1; i <= countOfMines; ++i) {
             int row = (int) (Math.random() * this.grid.length);
             int column = (int) (Math.random() * this.grid[0].length);
@@ -26,42 +26,38 @@ public class GridOfMines {
             }
             this.grid[row][column].setMined(true);
         }
-        for (int i = 0; i < grid.length; ++i) {
-            for (int j = 0; j < grid[0].length; ++j) {
-                if (grid[i][j].isMined()) {
-                    continue;
+        for (int i = 0; i < countOfColumns; ++i) {
+            for (int j = 0; j < countOfRows; ++j) {
+                int rowStart = i - 1;
+                int rowEnd = i + 1;
+                int columnStart = j - 1;
+                int columnEnd = j + 1;
+                if (i == 0) {
+                    rowStart = i;
                 }
-                if (i != 0 && grid[i - 1][j].isMined()) {
-                    grid[i][j].upIndex();
+                if (i == countOfColumns - 1) {
+                    rowEnd = i;
                 }
-                if (j != 0 && grid[i][j - 1].isMined()) {
-                    grid[i][j].upIndex();
+                if (j == 0) {
+                    columnStart = j;
                 }
-                if (i != (grid.length - 1) && grid[i + 1][j].isMined()) {
-                    grid[i][j].upIndex();
+                if (j == countOfRows - 1) {
+                    columnEnd = j;
                 }
-                if (j != (grid[0].length - 1) && grid[i][j + 1].isMined()) {
-                    grid[i][j].upIndex();
-                }
-                if (i != 0 && j != 0 && grid[i - 1][j - 1].isMined()) {
-                    grid[i][j].upIndex();
-                }
-                if (i != 0 && j != (grid[0].length - 1) && grid[i - 1][j + 1].isMined()) {
-                    grid[i][j].upIndex();
-                }
-                if (i != (grid.length - 1) && j != 0 && grid[i + 1][j - 1].isMined()) {
-                    grid[i][j].upIndex();
-                }
-                if (i != (grid.length - 1) && j != (grid[0].length - 1) && grid[i + 1][j + 1].isMined()) {
-                    grid[i][j].upIndex();
+                for (int k = rowStart; k <= rowEnd; ++k) {
+                    for (int l = columnStart; l <= columnEnd; ++l) {
+                        if (grid[k][l].isMined()) {
+                            grid[i][j].upIndex();
+                        }
+                    }
                 }
             }
         }
     }
 
-    public void clean(){
-        for (int i = 0; i < countOfColumns; ++i){
-            for(int j = 0; j < countOfRows; ++j){
+    public void clean() {
+        for (int i = 0; i < countOfColumns; ++i) {
+            for (int j = 0; j < countOfRows; ++j) {
                 grid[i][j].setMarked(false);
                 grid[i][j].setMined(false);
                 grid[i][j].setFlagged(false);
@@ -84,11 +80,11 @@ public class GridOfMines {
     }
 
     public int getCountOfRows() {
-        return this.grid.length;
+        return this.countOfRows;
     }
 
     public int getCountOfColumns() {
-        return this.grid[0].length;
+        return this.countOfColumns;
     }
 
     public void setFlag(int row, int column, boolean flag) {
@@ -103,7 +99,9 @@ public class GridOfMines {
         return this.grid[row][column].isMarked();
     }
 
-    public boolean isMined(int row, int column){return this.grid[row][column].isMined();}
+    public boolean isMined(int row, int column) {
+        return this.grid[row][column].isMined();
+    }
 
     public void setMark(int row, int column, boolean mark) {
         this.grid[row][column].setMarked(mark);
@@ -113,6 +111,8 @@ public class GridOfMines {
         this.grid[row][column].setOpened(opened);
     }
 
-    public void setMined(int row, int column, boolean mined){this.grid[row][column].setMined(mined);}
+    public void setMined(int row, int column, boolean mined) {
+        this.grid[row][column].setMined(mined);
+    }
 }
 

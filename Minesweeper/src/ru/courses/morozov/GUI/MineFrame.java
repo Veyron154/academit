@@ -161,7 +161,7 @@ public class MineFrame {
         mineCounter = countOfMines;
         mineCounterField.setText(Integer.toString(mineCounter));
         grid.clean();
-        grid.mine(countOfMines);
+        grid.mining(countOfMines);
     }
 
     private void setMark(int row, int column) {
@@ -396,32 +396,32 @@ public class MineFrame {
         }
     }
 
-    private boolean checkFlags(int i, int j) {
-        int columnStart = i - 1;
-        int columnEnd = i + 1;
-        int rowStart = j - 1;
-        int rowEnd = j + 1;
+    private boolean checkFlags(int row, int column) {
+        int rowStart = row - 1;
+        int rowEnd = row + 1;
+        int columnStart = column - 1;
+        int columnEnd = column + 1;
         int countOfFlags = 0;
-        if (i == 0) {
-            columnStart = i;
+        if (row == 0) {
+            rowStart = row;
         }
-        if (i == countOfColumns - 1) {
-            columnEnd = i;
+        if (row == countOfColumns - 1) {
+            rowEnd = row;
         }
-        if (j == 0) {
-            rowStart = j;
+        if (column == 0) {
+            columnStart = column;
         }
-        if (j == countOfRows - 1) {
-            rowEnd = j;
+        if (column == countOfRows - 1) {
+            columnEnd = column;
         }
-        for (int k = rowStart; k <= rowEnd; ++k) {
-            for (int l = columnStart; l <= columnEnd; ++l) {
-                if (grid.isFlagged(l, k)) {
+        for (int i = rowStart; i <= rowEnd; ++i) {
+            for (int j = columnStart; j <= columnEnd; ++j) {
+                if (grid.isFlagged(i, j)) {
                     countOfFlags++;
                 }
             }
         }
-        return grid.getIndex(i, j) == countOfFlags;
+        return grid.getIndex(row, column) == countOfFlags;
     }
 
     private Color getColorOfText(int i, int j) {
