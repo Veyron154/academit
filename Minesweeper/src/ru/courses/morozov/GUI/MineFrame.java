@@ -1,6 +1,5 @@
 package ru.courses.morozov.GUI;
 
-import ru.courses.morozov.controller.Controller;
 import ru.courses.morozov.model.GridOfMines;
 import ru.courses.morozov.model.TableOfRecords;
 
@@ -185,28 +184,28 @@ public class MineFrame {
 
     private void openLabel(int row, int column) {
         if (row != 0 && !grid.isOpened(row - 1, column)) {
-            Controller.open(row - 1, column, grid);
+            grid.open(row - 1, column);
         }
         if (column != 0 && !grid.isOpened(row, column - 1)) {
-            Controller.open(row, column - 1, grid);
+            grid.open(row, column - 1);
         }
         if (row != countOfColumns - 1 && !grid.isOpened(row + 1, column)) {
-            Controller.open(row + 1, column, grid);
+            grid.open(row + 1, column);
         }
         if (column != countOfRows - 1 && !grid.isOpened(row, column + 1)) {
-            Controller.open(row, column + 1, grid);
+            grid.open(row, column + 1);
         }
         if (column != 0 && row != 0 && !grid.isOpened(row - 1, column - 1)) {
-            Controller.open(row - 1, column - 1, grid);
+            grid.open(row - 1, column - 1);
         }
         if (column != countOfRows - 1 && row != 0 && !grid.isOpened(row - 1, column + 1)) {
-            Controller.open(row - 1, column + 1, grid);
+            grid.open(row - 1, column + 1);
         }
         if (column != 0 && row != countOfColumns - 1 && !grid.isOpened(row + 1, column - 1)) {
-            Controller.open(row + 1, column - 1, grid);
+            grid.open(row + 1, column - 1);
         }
         if (column != countOfRows - 1 && row != countOfColumns - 1 && !grid.isOpened(row + 1, column + 1)) {
-            Controller.open(row + 1, column + 1, grid);
+            grid.open(row + 1, column + 1);
         }
     }
 
@@ -314,7 +313,7 @@ public class MineFrame {
             public void mouseReleased(MouseEvent e) {
                 timer.start();
                 if (SwingUtilities.isLeftMouseButton(e) && !grid.isFlagged(finalI, finalJ))
-                    Controller.open(finalI, finalJ, grid);
+                    grid.open(finalI, finalJ);
                 openButtons();
 
                 if (isWin()) {

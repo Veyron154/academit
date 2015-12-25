@@ -1,5 +1,8 @@
 package ru.courses.morozov.model;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class GridOfMines {
     private Cell[][] grid;
     private int countOfColumns;
@@ -48,6 +51,51 @@ public class GridOfMines {
                     for (int l = columnStart; l <= columnEnd; ++l) {
                         if (grid[k][l].isMined()) {
                             grid[i][j].upIndex();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void open(int row, int column) {
+        Queue<Cell> queue = new LinkedList<>();
+
+        if (!grid[row][column].isFlagged()) {
+            grid[row][column].setOpened(true);
+            queue.add(grid[row][column]);
+        }
+
+        while (!queue.isEmpty()) {
+            Cell cell = queue.remove();
+
+            if (cell.getIndex() == 0 && !cell.isMined()) {
+                int rowIndex = cell.getRowIndex();
+                int columnIndex = cell.getColumnIndex();
+
+                int rowStart = rowIndex - 1;
+                int rowEnd = rowIndex + 1;
+                int columnStart = columnIndex - 1;
+                int columnEnd = columnIndex + 1;
+
+                if (rowIndex == 0) {
+                    rowStart = rowIndex;
+                }
+                if (rowIndex == countOfColumns - 1) {
+                    rowEnd = rowIndex;
+                }
+                if (columnIndex == 0) {
+                    columnStart = columnIndex;
+                }
+                if (columnIndex == countOfRows - 1) {
+                    columnEnd = columnIndex;
+                }
+
+                for (int i = rowStart; i <= rowEnd; ++i) {
+                    for (int j = columnStart; j <= columnEnd; ++j) {
+                        if (!grid[i][j].isOpened() && !grid[i][j].isFlagged()) {
+                            queue.add(grid[i][j]);
+                            grid[i][j].setOpened(true);
                         }
                     }
                 }
