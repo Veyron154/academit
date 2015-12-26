@@ -9,6 +9,7 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -62,7 +63,17 @@ public class MineFrame {
                 JOptionPane.showMessageDialog(mineFrame, TableOfRecords.tableToString(), "Таблица рекордов",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+                File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
+                try {
+                    if (newTableOfRecords.createNewFile()) {
+                        TableOfRecords.serialize(new ArrayList<>());
+                        JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов", "Создан новый файл",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException e2) {
+                    JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует", "Ошибка создания файла",
+                            JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         highScore.setMnemonic('а');
@@ -186,29 +197,28 @@ public class MineFrame {
     }
 
     private void openLabel(int row, int column) {
-        if (row != 0 && !grid.isOpened(row - 1, column)) {
-            grid.open(row - 1, column);
+        int rowStart = row - 1;
+        int rowEnd = row + 1;
+        int columnStart = column - 1;
+        int columnEnd = column + 1;
+
+        if(row == 0){
+            rowStart = row;
         }
-        if (column != 0 && !grid.isOpened(row, column - 1)) {
-            grid.open(row, column - 1);
+        if(row == countOfColumns - 1){
+            rowEnd = row;
         }
-        if (row != countOfColumns - 1 && !grid.isOpened(row + 1, column)) {
-            grid.open(row + 1, column);
+        if(column == 0){
+            columnStart = column;
         }
-        if (column != countOfRows - 1 && !grid.isOpened(row, column + 1)) {
-            grid.open(row, column + 1);
+        if(column == countOfRows - 1){
+            columnEnd = column;
         }
-        if (column != 0 && row != 0 && !grid.isOpened(row - 1, column - 1)) {
-            grid.open(row - 1, column - 1);
-        }
-        if (column != countOfRows - 1 && row != 0 && !grid.isOpened(row - 1, column + 1)) {
-            grid.open(row - 1, column + 1);
-        }
-        if (column != 0 && row != countOfColumns - 1 && !grid.isOpened(row + 1, column - 1)) {
-            grid.open(row + 1, column - 1);
-        }
-        if (column != countOfRows - 1 && row != countOfColumns - 1 && !grid.isOpened(row + 1, column + 1)) {
-            grid.open(row + 1, column + 1);
+
+        for(int i = rowStart; i <= rowEnd; ++i){
+            for(int j = columnStart; j <= columnEnd; ++j){
+                grid.open(i, j);
+            }
         }
     }
 
@@ -324,14 +334,28 @@ public class MineFrame {
                     try {
                         list = TableOfRecords.deserialize();
                     } catch (IOException | ClassNotFoundException e1) {
-                        e1.printStackTrace();
+                        File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
+                        try {
+                            if (newTableOfRecords.createNewFile()) {
+                                TableOfRecords.serialize(new ArrayList<>());
+                                list = TableOfRecords.deserialize();
+                                JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов",
+                                        "Создан новый файл", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } catch (IOException e2) {
+                            JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует",
+                                    "Ошибка создания файла", JOptionPane.ERROR_MESSAGE);
+                        } catch (ClassNotFoundException e2) {
+                            e2.printStackTrace();
+                        }
                     }
                     assert list != null;
                     list.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm").format(new Date())));
                     try {
                         TableOfRecords.serialize(list);
                     } catch (IOException e1) {
-                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
                     }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
@@ -373,6 +397,33 @@ public class MineFrame {
                 }
                 if (isWin()) {
                     timer.stop();
+                    List<Record> list = null;
+                    try {
+                        list = TableOfRecords.deserialize();
+                    } catch (IOException | ClassNotFoundException e1) {
+                        File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
+                        try {
+                            if (newTableOfRecords.createNewFile()) {
+                                TableOfRecords.serialize(new ArrayList<>());
+                                list = TableOfRecords.deserialize();
+                                JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов",
+                                        "Создан новый файл", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        } catch (IOException e2) {
+                            JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует",
+                                    "Ошибка создания файла", JOptionPane.ERROR_MESSAGE);
+                        } catch (ClassNotFoundException e2) {
+                            e2.printStackTrace();
+                        }
+                    }
+                    assert list != null;
+                    list.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm").format(new Date())));
+                    try {
+                        TableOfRecords.serialize(list);
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
+                    }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
                     clean();
