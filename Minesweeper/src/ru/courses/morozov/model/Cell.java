@@ -38,7 +38,7 @@ public class Cell {
         return this.marked;
     }
 
-    public boolean isMined(){
+    public boolean isMined() {
         return this.mined;
     }
 
@@ -47,7 +47,7 @@ public class Cell {
     }
 
     public void setIndex(int index) {
-        if (index < 0 || index > 8){
+        if (index < 0 || index > 8) {
             throw new IllegalArgumentException("Индекс ячейки должен лежать в пределах от 0 до 8");
         }
         this.index = index;
@@ -65,6 +65,8 @@ public class Cell {
         this.marked = marked;
     }
 
-    public void setMined(boolean mined){this.mined = mined;}
+    public void setMined(boolean mined) {
+        this.mined = mined;
+    }
 }
 
