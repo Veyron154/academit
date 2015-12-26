@@ -31,6 +31,7 @@ public class MineFrame {
     private final int BORDER = 10;
     private final int TEXT_COLUMNS = 3;
     private JTextField timerField = new JTextField(TEXT_COLUMNS);
+    private final String PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
 
     public MineFrame() {
     }
@@ -88,7 +89,7 @@ public class MineFrame {
         JPanel topPanel = new JPanel();
 
         JLabel mineCounterLabel = new JLabel();
-        mineCounterLabel.setIcon(new ImageIcon("Minesweeper/src/ru/courses/morozov/resources/mine.png"));
+        mineCounterLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "mine.png"));
         topPanel.add(mineCounterLabel);
 
         mineCounterField = new JTextField(TEXT_COLUMNS);
@@ -101,7 +102,7 @@ public class MineFrame {
         JButton smile = new JButton();
         final int SIZE_OF_SMILE = 40;
         smile.setPreferredSize(new Dimension(SIZE_OF_SMILE, SIZE_OF_SMILE));
-        smile.setIcon(new ImageIcon("Minesweeper/src/ru/courses/morozov/resources/smile.png"));
+        smile.setIcon(new ImageIcon(PATH_TO_RESOURCE + "smile.png"));
         smile.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -117,7 +118,7 @@ public class MineFrame {
         topPanel.add(timerField);
 
         JLabel timerLabel = new JLabel();
-        timerLabel.setIcon(new ImageIcon("Minesweeper/src/ru/courses/morozov/resources/timer.png"));
+        timerLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "timer.png"));
         topPanel.add(timerLabel);
 
         mineFrame.add(topPanel, BorderLayout.NORTH);
@@ -168,7 +169,7 @@ public class MineFrame {
             grid.setFlag(row, column, false);
             grid.setMark(row, column, true);
             mineButtons[row][column].setIcon(new ImageIcon
-                    ("Minesweeper/src/ru/courses/morozov/resources/question_mark.png"));
+                    (PATH_TO_RESOURCE + "question_mark.png"));
             mineCounter += 1;
             mineCounterField.setText(Integer.toString(mineCounter));
         } else if (grid.isMarked(row, column)) {
@@ -176,7 +177,7 @@ public class MineFrame {
             mineButtons[row][column].setIcon(null);
         } else {
             grid.setFlag(row, column, true);
-            mineButtons[row][column].setIcon(new ImageIcon("Minesweeper/src/ru/courses/morozov/resources/flag.png"));
+            mineButtons[row][column].setIcon(new ImageIcon(PATH_TO_RESOURCE + "flag.png"));
             mineCounter -= 1;
             mineCounterField.setText(Integer.toString(mineCounter));
         }
@@ -229,8 +230,7 @@ public class MineFrame {
                     if (grid.isMined(i, j)) {
                         timer.stop();
                         mineReveal();
-                        label.setIcon(new ImageIcon
-                                ("Minesweeper/src/ru/courses/morozov/resources/active_mine.png"));
+                        label.setIcon(new ImageIcon(PATH_TO_RESOURCE + "active_mine.png"));
                         JOptionPane.showMessageDialog(mineFrame, "Поражение!", "Поражение!",
                                 JOptionPane.PLAIN_MESSAGE);
                         clean();
@@ -247,7 +247,7 @@ public class MineFrame {
         for (int i = 0; i < countOfColumns; ++i) {
             for (int j = 0; j < countOfRows; ++j) {
                 if (grid.isMined(i, j)) {
-                    mineButtons[i][j].setIcon(new ImageIcon("Minesweeper/src/ru/courses/morozov/resources/mine.png"));
+                    mineButtons[i][j].setIcon(new ImageIcon(PATH_TO_RESOURCE + "mine.png"));
                 }
             }
         }

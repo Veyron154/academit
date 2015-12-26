@@ -123,18 +123,6 @@ public class GridOfMines {
         return this.grid[row][column].isOpened();
     }
 
-    public Cell getCell(int row, int column) {
-        return this.grid[row][column];
-    }
-
-    public int getCountOfRows() {
-        return this.countOfRows;
-    }
-
-    public int getCountOfColumns() {
-        return this.countOfColumns;
-    }
-
     public void setFlag(int row, int column, boolean flag) {
         this.grid[row][column].setFlagged(flag);
     }
