@@ -45,96 +45,10 @@ public class MineFrame {
         this.countOfMines = countOfMines;
     }
 
-    public void run() {
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu gameMenu = new JMenu("Игра");
-        menuBar.add(gameMenu);
-
-        JMenuItem newGame = new JMenuItem("Новая игра");
-        newGame.addActionListener(e -> showNewGameFrame());
-        newGame.setMnemonic('в');
-        newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-        gameMenu.add(newGame);
-
-        JMenuItem highScore = new JMenuItem("Таблица рекордов");
-        highScore.addActionListener(e1 -> {
-            try {
-                JOptionPane.showMessageDialog(mineFrame, TableOfRecords.tableToString(), "Таблица рекордов",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException | ClassNotFoundException e) {
-                File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
-                try {
-                    if (newTableOfRecords.createNewFile()) {
-                        TableOfRecords.serialize(new ArrayList<>());
-                        JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов", "Создан новый файл",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } catch (IOException e2) {
-                    JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует", "Ошибка создания файла",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        highScore.setMnemonic('а');
-        highScore.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
-        gameMenu.add(highScore);
-
-        JMenuItem exit = new JMenuItem("Выход");
-        exit.addActionListener(e -> mineFrame.dispose());
-        exit.setMnemonic('ы');
-        gameMenu.add(exit);
-
-        JMenu aboutMenu = new JMenu("Справка");
-        menuBar.add(aboutMenu);
-
-        JMenuItem about = new JMenuItem("О программе");
-        about.addActionListener(e1 -> JOptionPane.showMessageDialog
-                (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 1.3", "О программе",
-                        JOptionPane.INFORMATION_MESSAGE));
-        about.setMnemonic('м');
-        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-        aboutMenu.add(about);
-
-        mineFrame.setJMenuBar(menuBar);
+    public void createFrame() {
+        createMenuBar();
         mineFrame.setLayout(new BorderLayout());
-
-        JPanel topPanel = new JPanel();
-
-        JLabel mineCounterLabel = new JLabel();
-        mineCounterLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "mine.png"));
-        topPanel.add(mineCounterLabel);
-
-        mineCounterField = new JTextField(TEXT_COLUMNS);
-        mineCounterField.setEditable(false);
-        int SIZE_OF_FONT = 17;
-        mineCounterField.setFont(new Font("font", Font.BOLD, SIZE_OF_FONT));
-        mineCounterField.setHorizontalAlignment(JTextField.RIGHT);
-        topPanel.add(mineCounterField);
-
-        JButton smile = new JButton();
-        final int SIZE_OF_SMILE = 40;
-        smile.setPreferredSize(new Dimension(SIZE_OF_SMILE, SIZE_OF_SMILE));
-        smile.setIcon(new ImageIcon(PATH_TO_RESOURCE + "smile.png"));
-        smile.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                clean();
-                fill();
-            }
-        });
-        topPanel.add(smile);
-
-        timerField.setFont(new Font("F", Font.BOLD, SIZE_OF_FONT));
-        timerField.setEditable(false);
-        timerField.setHorizontalAlignment(JTextField.RIGHT);
-        topPanel.add(timerField);
-
-        JLabel timerLabel = new JLabel();
-        timerLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "timer.png"));
-        topPanel.add(timerLabel);
-
-        mineFrame.add(topPanel, BorderLayout.NORTH);
+        createTopPanel();
 
         gbc.fill = GridBagConstraints.BOTH;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -196,27 +110,27 @@ public class MineFrame {
         }
     }
 
-    private void openLabel(int row, int column) {
+    private void openButtonsAroundLabel(int row, int column) {
         int rowStart = row - 1;
         int rowEnd = row + 1;
         int columnStart = column - 1;
         int columnEnd = column + 1;
 
-        if(row == 0){
+        if (row == 0) {
             rowStart = row;
         }
-        if(row == countOfColumns - 1){
+        if (row == countOfColumns - 1) {
             rowEnd = row;
         }
-        if(column == 0){
+        if (column == 0) {
             columnStart = column;
         }
-        if(column == countOfRows - 1){
+        if (column == countOfRows - 1) {
             columnEnd = column;
         }
 
-        for(int i = rowStart; i <= rowEnd; ++i){
-            for(int j = columnStart; j <= columnEnd; ++j){
+        for (int i = rowStart; i <= rowEnd; ++i) {
+            for (int j = columnStart; j <= columnEnd; ++j) {
                 grid.open(i, j);
             }
         }
@@ -305,7 +219,7 @@ public class MineFrame {
                 } else {
                     MineFrame newFrame = new MineFrame(Integer.valueOf(countOfColumnsField.getText()),
                             Integer.valueOf(countOfRowsField.getText()), Integer.valueOf(countOfMinesField.getText()));
-                    newFrame.run();
+                    newFrame.createFrame();
                     mineFrame.dispose();
                 }
             }
@@ -392,7 +306,7 @@ public class MineFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isMiddleMouseButton(e) && checkFlags(finalI1, finalJ1)) {
-                    openLabel(finalI1, finalJ1);
+                    openButtonsAroundLabel(finalI1, finalJ1);
                     openButtons();
                 }
                 if (isWin()) {
@@ -495,6 +409,99 @@ public class MineFrame {
             default:
                 return Color.black;
         }
+    }
+
+    public void createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu gameMenu = new JMenu("Игра");
+        menuBar.add(gameMenu);
+
+        JMenuItem newGame = new JMenuItem("Новая игра");
+        newGame.addActionListener(e -> showNewGameFrame());
+        newGame.setMnemonic('в');
+        newGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+        gameMenu.add(newGame);
+
+        JMenuItem highScore = new JMenuItem("Таблица рекордов");
+        highScore.addActionListener(e1 -> {
+            try {
+                JOptionPane.showMessageDialog(mineFrame, TableOfRecords.tableToString(), "Таблица рекордов",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException | ClassNotFoundException e) {
+                File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
+                try {
+                    if (newTableOfRecords.createNewFile()) {
+                        TableOfRecords.serialize(new ArrayList<>());
+                        JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов", "Создан новый файл",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (IOException e2) {
+                    JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует", "Ошибка создания файла",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        highScore.setMnemonic('а');
+        highScore.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+        gameMenu.add(highScore);
+
+        JMenuItem exit = new JMenuItem("Выход");
+        exit.addActionListener(e -> mineFrame.dispose());
+        exit.setMnemonic('ы');
+        gameMenu.add(exit);
+
+        JMenu aboutMenu = new JMenu("Справка");
+        menuBar.add(aboutMenu);
+
+        JMenuItem about = new JMenuItem("О программе");
+        about.addActionListener(e1 -> JOptionPane.showMessageDialog
+                (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 1.3", "О программе",
+                        JOptionPane.INFORMATION_MESSAGE));
+        about.setMnemonic('м');
+        about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+        aboutMenu.add(about);
+
+        mineFrame.setJMenuBar(menuBar);
+    }
+
+    public void createTopPanel() {
+        JPanel topPanel = new JPanel();
+
+        JLabel mineCounterLabel = new JLabel();
+        mineCounterLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "mine.png"));
+        topPanel.add(mineCounterLabel);
+
+        mineCounterField = new JTextField(TEXT_COLUMNS);
+        mineCounterField.setEditable(false);
+        int SIZE_OF_FONT = 17;
+        mineCounterField.setFont(new Font("font", Font.BOLD, SIZE_OF_FONT));
+        mineCounterField.setHorizontalAlignment(JTextField.RIGHT);
+        topPanel.add(mineCounterField);
+
+        JButton smile = new JButton();
+        final int SIZE_OF_SMILE = 40;
+        smile.setPreferredSize(new Dimension(SIZE_OF_SMILE, SIZE_OF_SMILE));
+        smile.setIcon(new ImageIcon(PATH_TO_RESOURCE + "smile.png"));
+        smile.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                clean();
+                fill();
+            }
+        });
+        topPanel.add(smile);
+
+        timerField.setFont(new Font("F", Font.BOLD, SIZE_OF_FONT));
+        timerField.setEditable(false);
+        timerField.setHorizontalAlignment(JTextField.RIGHT);
+        topPanel.add(timerField);
+
+        JLabel timerLabel = new JLabel();
+        timerLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "timer.png"));
+        topPanel.add(timerLabel);
+
+        mineFrame.add(topPanel, BorderLayout.NORTH);
     }
 }
 
