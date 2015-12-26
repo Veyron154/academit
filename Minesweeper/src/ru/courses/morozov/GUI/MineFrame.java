@@ -1,21 +1,23 @@
 package ru.courses.morozov.GUI;
 
 import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.model.Record;
 import ru.courses.morozov.model.TableOfRecords;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.List;
 
 public class MineFrame {
-    private int countOfColumns = 25;
+    private int countOfColumns = 9;
     private int countOfRows = 9;
-    private int countOfMines = 38;
+    private int countOfMines = 10;
     private int mineCounter;
     private int timerText = 0;
     private Timer timer;
@@ -318,16 +320,16 @@ public class MineFrame {
 
                 if (isWin()) {
                     timer.stop();
-                    TreeMap<Integer, String> map = null;
+                    List<Record> list = null;
                     try {
-                        map = TableOfRecords.deserialize();
+                        list = TableOfRecords.deserialize();
                     } catch (IOException | ClassNotFoundException e1) {
                         e1.printStackTrace();
                     }
-                    assert map != null;
-                    map.put(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm").format(new Date()));
+                    assert list != null;
+                    list.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm").format(new Date())));
                     try {
-                        TableOfRecords.serialize(map);
+                        TableOfRecords.serialize(list);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }

@@ -2,38 +2,42 @@ package ru.courses.morozov.model;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TableOfRecords {
-    public static void serialize(SortedMap<Integer, String> map) throws IOException {
+    private static final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+
+    public static void serialize(List<Record> list) throws IOException {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream
-                ("Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin"))) {
-            outputStream.writeObject(map);
+                (PATH_TO_TABLE))) {
+            List<Record> tmpList = list.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
+                    .collect(Collectors.toList());
+            outputStream.writeObject(tmpList);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static TreeMap<Integer, String> deserialize() throws IOException, ClassNotFoundException {
+    public static List<Record> deserialize() throws IOException, ClassNotFoundException {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
-                ("Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin"))) {
-            return (TreeMap<Integer, String>) inputStream.readObject();
+                (PATH_TO_TABLE))) {
+            return (List<Record>) inputStream.readObject();
         }
     }
 
     public static String tableToString() throws IOException, ClassNotFoundException {
-        TreeMap<Integer, String> tmpMap = new TreeMap<>(TableOfRecords.deserialize());
-        int tmpSize = tmpMap.size();
-        if (tmpMap.isEmpty()) {
+        List<Record> tmpList = TableOfRecords.deserialize();
+        int tmpSize = tmpList.size();
+        if (tmpList.isEmpty()) {
             return "Рекордов ещё нет!";
-        } else {
-            StringBuilder builder = new StringBuilder();
-            builder.append("     Время:       Дата:")
-                    .append(System.lineSeparator());
-            for (int i = 1; i <= 5 && i <= tmpSize; ++i) {
-                builder.append(String.format("%d. %3d сек       ", i, tmpMap.firstKey()))
-                        .append(tmpMap.remove(tmpMap.firstKey()))
-                        .append(System.lineSeparator());
-            }
-            return builder.toString();
         }
+        StringBuilder builder = new StringBuilder();
+        builder.append("     Время:       Дата:")
+                .append(System.lineSeparator());
+        for (int i = 1; i <= 5 && i <= tmpSize; ++i) {
+            builder.append(String.format("%d. %3d сек       ", i, tmpList.get(i - 1).getTime()))
+                    .append(tmpList.get(i - 1).getDate())
+                    .append(System.lineSeparator());
+        }
+        return builder.toString();
     }
 }
