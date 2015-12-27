@@ -22,8 +22,8 @@ public class MineFrame {
     private JButton[][] mineButtons;
     private JLabel[][] mineLabels;
     private GridOfMines grid;
-    private GridBagConstraints gbc = new GridBagConstraints();
-    private JPanel buttonsPanel = new JPanel();
+    private GridBagConstraints gbc;
+    private JPanel buttonsPanel;
     private final int SIZE_OF_BUTTON = 25;
     private JLabel mineLabel;
     private final int BORDER = 10;
@@ -36,44 +36,12 @@ public class MineFrame {
     public MineFrame() {
     }
 
-    public MineFrame(int countOfColumns, int countOfRows, int countOfMines) {
-        this.countOfColumns = countOfColumns;
-        this.countOfRows = countOfRows;
-        this.countOfMines = countOfMines;
-    }
-
     public void createFrame() {
         createMenuBar();
         mineFrame.setLayout(new BorderLayout());
         createTopPanel();
-
-        gbc.fill = GridBagConstraints.BOTH;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        gbc.weightx = (screenSize.getWidth() / countOfRows) - SIZE_OF_BUTTON;
-        gbc.weighty = (screenSize.getHeight() / countOfColumns) - SIZE_OF_BUTTON;
-
-        grid = new GridOfMines(this.countOfColumns, this.countOfRows);
-
-        timer = new Timer(1000, e -> {
-            timerText += 1;
-            timerField.setText(Integer.toString(timerText));
-        });
-
-        buttonsPanel.setLayout(new GridBagLayout());
-        mineLabels = new JLabel[countOfColumns][countOfRows];
-        mineButtons = new JButton[this.countOfColumns][this.countOfRows];
-        for (int i = 0; i < countOfColumns; ++i) {
-            for (int j = 0; j < countOfRows; ++j) {
-                createNewButton(i, j);
-            }
-        }
-        buttonsPanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
-
-        mineFrame.add(buttonsPanel);
-        mineFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mineFrame.setVisible(true);
-        mineFrame.pack();
-        mineFrame.setMinimumSize(new Dimension(mineFrame.getSize()));
+        createTimer();
+        fillFrame();
         mineFrame.setLocationRelativeTo(null);
         mineFrame.setResizable(false);
         fill();
@@ -167,50 +135,14 @@ public class MineFrame {
     }
 
     private void showNewGameFrame() {
-        JPanel newGamePanel = new JPanel(new GridLayout(3, 2, BORDER, BORDER));
-        JLabel countOfRowsLabel = new JLabel("Высота (9 - 24):");
-        JLabel countOfColumnsLabel = new JLabel("Ширина (9 - 30):");
-        JLabel countOfMinesLabel = new JLabel("Число мин (10 - 668):");
-        JTextField countOfRowsField = new JTextField();
-        JTextField countOfColumnsField = new JTextField();
-        JTextField countOfMinesField = new JTextField();
-        newGamePanel.add(countOfRowsLabel);
-        newGamePanel.add(countOfRowsField);
-        newGamePanel.add(countOfColumnsLabel);
-        newGamePanel.add(countOfColumnsField);
-        newGamePanel.add(countOfMinesLabel);
-        newGamePanel.add(countOfMinesField);
-        newGamePanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
-        UIManager.put("OptionPane.cancelButtonText", "Отмена");
-        int reply = JOptionPane.showConfirmDialog(mineFrame, newGamePanel, "Новая игра", JOptionPane.OK_CANCEL_OPTION);
-        if (reply == JOptionPane.OK_OPTION) {
-            if (countOfColumnsField.getText().equals("") || countOfRowsField.getText().equals("") ||
-                    countOfMinesField.getText().equals("")) {
-                JOptionPane.showMessageDialog(mineFrame, "Введите значения", "Введите значения",
-                        JOptionPane.ERROR_MESSAGE);
-            } else if (!countOfColumnsField.getText().matches("^\\d*$") || !countOfRowsField.getText().matches("^\\d*$")
-                    || !countOfMinesField.getText().matches("^\\d*$")) {
-                JOptionPane.showMessageDialog(mineFrame, "Введите числовые значения", "Введите значения",
-                        JOptionPane.ERROR_MESSAGE);
-            } else {
-                int tmpRows = Integer.valueOf(countOfRowsField.getText());
-                int tmpColumns = Integer.valueOf(countOfColumnsField.getText());
-                int tmpMines = Integer.valueOf(countOfMinesField.getText());
-                if (tmpRows < 9 || tmpRows > 24 || tmpColumns < 9 || tmpColumns > 30 || tmpMines < 10 ||
-                        tmpMines > 668) {
-                    JOptionPane.showInputDialog(mineFrame, "Введите корректные значения", "Введите значения",
-                            JOptionPane.ERROR_MESSAGE);
-                } else if (tmpMines > tmpColumns * tmpRows) {
-                    JOptionPane.showMessageDialog(mineFrame, "Число мин не должно превышать число ячеек поля",
-                            "Введите значения", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    MineFrame newFrame = new MineFrame(Integer.valueOf(countOfColumnsField.getText()),
-                            Integer.valueOf(countOfRowsField.getText()), Integer.valueOf(countOfMinesField.getText()));
-                    newFrame.createFrame();
-                    mineFrame.dispose();
-                }
-            }
-        }
+        NewGameFrame newGameFrame = new NewGameFrame(mineFrame);
+        clean();
+        mineFrame.remove(buttonsPanel);
+        countOfColumns = newGameFrame.getCountOfColumns();
+        countOfRows = newGameFrame.getCountOfRows();
+        countOfMines = newGameFrame.getCountOfMines();
+        fillFrame();
+        fill();
     }
 
     private void createNewButton(int i, int j) {
@@ -419,6 +351,39 @@ public class MineFrame {
         topPanel.add(timerLabel);
 
         mineFrame.add(topPanel, BorderLayout.NORTH);
+    }
+
+    private void fillFrame(){
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        gbc.weightx = (screenSize.getWidth() / countOfRows) - SIZE_OF_BUTTON;
+        gbc.weighty = (screenSize.getHeight() / countOfColumns) - SIZE_OF_BUTTON;
+
+        grid = new GridOfMines(this.countOfColumns, this.countOfRows);
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridBagLayout());
+        mineLabels = new JLabel[countOfColumns][countOfRows];
+        mineButtons = new JButton[this.countOfColumns][this.countOfRows];
+        for (int i = 0; i < countOfColumns; ++i) {
+            for (int j = 0; j < countOfRows; ++j) {
+                createNewButton(i, j);
+            }
+        }
+        buttonsPanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
+        mineFrame.add(buttonsPanel);
+        mineFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mineFrame.setVisible(true);
+        mineFrame.pack();
+        mineFrame.setMinimumSize(new Dimension(mineFrame.getSize()));
+    }
+
+    private void createTimer(){
+        timer = new Timer(1000, e -> {
+            timerText += 1;
+            timerField.setText(Integer.toString(timerText));
+        });
     }
 }
 
