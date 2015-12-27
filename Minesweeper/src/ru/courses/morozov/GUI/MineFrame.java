@@ -25,7 +25,7 @@ public class MineFrame {
     private JTextField mineCounterField;
     private JFrame mineFrame = new JFrame("Сапёр");
     private JButton[][] mineButtons;
-    private JLabel[][] mineLabels = new JLabel[countOfColumns][countOfRows];
+    private JLabel[][] mineLabels;
     private GridOfMines grid;
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel buttonsPanel = new JPanel();
@@ -63,6 +63,7 @@ public class MineFrame {
         });
 
         buttonsPanel.setLayout(new GridBagLayout());
+        mineLabels = new JLabel[countOfColumns][countOfRows];
         mineButtons = new JButton[this.countOfColumns][this.countOfRows];
         for (int i = 0; i < countOfColumns; ++i) {
             for (int j = 0; j < countOfRows; ++j) {
