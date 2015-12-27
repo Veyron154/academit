@@ -58,6 +58,9 @@ public class TableOfRecords {
             listOfRecords = listOfRecords.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
                     .collect(Collectors.toList());
         } else {
+            while (listOfRecords.size() > capacity){
+                listOfRecords.remove(listOfRecords.size() - 1);
+            }
             if (record.getTime() < listOfRecords.get(capacity - 1).getTime()) {
                 listOfRecords.remove(capacity - 1);
                 this.listOfRecords.add(record);
