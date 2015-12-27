@@ -28,7 +28,7 @@ public class MineFrame {
     private GridBagConstraints gbc = new GridBagConstraints();
     private JPanel buttonsPanel = new JPanel();
     private final int SIZE_OF_BUTTON = 25;
-    private JLabel label;
+    private JLabel mineLabel;
     private final int BORDER = 10;
     private final int TEXT_COLUMNS = 3;
     private JTextField timerField = new JTextField(TEXT_COLUMNS);
@@ -146,13 +146,13 @@ public class MineFrame {
                     if (grid.isMined(i, j)) {
                         timer.stop();
                         mineReveal();
-                        label.setIcon(new ImageIcon(PATH_TO_RESOURCE + "active_mine.png"));
+                        mineLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "active_mine.png"));
                         JOptionPane.showMessageDialog(mineFrame, "Поражение!", "Поражение!",
                                 JOptionPane.PLAIN_MESSAGE);
                         clean();
                         fill();
                     } else if (index != 0) {
-                        label.setText(Integer.toString(index));
+                        mineLabel.setText(Integer.toString(index));
                     }
                 }
             }
@@ -232,18 +232,7 @@ public class MineFrame {
                     grid.open(finalI, finalJ);
                 openButtons();
 
-                if (grid.isWin()) {
-                    timer.stop();
-                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
-                            .format(new Date())));
-                    try {
-                        tableOfRecords.save();
-                    } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
-                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
-                    }
-                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
-                            JOptionPane.PLAIN_MESSAGE);
+                if (grid.isWin(timer, tableOfRecords, timerText, mineFrame)) {
                     clean();
                     fill();
                 }
@@ -262,43 +251,32 @@ public class MineFrame {
         mineButtons[i][j].setVisible(false);
         gbc.gridx = i;
         gbc.gridy = j;
-        label = new JLabel();
-        label.setVerticalAlignment(JLabel.CENTER);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setPreferredSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
-        label.setMinimumSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
-        label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        mineLabel = new JLabel();
+        mineLabel.setVerticalAlignment(JLabel.CENTER);
+        mineLabel.setHorizontalAlignment(JLabel.CENTER);
+        mineLabel.setPreferredSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
+        mineLabel.setMinimumSize(new Dimension(SIZE_OF_BUTTON, SIZE_OF_BUTTON));
+        mineLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         final int SIZE_OF_TEXT = 18;
-        label.setFont(new Font("Verdana", Font.BOLD, SIZE_OF_TEXT));
-        label.setForeground(getColorOfText(i, j));
+        mineLabel.setFont(new Font("Verdana", Font.BOLD, SIZE_OF_TEXT));
+        mineLabel.setForeground(getColorOfText(i, j));
         final int finalI1 = i;
         final int finalJ1 = j;
-        label.addMouseListener(new MouseAdapter() {
+        mineLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (SwingUtilities.isMiddleMouseButton(e) && checkFlags(finalI1, finalJ1)) {
                     openButtonsAroundLabel(finalI1, finalJ1);
                     openButtons();
                 }
-                if (grid.isWin()) {
-                    timer.stop();
-                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
-                            .format(new Date())));
-                    try {
-                        tableOfRecords.save();
-                    } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
-                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
-                    }
-                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
-                            JOptionPane.PLAIN_MESSAGE);
+                if (grid.isWin(timer, tableOfRecords, timerText, mineFrame)) {
                     clean();
                     fill();
                 }
             }
         });
-        buttonsPanel.add(label, gbc);
-        mineLabels[i][j] = label;
+        buttonsPanel.add(mineLabel, gbc);
+        mineLabels[i][j] = mineLabel;
     }
 
     private void clean() {
