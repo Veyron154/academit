@@ -8,16 +8,18 @@ public class NewGameFrame {
     private int countOfColumns;
     private int countOfRows;
     private int countOfMines;
+    private JFrame mainFrame;
+    final int BORDER = 10;
+    private JPanel newGamePanel = new JPanel(new GridLayout(3, 2, BORDER, BORDER));
+    JTextField countOfRowsField = new JTextField();
+    JTextField countOfColumnsField = new JTextField();
+    JTextField countOfMinesField = new JTextField();
 
-    public NewGameFrame(JFrame mainFrame){
-        final int BORDER = 10;
-        JPanel newGamePanel = new JPanel(new GridLayout(3, 2, BORDER, BORDER));
+    public NewGameFrame(JFrame mainFrame) {
+        this.mainFrame = mainFrame;
         JLabel countOfRowsLabel = new JLabel("Высота (9 - 24):");
         JLabel countOfColumnsLabel = new JLabel("Ширина (9 - 30):");
         JLabel countOfMinesLabel = new JLabel("Число мин (10 - 668):");
-        JTextField countOfRowsField = new JTextField();
-        JTextField countOfColumnsField = new JTextField();
-        JTextField countOfMinesField = new JTextField();
         newGamePanel.add(countOfRowsLabel);
         newGamePanel.add(countOfRowsField);
         newGamePanel.add(countOfColumnsLabel);
@@ -26,6 +28,9 @@ public class NewGameFrame {
         newGamePanel.add(countOfMinesField);
         newGamePanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
         UIManager.put("OptionPane.cancelButtonText", "Отмена");
+    }
+
+    public boolean isCorrect() {
         int reply = JOptionPane.showConfirmDialog(mainFrame, newGamePanel, "Новая игра", JOptionPane.OK_CANCEL_OPTION);
         if (reply == JOptionPane.OK_OPTION) {
             if (countOfColumnsField.getText().equals("") || countOfRowsField.getText().equals("") ||
@@ -51,20 +56,22 @@ public class NewGameFrame {
                     countOfColumns = Integer.valueOf(countOfColumnsField.getText());
                     countOfRows = Integer.valueOf(countOfRowsField.getText());
                     countOfMines = Integer.valueOf(countOfMinesField.getText());
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    public int getCountOfColumns(){
+    public int getCountOfColumns() {
         return this.countOfColumns;
     }
 
-    public int getCountOfRows(){
+    public int getCountOfRows() {
         return this.countOfRows;
     }
 
-    public int getCountOfMines(){
+    public int getCountOfMines() {
         return this.countOfMines;
     }
 }

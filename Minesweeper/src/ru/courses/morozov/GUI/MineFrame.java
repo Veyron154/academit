@@ -26,7 +26,6 @@ public class MineFrame {
     private JPanel buttonsPanel;
     private final int SIZE_OF_BUTTON = 25;
     private JLabel mineLabel;
-    private final int BORDER = 10;
     private final int TEXT_COLUMNS = 3;
     private JTextField timerField = new JTextField(TEXT_COLUMNS);
     private final String PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
@@ -136,13 +135,15 @@ public class MineFrame {
 
     private void showNewGameFrame() {
         NewGameFrame newGameFrame = new NewGameFrame(mineFrame);
-        clean();
-        mineFrame.remove(buttonsPanel);
-        countOfColumns = newGameFrame.getCountOfColumns();
-        countOfRows = newGameFrame.getCountOfRows();
-        countOfMines = newGameFrame.getCountOfMines();
-        fillFrame();
-        fill();
+        if(newGameFrame.isCorrect()) {
+            clean();
+            mineFrame.remove(buttonsPanel);
+            countOfColumns = newGameFrame.getCountOfColumns();
+            countOfRows = newGameFrame.getCountOfRows();
+            countOfMines = newGameFrame.getCountOfMines();
+            fillFrame();
+            fill();
+        }
     }
 
     private void createNewButton(int i, int j) {
@@ -371,6 +372,7 @@ public class MineFrame {
                 createNewButton(i, j);
             }
         }
+        final int BORDER = 10;
         buttonsPanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
         mineFrame.add(buttonsPanel);
         mineFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
