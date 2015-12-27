@@ -9,11 +9,9 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 public class MineFrame {
     private int countOfColumns = 9;
@@ -241,7 +239,8 @@ public class MineFrame {
                     try {
                         tableOfRecords.save();
                     } catch (IOException e1) {
-                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
                     }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
@@ -288,7 +287,8 @@ public class MineFrame {
                     try {
                         tableOfRecords.save();
                     } catch (IOException e1) {
-                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
                     }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
