@@ -45,19 +45,30 @@ public class NewGameFrame {
                 int tmpRows = Integer.valueOf(countOfRowsField.getText());
                 int tmpColumns = Integer.valueOf(countOfColumnsField.getText());
                 int tmpMines = Integer.valueOf(countOfMinesField.getText());
-                if (tmpRows < 9 || tmpRows > 24 || tmpColumns < 9 || tmpColumns > 30 || tmpMines < 10 ||
-                        tmpMines > 668) {
-                    JOptionPane.showInputDialog(mainFrame, "Введите корректные значения", "Введите значения",
-                            JOptionPane.ERROR_MESSAGE);
-                } else if (tmpMines > tmpColumns * tmpRows) {
+                if (tmpRows < 9 || tmpRows > 24) {
+                    JOptionPane.showMessageDialog(mainFrame, "Высота поля должна быть в пределах от 9 до 24",
+                            "Введите значения", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                if (tmpMines < 10 || tmpMines > 668) {
+                    JOptionPane.showMessageDialog(mainFrame, "Число мин должно быть в пределах от 10 до 668",
+                            "Введите значения", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                if (tmpColumns < 9 || tmpColumns > 30) {
+                    JOptionPane.showMessageDialog(mainFrame, "Ширина поля должна быть в пределах от 9 до 30",
+                            "Введите значения", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+                if (tmpMines > tmpColumns * tmpRows) {
                     JOptionPane.showMessageDialog(mainFrame, "Число мин не должно превышать число ячеек поля",
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    countOfColumns = Integer.valueOf(countOfColumnsField.getText());
-                    countOfRows = Integer.valueOf(countOfRowsField.getText());
-                    countOfMines = Integer.valueOf(countOfMinesField.getText());
-                    return true;
+                    return false;
                 }
+                countOfColumns = Integer.valueOf(countOfColumnsField.getText());
+                countOfRows = Integer.valueOf(countOfRowsField.getText());
+                countOfMines = Integer.valueOf(countOfMinesField.getText());
+                return true;
             }
         }
         return false;
