@@ -1,7 +1,6 @@
 package ru.courses.morozov.GUI;
 
 import ru.courses.morozov.model.GridOfMines;
-import ru.courses.morozov.model.Record;
 import ru.courses.morozov.model.TableOfRecords;
 
 import javax.swing.*;
@@ -10,8 +9,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class MineFrame {
     private int countOfColumns = 9;
