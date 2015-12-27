@@ -115,6 +115,17 @@ public class GridOfMines {
         }
     }
 
+    public boolean isWin() {
+        for (int i = 0; i < this.countOfColumns; ++i) {
+            for (int j = 0; j < this.countOfRows; ++j) {
+                if (!grid[i][j].isMined() && !grid[i][j].isOpened()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public int getIndex(int row, int column) {
         return this.grid[row][column].getIndex();
     }

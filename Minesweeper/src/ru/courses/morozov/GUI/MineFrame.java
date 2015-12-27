@@ -35,6 +35,8 @@ public class MineFrame {
     private final int TEXT_COLUMNS = 3;
     private JTextField timerField = new JTextField(TEXT_COLUMNS);
     private final String PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
+    private final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+    private TableOfRecords tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
 
     public MineFrame() {
     }
@@ -137,17 +139,6 @@ public class MineFrame {
         }
     }
 
-    private boolean isWin() {
-        for (int i = 0; i < this.countOfColumns; ++i) {
-            for (int j = 0; j < this.countOfRows; ++j) {
-                if (!grid.isMined(i, j) && !grid.isOpened(i, j)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     private void openButtons() {
         for (int i = 0; i < countOfColumns; ++i) {
             for (int j = 0; j < countOfRows; ++j) {
@@ -243,34 +234,14 @@ public class MineFrame {
                     grid.open(finalI, finalJ);
                 openButtons();
 
-                if (isWin()) {
+                if (grid.isWin()) {
                     timer.stop();
-                    List<Record> list = null;
+                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
+                            .format(new Date())));
                     try {
-                        list = TableOfRecords.deserialize();
-                    } catch (IOException | ClassNotFoundException e1) {
-                        File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
-                        try {
-                            if (newTableOfRecords.createNewFile()) {
-                                TableOfRecords.serialize(new ArrayList<>());
-                                list = TableOfRecords.deserialize();
-                                JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов",
-                                        "Создан новый файл", JOptionPane.INFORMATION_MESSAGE);
-                            }
-                        } catch (IOException e2) {
-                            JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует",
-                                    "Ошибка создания файла", JOptionPane.ERROR_MESSAGE);
-                        } catch (ClassNotFoundException e2) {
-                            e2.printStackTrace();
-                        }
-                    }
-                    assert list != null;
-                    list.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm").format(new Date())));
-                    try {
-                        TableOfRecords.serialize(list);
+                        tableOfRecords.save();
                     } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
-                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
+                        e1.printStackTrace();
                     }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
@@ -310,34 +281,14 @@ public class MineFrame {
                     openButtonsAroundLabel(finalI1, finalJ1);
                     openButtons();
                 }
-                if (isWin()) {
+                if (grid.isWin()) {
                     timer.stop();
-                    List<Record> list = null;
+                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
+                            .format(new Date())));
                     try {
-                        list = TableOfRecords.deserialize();
-                    } catch (IOException | ClassNotFoundException e1) {
-                        File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
-                        try {
-                            if (newTableOfRecords.createNewFile()) {
-                                TableOfRecords.serialize(new ArrayList<>());
-                                list = TableOfRecords.deserialize();
-                                JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов",
-                                        "Создан новый файл", JOptionPane.INFORMATION_MESSAGE);
-                            }
-                        } catch (IOException e2) {
-                            JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует",
-                                    "Ошибка создания файла", JOptionPane.ERROR_MESSAGE);
-                        } catch (ClassNotFoundException e2) {
-                            e2.printStackTrace();
-                        }
-                    }
-                    assert list != null;
-                    list.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm").format(new Date())));
-                    try {
-                        TableOfRecords.serialize(list);
+                        tableOfRecords.save();
                     } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
-                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
+                        e1.printStackTrace();
                     }
                     JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
                             JOptionPane.PLAIN_MESSAGE);
@@ -427,20 +378,10 @@ public class MineFrame {
         JMenuItem highScore = new JMenuItem("Таблица рекордов");
         highScore.addActionListener(e1 -> {
             try {
-                JOptionPane.showMessageDialog(mineFrame, TableOfRecords.tableToString(), "Таблица рекордов",
+                JOptionPane.showMessageDialog(mineFrame, tableOfRecords.tableToString(), "Таблица рекордов",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException | ClassNotFoundException e) {
-                File newTableOfRecords = new File(PATH_TO_RESOURCE + "table_of_records.bin");
-                try {
-                    if (newTableOfRecords.createNewFile()) {
-                        TableOfRecords.serialize(new ArrayList<>());
-                        JOptionPane.showMessageDialog(mineFrame, "Создана новая таблица рекордов", "Создан новый файл",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } catch (IOException e2) {
-                    JOptionPane.showMessageDialog(mineFrame, "Таблица рекордов отсутствует", "Ошибка создания файла",
-                            JOptionPane.ERROR_MESSAGE);
-                }
+                tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
             }
         });
         highScore.setMnemonic('а');

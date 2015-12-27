@@ -5,37 +5,66 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TableOfRecords {
-    private static final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+    private String pathToTable;
+    private List<Record> listOfRecords;
 
-    public static void serialize(List<Record> list) throws IOException {
+    @SuppressWarnings("unchecked")
+    public TableOfRecords(String pathToTable){
+        this.pathToTable = pathToTable;
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
+                (pathToTable))) {
+            this.listOfRecords = (List<Record>) inputStream.readObject();
+        } catch (FileNotFoundException e) {
+            File newTableOfRecords = new File(pathToTable);
+            try {
+                if (newTableOfRecords.createNewFile()) {
+                    listOfRecords = new ArrayList<>();
+                    save();
+                }
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Record> getListOfRecords(){
+        return this.listOfRecords;
+    }
+
+    public void add(Record record){
+        this.listOfRecords.add(record);
+    }
+
+    public void save() throws IOException {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream
-                (PATH_TO_TABLE))) {
-            List<Record> tmpList = list.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
+                (pathToTable))) {
+            listOfRecords = listOfRecords.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
                     .collect(Collectors.toList());
-            outputStream.writeObject(tmpList);
+            outputStream.writeObject(listOfRecords);
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static List<Record> deserialize() throws IOException, ClassNotFoundException {
+    /*public List<Record> load() throws IOException, ClassNotFoundException {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
-                (PATH_TO_TABLE))) {
+                (pathToTable))) {
             return (List<Record>) inputStream.readObject();
         }
-    }
+    }*/
 
-    public static String tableToString() throws IOException, ClassNotFoundException {
-        List<Record> tmpList = TableOfRecords.deserialize();
-        int tmpSize = tmpList.size();
-        if (tmpList.isEmpty()) {
+    public String tableToString() throws IOException, ClassNotFoundException {
+        int tmpSize = listOfRecords.size();
+        if (listOfRecords.isEmpty()) {
             return "Рекордов ещё нет!";
         }
         StringBuilder builder = new StringBuilder();
         builder.append("     Время:       Дата:")
                 .append(System.lineSeparator());
         for (int i = 1; i <= 5 && i <= tmpSize; ++i) {
-            builder.append(String.format("%d. %3d сек       ", i, tmpList.get(i - 1).getTime()))
-                    .append(tmpList.get(i - 1).getDate())
+            builder.append(String.format("%d. %3d сек       ", i, listOfRecords.get(i - 1).getTime()))
+                    .append(listOfRecords.get(i - 1).getDate())
                     .append(System.lineSeparator());
         }
         return builder.toString();
