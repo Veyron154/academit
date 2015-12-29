@@ -11,9 +11,6 @@ import java.awt.event.*;
 import java.io.IOException;
 
 public class MineFrame {
-    private int countOfColumns = 9;
-    private int countOfRows = 9;
-    private int countOfMines = 10;
     private int mineCounter;
     private int timerText = 0;
     private Timer timer;
@@ -40,20 +37,21 @@ public class MineFrame {
         mineFrame.setLayout(new BorderLayout());
         createTopPanel();
         createTimer();
+        grid = new GridOfMines();
         fillFrame();
         mineFrame.setLocationRelativeTo(null);
         mineFrame.setResizable(false);
-        fill();
+        restartGame();
     }
 
-    private void fill() {
+    private void restartGame() {
         timer.stop();
         timerText = 0;
         timerField.setText(Integer.toString(timerText));
-        mineCounter = countOfMines;
+        mineCounter = grid.getCountOfMines();
         mineCounterField.setText(Integer.toString(mineCounter));
         grid.clean();
-        grid.mining(countOfMines);
+        grid.mining();
     }
 
     private void setMark(int row, int column) {
@@ -75,35 +73,9 @@ public class MineFrame {
         }
     }
 
-    private void openButtonsAroundLabel(int row, int column) {
-        int rowStart = row - 1;
-        int rowEnd = row + 1;
-        int columnStart = column - 1;
-        int columnEnd = column + 1;
-
-        if (row == 0) {
-            rowStart = row;
-        }
-        if (row == countOfColumns - 1) {
-            rowEnd = row;
-        }
-        if (column == 0) {
-            columnStart = column;
-        }
-        if (column == countOfRows - 1) {
-            columnEnd = column;
-        }
-
-        for (int i = rowStart; i <= rowEnd; ++i) {
-            for (int j = columnStart; j <= columnEnd; ++j) {
-                grid.open(i, j);
-            }
-        }
-    }
-
     private void openButtons() {
-        for (int i = 0; i < countOfColumns; ++i) {
-            for (int j = 0; j < countOfRows; ++j) {
+        for (int i = 0; i < grid.getCountOfColumns(); ++i) {
+            for (int j = 0; j < grid.getCountOfRows(); ++j) {
                 if (grid.isOpened(i, j) && mineButtons[i][j].isVisible()) {
                     setLabel(i, j);
                     int index = grid.getIndex(i, j);
@@ -114,7 +86,7 @@ public class MineFrame {
                         JOptionPane.showMessageDialog(mineFrame, "Поражение!", "Поражение!",
                                 JOptionPane.PLAIN_MESSAGE);
                         clean();
-                        fill();
+                        restartGame();
                     } else if (index != 0) {
                         mineLabel.setText(Integer.toString(index));
                     }
@@ -124,8 +96,8 @@ public class MineFrame {
     }
 
     private void mineReveal() {
-        for (int i = 0; i < countOfColumns; ++i) {
-            for (int j = 0; j < countOfRows; ++j) {
+        for (int i = 0; i < grid.getCountOfColumns(); ++i) {
+            for (int j = 0; j < grid.getCountOfRows(); ++j) {
                 if (grid.isMined(i, j)) {
                     mineButtons[i][j].setIcon(new ImageIcon(PATH_TO_RESOURCE + "mine.png"));
                 }
@@ -135,14 +107,13 @@ public class MineFrame {
 
     private void showNewGameFrame() {
         NewGameFrame newGameFrame = new NewGameFrame(mineFrame);
-        if(newGameFrame.isCorrect()) {
+        if (newGameFrame.isCorrect()) {
             clean();
             mineFrame.remove(buttonsPanel);
-            countOfColumns = newGameFrame.getCountOfColumns();
-            countOfRows = newGameFrame.getCountOfRows();
-            countOfMines = newGameFrame.getCountOfMines();
+            grid = new GridOfMines(newGameFrame.getCountOfColumns(), newGameFrame.getCountOfRows(),
+                    newGameFrame.getCountOfMines());
             fillFrame();
-            fill();
+            restartGame();
         }
     }
 
@@ -164,7 +135,7 @@ public class MineFrame {
 
                 if (grid.isWin(timer, tableOfRecords, timerText, mineFrame)) {
                     clean();
-                    fill();
+                    restartGame();
                 }
                 if (SwingUtilities.isRightMouseButton(e)) {
                     setMark(finalI, finalJ);
@@ -195,13 +166,13 @@ public class MineFrame {
         mineLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (SwingUtilities.isMiddleMouseButton(e) && checkFlags(finalI1, finalJ1)) {
-                    openButtonsAroundLabel(finalI1, finalJ1);
+                if (SwingUtilities.isMiddleMouseButton(e) && grid.checkFlags(finalI1, finalJ1)) {
+                    grid.openButtonsAroundLabel(finalI1, finalJ1);
                     openButtons();
                 }
                 if (grid.isWin(timer, tableOfRecords, timerText, mineFrame)) {
                     clean();
-                    fill();
+                    restartGame();
                 }
             }
         });
@@ -210,8 +181,8 @@ public class MineFrame {
     }
 
     private void clean() {
-        for (int i = 0; i < countOfColumns; ++i) {
-            for (int j = 0; j < countOfRows; ++j) {
+        for (int i = 0; i < grid.getCountOfColumns(); ++i) {
+            for (int j = 0; j < grid.getCountOfRows(); ++j) {
                 mineButtons[i][j].setIcon(null);
                 mineButtons[i][j].setVisible(true);
                 if (mineLabels[i][j] != null) {
@@ -220,34 +191,6 @@ public class MineFrame {
                 }
             }
         }
-    }
-
-    private boolean checkFlags(int row, int column) {
-        int rowStart = row - 1;
-        int rowEnd = row + 1;
-        int columnStart = column - 1;
-        int columnEnd = column + 1;
-        int countOfFlags = 0;
-        if (row == 0) {
-            rowStart = row;
-        }
-        if (row == countOfColumns - 1) {
-            rowEnd = row;
-        }
-        if (column == 0) {
-            columnStart = column;
-        }
-        if (column == countOfRows - 1) {
-            columnEnd = column;
-        }
-        for (int i = rowStart; i <= rowEnd; ++i) {
-            for (int j = columnStart; j <= columnEnd; ++j) {
-                if (grid.isFlagged(i, j)) {
-                    countOfFlags++;
-                }
-            }
-        }
-        return grid.getIndex(row, column) == countOfFlags;
     }
 
     private Color getColorOfText(int i, int j) {
@@ -306,7 +249,7 @@ public class MineFrame {
 
         JMenuItem about = new JMenuItem("О программе");
         about.addActionListener(e1 -> JOptionPane.showMessageDialog
-                (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 1.3", "О программе",
+                (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 1.7", "О программе",
                         JOptionPane.INFORMATION_MESSAGE));
         about.setMnemonic('м');
         about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
@@ -337,7 +280,7 @@ public class MineFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 clean();
-                fill();
+                restartGame();
             }
         });
         topPanel.add(smile);
@@ -354,21 +297,19 @@ public class MineFrame {
         mineFrame.add(topPanel, BorderLayout.NORTH);
     }
 
-    private void fillFrame(){
+    private void fillFrame() {
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        gbc.weightx = (screenSize.getWidth() / countOfRows) - SIZE_OF_BUTTON;
-        gbc.weighty = (screenSize.getHeight() / countOfColumns) - SIZE_OF_BUTTON;
-
-        grid = new GridOfMines(this.countOfColumns, this.countOfRows);
+        gbc.weightx = (screenSize.getWidth() / grid.getCountOfRows()) - SIZE_OF_BUTTON;
+        gbc.weighty = (screenSize.getHeight() / grid.getCountOfColumns()) - SIZE_OF_BUTTON;
 
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridBagLayout());
-        mineLabels = new JLabel[countOfColumns][countOfRows];
-        mineButtons = new JButton[this.countOfColumns][this.countOfRows];
-        for (int i = 0; i < countOfColumns; ++i) {
-            for (int j = 0; j < countOfRows; ++j) {
+        mineLabels = new JLabel[grid.getCountOfColumns()][grid.getCountOfRows()];
+        mineButtons = new JButton[grid.getCountOfColumns()][grid.getCountOfRows()];
+        for (int i = 0; i < grid.getCountOfColumns(); ++i) {
+            for (int j = 0; j < grid.getCountOfRows(); ++j) {
                 createNewButton(i, j);
             }
         }
@@ -381,7 +322,7 @@ public class MineFrame {
         mineFrame.setMinimumSize(new Dimension(mineFrame.getSize()));
     }
 
-    private void createTimer(){
+    private void createTimer() {
         timer = new Timer(1000, e -> {
             timerText += 1;
             timerField.setText(Integer.toString(timerText));

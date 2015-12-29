@@ -9,12 +9,15 @@ import java.util.Queue;
 
 public class GridOfMines {
     private Cell[][] grid;
-    private int countOfColumns;
-    private int countOfRows;
+    private int countOfColumns = 9;
+    private int countOfRows = 9;
+    private int countOfMines = 10;
+    private int rowStart;
+    private int rowEnd;
+    private int columnStart;
+    private int columnEnd;
 
-    public GridOfMines(int countOfColumns, int countOfRows) {
-        this.countOfColumns = countOfColumns;
-        this.countOfRows = countOfRows;
+    public GridOfMines() {
         this.grid = new Cell[countOfColumns][countOfRows];
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {
@@ -23,7 +26,19 @@ public class GridOfMines {
         }
     }
 
-    public void mining(int countOfMines) {
+    public GridOfMines(int countOfColumns, int countOfRows, int countOfMines) {
+        this.countOfColumns = countOfColumns;
+        this.countOfRows = countOfRows;
+        this.countOfMines = countOfMines;
+        this.grid = new Cell[countOfColumns][countOfRows];
+        for (int i = 0; i < grid.length; ++i) {
+            for (int j = 0; j < grid[0].length; ++j) {
+                grid[i][j] = new Cell(i, j);
+            }
+        }
+    }
+
+    public void mining() {
         for (int i = 1; i <= countOfMines; ++i) {
             int row = (int) (Math.random() * this.grid.length);
             int column = (int) (Math.random() * this.grid[0].length);
@@ -35,22 +50,7 @@ public class GridOfMines {
         }
         for (int i = 0; i < countOfColumns; ++i) {
             for (int j = 0; j < countOfRows; ++j) {
-                int rowStart = i - 1;
-                int rowEnd = i + 1;
-                int columnStart = j - 1;
-                int columnEnd = j + 1;
-                if (i == 0) {
-                    rowStart = i;
-                }
-                if (i == countOfColumns - 1) {
-                    rowEnd = i;
-                }
-                if (j == 0) {
-                    columnStart = j;
-                }
-                if (j == countOfRows - 1) {
-                    columnEnd = j;
-                }
+                setLimitsOfCycles(i, j);
                 for (int k = rowStart; k <= rowEnd; ++k) {
                     for (int l = columnStart; l <= columnEnd; ++l) {
                         if (grid[k][l].isMined()) {
@@ -76,25 +76,7 @@ public class GridOfMines {
             if (cell.getIndex() == 0 && !cell.isMined()) {
                 int rowIndex = cell.getRowIndex();
                 int columnIndex = cell.getColumnIndex();
-
-                int rowStart = rowIndex - 1;
-                int rowEnd = rowIndex + 1;
-                int columnStart = columnIndex - 1;
-                int columnEnd = columnIndex + 1;
-
-                if (rowIndex == 0) {
-                    rowStart = rowIndex;
-                }
-                if (rowIndex == countOfColumns - 1) {
-                    rowEnd = rowIndex;
-                }
-                if (columnIndex == 0) {
-                    columnStart = columnIndex;
-                }
-                if (columnIndex == countOfRows - 1) {
-                    columnEnd = columnIndex;
-                }
-
+                setLimitsOfCycles(rowIndex, columnIndex);
                 for (int i = rowStart; i <= rowEnd; ++i) {
                     for (int j = columnStart; j <= columnEnd; ++j) {
                         if (!grid[i][j].isOpened() && !grid[i][j].isFlagged()) {
@@ -141,6 +123,62 @@ public class GridOfMines {
         return true;
     }
 
+    public void openButtonsAroundLabel(int row, int column) {
+        int rowStart = row - 1;
+        int rowEnd = row + 1;
+        int columnStart = column - 1;
+        int columnEnd = column + 1;
+        if (row == 0) {
+            rowStart = row;
+        }
+        if (row == countOfColumns - 1) {
+            rowEnd = row;
+        }
+        if (column == 0) {
+            columnStart = column;
+        }
+        if (column == countOfRows - 1) {
+            columnEnd = column;
+        }
+        for (int i = rowStart; i <= rowEnd; ++i) {
+            for (int j = columnStart; j <= columnEnd; ++j) {
+                open(i, j);
+            }
+        }
+    }
+
+    private void setLimitsOfCycles(int row, int column) {
+        rowStart = row - 1;
+        rowEnd = row + 1;
+        columnStart = column - 1;
+        columnEnd = column + 1;
+        if (row == 0) {
+            rowStart = row;
+        }
+        if (row == countOfColumns - 1) {
+            rowEnd = row;
+        }
+        if (column == 0) {
+            columnStart = column;
+        }
+        if (column == countOfRows - 1) {
+            columnEnd = column;
+        }
+    }
+
+    public boolean checkFlags(int row, int column) {
+        setLimitsOfCycles(row, column);
+        int countOfFlags = 0;
+        for (int i = rowStart; i <= rowEnd; ++i) {
+            for (int j = columnStart; j <= columnEnd; ++j) {
+                if (grid[i][j].isFlagged()) {
+                    countOfFlags++;
+                }
+            }
+        }
+        return grid[row][column].getIndex() == countOfFlags;
+    }
+
     public int getIndex(int row, int column) {
         return this.grid[row][column].getIndex();
     }
@@ -167,6 +205,18 @@ public class GridOfMines {
 
     public void setMark(int row, int column, boolean mark) {
         this.grid[row][column].setMarked(mark);
+    }
+
+    public int getCountOfColumns() {
+        return this.countOfColumns;
+    }
+
+    public int getCountOfRows() {
+        return this.countOfRows;
+    }
+
+    public int getCountOfMines() {
+        return this.countOfMines;
     }
 }
 
