@@ -1,9 +1,5 @@
 package ru.courses.morozov.model;
 
-import javax.swing.*;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -101,7 +97,7 @@ public class GridOfMines {
         }
     }
 
-    public boolean isWin(Timer timer, TableOfRecords tableOfRecords, int timerText, JFrame frame) {
+    public boolean isWin() {
         for (int i = 0; i < this.countOfColumns; ++i) {
             for (int j = 0; j < this.countOfRows; ++j) {
                 if (!grid[i][j].isMined() && !grid[i][j].isOpened()) {
@@ -109,18 +105,18 @@ public class GridOfMines {
                 }
             }
         }
-        timer.stop();
-        tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
-                .format(new Date())));
-        try {
-            tableOfRecords.save();
-        } catch (IOException e1) {
-            JOptionPane.showMessageDialog(frame, "Результат не сохранён",
-                    "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
-        }
-        JOptionPane.showMessageDialog(frame, "Ваше время: " + timerText, "Победа!",
-                JOptionPane.PLAIN_MESSAGE);
         return true;
+    }
+
+    public boolean isLose() {
+        for (int i = 0; i < countOfColumns; ++i) {
+            for (int j = 0; j < countOfRows; ++j) {
+                if (grid[i][j].isOpened() && grid[i][j].isMined()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void openButtonsAroundLabel(int row, int column) {

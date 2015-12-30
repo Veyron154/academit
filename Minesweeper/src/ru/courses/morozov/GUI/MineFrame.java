@@ -1,6 +1,7 @@
 package ru.courses.morozov.GUI;
 
 import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.model.Record;
 import ru.courses.morozov.model.TableOfRecords;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MineFrame {
     private int mineCounter;
@@ -33,15 +36,19 @@ public class MineFrame {
     }
 
     public void createFrame() {
-        createMenuBar();
-        mineFrame.setLayout(new BorderLayout());
-        createTopPanel();
-        createTimer();
-        grid = new GridOfMines();
-        fillFrame();
-        mineFrame.setLocationRelativeTo(null);
-        mineFrame.setResizable(false);
-        restartGame();
+        SwingUtilities.invokeLater(() -> {
+            createMenuBar();
+            mineFrame.setLayout(new BorderLayout());
+            createTopPanel();
+            createTimer();
+            grid = new GridOfMines();
+            fillFrame();
+            mineFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            mineFrame.setVisible(true);
+            mineFrame.setLocationRelativeTo(null);
+            mineFrame.setResizable(false);
+            restartGame();
+        });
     }
 
     private void restartGame() {
@@ -107,6 +114,7 @@ public class MineFrame {
 
     private void showNewGameFrame() {
         NewGameFrame newGameFrame = new NewGameFrame(mineFrame);
+        newGameFrame.createFrame();
         if (newGameFrame.isCorrect()) {
             clean();
             mineFrame.remove(buttonsPanel);
@@ -133,7 +141,18 @@ public class MineFrame {
                     grid.open(finalI, finalJ);
                 openButtons();
 
-                if (grid.isWin(timer, tableOfRecords, timerText, mineFrame)) {
+                if (grid.isWin()) {
+                    timer.stop();
+                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
+                            .format(new Date())));
+                    try {
+                        tableOfRecords.save();
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
+                    }
+                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
+                            JOptionPane.PLAIN_MESSAGE);
                     clean();
                     restartGame();
                 }
@@ -170,7 +189,18 @@ public class MineFrame {
                     grid.openButtonsAroundLabel(finalI1, finalJ1);
                     openButtons();
                 }
-                if (grid.isWin(timer, tableOfRecords, timerText, mineFrame)) {
+                if (grid.isWin()) {
+                    timer.stop();
+                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
+                            .format(new Date())));
+                    try {
+                        tableOfRecords.save();
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
+                    }
+                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
+                            JOptionPane.PLAIN_MESSAGE);
                     clean();
                     restartGame();
                 }
@@ -316,10 +346,7 @@ public class MineFrame {
         final int BORDER = 10;
         buttonsPanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
         mineFrame.add(buttonsPanel);
-        mineFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        mineFrame.setVisible(true);
         mineFrame.pack();
-        mineFrame.setMinimumSize(new Dimension(mineFrame.getSize()));
     }
 
     private void createTimer() {

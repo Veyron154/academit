@@ -9,30 +9,46 @@ public class NewGameFrame {
     private int countOfRows;
     private int countOfMines;
     private JFrame mainFrame;
-    final int BORDER = 10;
-    private JPanel newGamePanel = new JPanel(new GridLayout(3, 2, BORDER, BORDER));
-    JTextField countOfRowsField = new JTextField();
-    JTextField countOfColumnsField = new JTextField();
-    JTextField countOfMinesField = new JTextField();
+    private final int BORDER = 10;
+    private JPanel newGamePanel = new JPanel(new GridLayout(4, 2, BORDER, BORDER));
+    private JTextField countOfRowsField = new JTextField();
+    private JTextField countOfColumnsField = new JTextField();
+    private JTextField countOfMinesField = new JTextField();
+    private JDialog newGameFrame;
+    private JButton buttonOk = new JButton("ОК");
+    private JButton buttonCancel = new JButton("Отмена");
+    private boolean correct = false;
 
     public NewGameFrame(JFrame mainFrame) {
         this.mainFrame = mainFrame;
-        JLabel countOfRowsLabel = new JLabel("Высота (9 - 24):");
-        JLabel countOfColumnsLabel = new JLabel("Ширина (9 - 30):");
-        JLabel countOfMinesLabel = new JLabel("Число мин (10 - 668):");
-        newGamePanel.add(countOfRowsLabel);
-        newGamePanel.add(countOfRowsField);
-        newGamePanel.add(countOfColumnsLabel);
-        newGamePanel.add(countOfColumnsField);
-        newGamePanel.add(countOfMinesLabel);
-        newGamePanel.add(countOfMinesField);
-        newGamePanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
-        UIManager.put("OptionPane.cancelButtonText", "Отмена");
     }
 
-    public boolean isCorrect() {
-        int reply = JOptionPane.showConfirmDialog(mainFrame, newGamePanel, "Новая игра", JOptionPane.OK_CANCEL_OPTION);
-        if (reply == JOptionPane.OK_OPTION) {
+    public void createFrame() {
+        newGameFrame = new JDialog(mainFrame);
+        newGameFrame.setModal(true);
+        newGameFrame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        newGameFrame.setTitle("Новая игра");
+        createPanel();
+        newGameFrame.add(newGamePanel);
+        newGameFrame.pack();
+        newGameFrame.setLocationRelativeTo(mainFrame);
+        newGameFrame.setVisible(true);
+    }
+
+    public int getCountOfColumns() {
+        return this.countOfColumns;
+    }
+
+    public int getCountOfRows() {
+        return this.countOfRows;
+    }
+
+    public int getCountOfMines() {
+        return this.countOfMines;
+    }
+
+    private void createOkButton() {
+        buttonOk.addActionListener(e -> {
             if (countOfColumnsField.getText().equals("") || countOfRowsField.getText().equals("") ||
                     countOfMinesField.getText().equals("")) {
                 JOptionPane.showMessageDialog(mainFrame, "Введите значения", "Введите значения",
@@ -48,41 +64,48 @@ public class NewGameFrame {
                 if (tmpRows < 9 || tmpRows > 24) {
                     JOptionPane.showMessageDialog(mainFrame, "Высота поля должна быть в пределах от 9 до 24",
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-                if (tmpMines < 10 || tmpMines > 668) {
+                } else if (tmpMines < 10 || tmpMines > 668) {
                     JOptionPane.showMessageDialog(mainFrame, "Число мин должно быть в пределах от 10 до 668",
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-                if (tmpColumns < 9 || tmpColumns > 30) {
+                } else if (tmpColumns < 9 || tmpColumns > 30) {
                     JOptionPane.showMessageDialog(mainFrame, "Ширина поля должна быть в пределах от 9 до 30",
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-                if (tmpMines > tmpColumns * tmpRows) {
+                } else if (tmpMines > tmpColumns * tmpRows) {
                     JOptionPane.showMessageDialog(mainFrame, "Число мин не должно превышать число ячеек поля",
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                    return false;
+                } else {
+                    countOfColumns = Integer.valueOf(countOfColumnsField.getText());
+                    countOfRows = Integer.valueOf(countOfRowsField.getText());
+                    countOfMines = Integer.valueOf(countOfMinesField.getText());
+                    correct = true;
+                    newGameFrame.dispose();
                 }
-                countOfColumns = Integer.valueOf(countOfColumnsField.getText());
-                countOfRows = Integer.valueOf(countOfRowsField.getText());
-                countOfMines = Integer.valueOf(countOfMinesField.getText());
-                return true;
             }
-        }
-        return false;
+        });
+        newGamePanel.add(buttonOk);
     }
 
-    public int getCountOfColumns() {
-        return this.countOfColumns;
+    private void createCancelButton() {
+        buttonCancel.addActionListener(e -> newGameFrame.dispose());
+        newGamePanel.add(buttonCancel);
     }
 
-    public int getCountOfRows() {
-        return this.countOfRows;
+    public boolean isCorrect() {
+        return this.correct;
     }
 
-    public int getCountOfMines() {
-        return this.countOfMines;
+    private void createPanel() {
+        JLabel countOfRowsLabel = new JLabel("Высота (9 - 24):");
+        JLabel countOfColumnsLabel = new JLabel("Ширина (9 - 30):");
+        JLabel countOfMinesLabel = new JLabel("Число мин (10 - 668):");
+        newGamePanel.add(countOfRowsLabel);
+        newGamePanel.add(countOfRowsField);
+        newGamePanel.add(countOfColumnsLabel);
+        newGamePanel.add(countOfColumnsField);
+        newGamePanel.add(countOfMinesLabel);
+        newGamePanel.add(countOfMinesField);
+        createOkButton();
+        createCancelButton();
+        newGamePanel.setBorder(new EmptyBorder(BORDER, BORDER, BORDER, BORDER));
     }
 }
