@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 public class TableOfRecords {
     private String pathToTable;
     private List<Record> listOfRecords;
-    private int capacity = 5;
+    private int capacity;
 
     @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable) {
+    public TableOfRecords(String pathToTable) throws IOException, ClassNotFoundException {
+        this.capacity = 5;
         this.pathToTable = pathToTable;
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
                 (pathToTable))) {
@@ -25,31 +26,13 @@ public class TableOfRecords {
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable, int capacity) {
-        this.pathToTable = pathToTable;
+    public TableOfRecords(String pathToTable, int capacity) throws IOException, ClassNotFoundException {
+        new TableOfRecords(pathToTable);
         this.capacity = capacity;
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
-                (pathToTable))) {
-            this.listOfRecords = (List<Record>) inputStream.readObject();
-        } catch (FileNotFoundException e) {
-            File newTableOfRecords = new File(pathToTable);
-            try {
-                if (newTableOfRecords.createNewFile()) {
-                    listOfRecords = new ArrayList<>();
-                    save();
-                }
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public void add(Record record) {
@@ -57,16 +40,16 @@ public class TableOfRecords {
             this.listOfRecords.add(record);
             listOfRecords = listOfRecords.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
                     .collect(Collectors.toList());
-        } else {
-            while (listOfRecords.size() > capacity){
-                listOfRecords.remove(listOfRecords.size() - 1);
-            }
-            if (record.getTime() < listOfRecords.get(capacity - 1).getTime()) {
-                listOfRecords.remove(capacity - 1);
-                this.listOfRecords.add(record);
-                listOfRecords = listOfRecords.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
-                        .collect(Collectors.toList());
-            }
+            return;
+        }
+        while (listOfRecords.size() > capacity) {
+            listOfRecords.remove(listOfRecords.size() - 1);
+        }
+        if (record.getTime() < listOfRecords.get(capacity - 1).getTime()) {
+            listOfRecords.remove(capacity - 1);
+            this.listOfRecords.add(record);
+            listOfRecords = listOfRecords.stream().sorted((a1, a2) -> a1.getTime() - a2.getTime())
+                    .collect(Collectors.toList());
         }
     }
 

@@ -14,25 +14,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MineFrame {
+    private final int SIZE_OF_BUTTON = 25;
     private int mineCounter;
-    private int timerText = 0;
+    private int timerText;
     private Timer timer;
     private JTextField mineCounterField;
-    private JFrame mineFrame = new JFrame("Сапёр");
+    private JFrame mineFrame;
     private JButton[][] mineButtons;
     private JLabel[][] mineLabels;
     private GridOfMines grid;
     private GridBagConstraints gbc;
     private JPanel buttonsPanel;
-    private final int SIZE_OF_BUTTON = 25;
     private JLabel mineLabel;
-    private final int TEXT_COLUMNS = 3;
-    private JTextField timerField = new JTextField(TEXT_COLUMNS);
-    private final String PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
-    private final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
-    private TableOfRecords tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+    private JTextField timerField;
+
+    private final String PATH_TO_RESOURCE;
+    private final String PATH_TO_TABLE;
+    private TableOfRecords tableOfRecords;
 
     public MineFrame() {
+        mineFrame = new JFrame("Сапёр");
+        int TEXT_COLUMNS = 3;
+        mineCounterField = new JTextField(TEXT_COLUMNS);
+        timerField = new JTextField(TEXT_COLUMNS);
+        PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
+        PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+        try {
+            tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+        } catch (IOException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
+                    "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void createFrame() {
@@ -58,7 +70,7 @@ public class MineFrame {
         mineCounter = grid.getCountOfMines();
         mineCounterField.setText(Integer.toString(mineCounter));
         grid.clean();
-        grid.mining();
+        grid.setFilled(false);
     }
 
     private void setMark(int row, int column) {
@@ -113,8 +125,8 @@ public class MineFrame {
     }
 
     private void showNewGameFrame() {
-        NewGameFrame newGameFrame = new NewGameFrame(mineFrame);
-        newGameFrame.createFrame();
+        NewGameDialog newGameFrame = new NewGameDialog(mineFrame);
+        newGameFrame.createDialog();
         if (newGameFrame.isCorrect()) {
             clean();
             mineFrame.remove(buttonsPanel);
@@ -136,6 +148,10 @@ public class MineFrame {
         MouseListener listener = new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+                if (!grid.isFilled()){
+                    grid.mining(finalI, finalJ);
+                    grid.setFilled(true);
+                }
                 timer.start();
                 if (SwingUtilities.isLeftMouseButton(e) && !grid.isFlagged(finalI, finalJ))
                     grid.open(finalI, finalJ);
@@ -262,7 +278,12 @@ public class MineFrame {
                 JOptionPane.showMessageDialog(mineFrame, tableOfRecords.tableToString(), "Таблица рекордов",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException | ClassNotFoundException e) {
-                tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+                try {
+                    tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+                } catch (IOException | ClassNotFoundException e2) {
+                    JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
+                            "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         highScore.setMnemonic('а');
@@ -295,9 +316,8 @@ public class MineFrame {
         mineCounterLabel.setIcon(new ImageIcon(PATH_TO_RESOURCE + "mine.png"));
         topPanel.add(mineCounterLabel);
 
-        mineCounterField = new JTextField(TEXT_COLUMNS);
         mineCounterField.setEditable(false);
-        int SIZE_OF_FONT = 17;
+        final int SIZE_OF_FONT = 17;
         mineCounterField.setFont(new Font("font", Font.BOLD, SIZE_OF_FONT));
         mineCounterField.setHorizontalAlignment(JTextField.RIGHT);
         topPanel.add(mineCounterField);

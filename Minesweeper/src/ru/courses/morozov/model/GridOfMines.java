@@ -6,9 +6,9 @@ import java.util.Queue;
 public class GridOfMines {
     private Cell[][] grid;
 
-    private int countOfColumns = 9;
-    private int countOfRows = 9;
-    private int countOfMines = 10;
+    private int countOfColumns;
+    private int countOfRows;
+    private int countOfMines;
 
     private int rowStart;
     private int rowEnd;
@@ -18,6 +18,9 @@ public class GridOfMines {
     private boolean filled;
 
     public GridOfMines() {
+        countOfColumns = 9;
+        countOfRows = 9;
+        countOfMines = 10;
         this.grid = new Cell[countOfColumns][countOfRows];
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {

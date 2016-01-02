@@ -2,12 +2,14 @@ package ru.courses.morozov.model;
 
 public class Cell {
     private int index;
+
+    private int rowIndex;
+    private int columnIndex;
+
     private boolean flagged;
     private boolean opened;
     private boolean marked;
     private boolean mined;
-    private int rowIndex;
-    private int columnIndex;
 
     public Cell(int rowIndex, int columnIndex) {
         this.rowIndex = rowIndex;

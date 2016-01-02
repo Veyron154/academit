@@ -11,46 +11,30 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class MineText {
+public class MineText {/*
     private GridOfMines grid;
     private Timer timer;
     private int timerCount;
     private final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
     private TableOfRecords tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+    private Scanner scanner = new Scanner(System.in).useLocale(Locale.US);
+    private int row;
+    private int column;
 
     public MineText() {
     }
 
     public void run() {
         grid = new GridOfMines();
-        grid.mining();
-        Scanner scanner = new Scanner(System.in);
-        scanner.useLocale(Locale.US);
+        //grid.mining();
         createTimer();
         timer.start();
-        int row;
-        int column;
         while (!grid.isWin() && !grid.isLose()) {
             print();
-            while (true) {
-                System.out.println("Введите индекс ячейки по вертикали: ");
-                row = scanner.nextInt();
-                if (row >= 0 && row < grid.getCountOfColumns()) {
-                    break;
-                }
-                System.out.println("Индекс ячейки по вертикали должен быть в пределах от 0 до " +
-                        (grid.getCountOfColumns() - 1));
+            switch (printMenu()){
+                case 1:
+                    openCell();
             }
-            while (true) {
-                System.out.println("Введите индекс ячейки по горизрнтали: ");
-                column = scanner.nextInt();
-                if (column >= 0 && column < grid.getCountOfRows()) {
-                    break;
-                }
-                System.out.println("Индекс ячейки по горизонтали должен быть в пределах от 0 до " +
-                        (grid.getCountOfRows() - 1));
-            }
-            grid.open(row, column);
         }
         if (grid.isLose()) {
             timer.stop();
@@ -103,8 +87,6 @@ public class MineText {
                     System.out.print(" *|");
                 } else if (!grid.isOpened(i, j)) {
                     System.out.print("  |");
-                } else if (grid.getIndex(i, j) == 0) {
-                    System.out.print(" .|");
                 } else {
                     System.out.print(" " + grid.getIndex(i, j) + "|");
                 }
@@ -116,4 +98,46 @@ public class MineText {
     private void createTimer() {
         timer = new Timer(1000, e -> timerCount += 1);
     }
+
+    private int printMenu(){
+        System.out.println("Выберите действие:");
+        System.out.println("1 - Открыть ячейку.");
+        System.out.println("2 - Поставить флаг.");
+        System.out.println("3 - Поставить вопрос.");
+        System.out.println("4 - Открыть ячейки вокруг поля.");
+        System.out.println("5 - Перезапустить игру.");
+        System.out.println("6 - Новая игра.");
+        System.out.println("7 - Таблица рекордов.");
+        System.out.println("8 - Информация.");
+        System.out.println("9 - Выход.");
+        int menuIndex = scanner.nextInt();
+        while (true){
+            if(menuIndex > 0 && menuIndex <= 9){
+                return menuIndex;
+            }
+            System.out.println("Введён не верный индекс.");
+        }
+    }
+
+    private void openCell(){
+        while (true) {
+            System.out.println("Введите индекс ячейки по вертикали: ");
+            row = scanner.nextInt();
+            if (row >= 0 && row < grid.getCountOfColumns()) {
+                break;
+            }
+            System.out.println("Индекс ячейки по вертикали должен быть в пределах от 0 до " +
+                    (grid.getCountOfColumns() - 1));
+        }
+        while (true) {
+            System.out.println("Введите индекс ячейки по горизрнтали: ");
+            column = scanner.nextInt();
+            if (column >= 0 && column < grid.getCountOfRows()) {
+                break;
+            }
+            System.out.println("Индекс ячейки по горизонтали должен быть в пределах от 0 до " +
+                    (grid.getCountOfRows() - 1));
+        }
+        grid.open(row, column);
+    }*/
 }
