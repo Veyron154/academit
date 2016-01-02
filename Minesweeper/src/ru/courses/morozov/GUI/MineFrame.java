@@ -15,30 +15,31 @@ import java.util.Date;
 
 public class MineFrame {
     private final int SIZE_OF_BUTTON = 25;
+    private final String PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
+    private final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+
     private int mineCounter;
     private int timerText;
+
     private Timer timer;
-    private JTextField mineCounterField;
-    private JFrame mineFrame;
+    private TableOfRecords tableOfRecords;
     private JButton[][] mineButtons;
     private JLabel[][] mineLabels;
+
+    private JFrame mineFrame;
     private GridOfMines grid;
     private GridBagConstraints gbc;
     private JPanel buttonsPanel;
     private JLabel mineLabel;
+    private JTextField mineCounterField;
     private JTextField timerField;
 
-    private final String PATH_TO_RESOURCE;
-    private final String PATH_TO_TABLE;
-    private TableOfRecords tableOfRecords;
 
     public MineFrame() {
         mineFrame = new JFrame("Сапёр");
         int TEXT_COLUMNS = 3;
         mineCounterField = new JTextField(TEXT_COLUMNS);
         timerField = new JTextField(TEXT_COLUMNS);
-        PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
-        PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
         try {
             tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
         } catch (IOException | ClassNotFoundException e) {
@@ -148,27 +149,18 @@ public class MineFrame {
         MouseListener listener = new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (!grid.isFilled()){
+                if (!grid.isFilled()) {
                     grid.mining(finalI, finalJ);
                     grid.setFilled(true);
                 }
                 timer.start();
-                if (SwingUtilities.isLeftMouseButton(e) && !grid.isFlagged(finalI, finalJ))
+                if (SwingUtilities.isLeftMouseButton(e) && !grid.isFlagged(finalI, finalJ)) {
                     grid.open(finalI, finalJ);
-                openButtons();
-
+                    openButtons();
+                }
                 if (grid.isWin()) {
                     timer.stop();
-                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
-                            .format(new Date())));
-                    try {
-                        tableOfRecords.save();
-                    } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
-                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
-                    }
-                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
-                            JOptionPane.PLAIN_MESSAGE);
+                    showWinMessage();
                     clean();
                     restartGame();
                 }
@@ -207,16 +199,7 @@ public class MineFrame {
                 }
                 if (grid.isWin()) {
                     timer.stop();
-                    tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
-                            .format(new Date())));
-                    try {
-                        tableOfRecords.save();
-                    } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
-                                "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
-                    }
-                    JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
-                            JOptionPane.PLAIN_MESSAGE);
+                    showWinMessage();
                     clean();
                     restartGame();
                 }
@@ -374,6 +357,19 @@ public class MineFrame {
             timerText += 1;
             timerField.setText(Integer.toString(timerText));
         });
+    }
+
+    private void showWinMessage() {
+        tableOfRecords.add(new Record(timerText, new SimpleDateFormat("dd.MM.yyyy hh.mm")
+                .format(new Date())));
+        try {
+            tableOfRecords.save();
+        } catch (IOException e1) {
+            JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
+                    "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
+        }
+        JOptionPane.showMessageDialog(mineFrame, "Ваше время: " + timerText, "Победа!",
+                JOptionPane.PLAIN_MESSAGE);
     }
 }
 
