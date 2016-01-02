@@ -4,26 +4,33 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class NewGameFrame {
+public class NewGameDialog {
+    private final int BORDER = 10;
+
     private int countOfColumns;
     private int countOfRows;
     private int countOfMines;
+
     private JFrame mainFrame;
-    private final int BORDER = 10;
-    private JPanel newGamePanel = new JPanel(new GridLayout(4, 2, BORDER, BORDER));
-    private JTextField countOfRowsField = new JTextField();
-    private JTextField countOfColumnsField = new JTextField();
-    private JTextField countOfMinesField = new JTextField();
     private JDialog newGameFrame;
+    private JPanel newGamePanel;
+    private JTextField countOfRowsField;
+    private JTextField countOfColumnsField;
+    private JTextField countOfMinesField;
     private JButton buttonOk = new JButton("ОК");
     private JButton buttonCancel = new JButton("Отмена");
+
     private boolean correct = false;
 
-    public NewGameFrame(JFrame mainFrame) {
+    public NewGameDialog(JFrame mainFrame) {
         this.mainFrame = mainFrame;
     }
 
-    public void createFrame() {
+    public void createDialog() {
+        newGamePanel = new JPanel(new GridLayout(4, 2, BORDER, BORDER));
+        countOfRowsField = new JTextField();
+        countOfColumnsField = new JTextField();
+        countOfMinesField = new JTextField();
         newGameFrame = new JDialog(mainFrame);
         newGameFrame.setModal(true);
         newGameFrame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -61,18 +68,29 @@ public class NewGameFrame {
                 int tmpRows = Integer.valueOf(countOfRowsField.getText());
                 int tmpColumns = Integer.valueOf(countOfColumnsField.getText());
                 int tmpMines = Integer.valueOf(countOfMinesField.getText());
-                if (tmpRows < 9 || tmpRows > 24) {
-                    JOptionPane.showMessageDialog(mainFrame, "Высота поля должна быть в пределах от 9 до 24",
+                int maxFeasibleCountOfMines = (tmpColumns * tmpRows * 85) / 100;
+                final int MIN_COUNT_OF_ROWS = 9;
+                final int MAX_COUNT_OF_ROWS = 24;
+                final int MIN_COUNT_OF_COLUMNS = 9;
+                final int MAX_COUNT_OF_COLUMNS = 30;
+                final int MIN_COUNT_OF_MINES = 10;
+                final int MAX_COUNT_OF_MINES = 668;
+                if (tmpRows < MIN_COUNT_OF_ROWS || tmpRows > MAX_COUNT_OF_ROWS) {
+                    JOptionPane.showMessageDialog(mainFrame, "Высота поля должна быть в пределах от " +
+                                    MIN_COUNT_OF_ROWS + " до " + MAX_COUNT_OF_ROWS,
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                } else if (tmpMines < 10 || tmpMines > 668) {
-                    JOptionPane.showMessageDialog(mainFrame, "Число мин должно быть в пределах от 10 до 668",
+                } else if (tmpMines < MIN_COUNT_OF_MINES || tmpMines > MAX_COUNT_OF_MINES) {
+                    JOptionPane.showMessageDialog(mainFrame, "Число мин должно быть в пределах от " +
+                                    MIN_COUNT_OF_MINES + " до " + MAX_COUNT_OF_MINES,
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                } else if (tmpColumns < 9 || tmpColumns > 30) {
-                    JOptionPane.showMessageDialog(mainFrame, "Ширина поля должна быть в пределах от 9 до 30",
+                } else if (tmpColumns < MIN_COUNT_OF_COLUMNS || tmpColumns > MAX_COUNT_OF_COLUMNS) {
+                    JOptionPane.showMessageDialog(mainFrame, "Ширина поля должна быть в пределах от " +
+                                    MIN_COUNT_OF_COLUMNS + " до " + MAX_COUNT_OF_COLUMNS,
                             "Введите значения", JOptionPane.ERROR_MESSAGE);
-                } else if (tmpMines > tmpColumns * tmpRows) {
-                    JOptionPane.showMessageDialog(mainFrame, "Число мин не должно превышать число ячеек поля",
-                            "Введите значения", JOptionPane.ERROR_MESSAGE);
+                } else if (tmpMines > maxFeasibleCountOfMines) {
+                    JOptionPane.showMessageDialog(mainFrame, "Число мин не должно превышать " + maxFeasibleCountOfMines
+                                    + " в зависимости от текущих значений ширины и высоты", "Введите значения",
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     countOfColumns = Integer.valueOf(countOfColumnsField.getText());
                     countOfRows = Integer.valueOf(countOfRowsField.getText());
