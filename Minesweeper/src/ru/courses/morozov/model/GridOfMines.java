@@ -5,13 +5,17 @@ import java.util.Queue;
 
 public class GridOfMines {
     private Cell[][] grid;
+
     private int countOfColumns = 9;
     private int countOfRows = 9;
     private int countOfMines = 10;
+
     private int rowStart;
     private int rowEnd;
     private int columnStart;
     private int columnEnd;
+
+    private boolean filled;
 
     public GridOfMines() {
         this.grid = new Cell[countOfColumns][countOfRows];
@@ -34,15 +38,25 @@ public class GridOfMines {
         }
     }
 
-    public void mining() {
+    public void mining(int row, int column) {
+        setLimitsOfCycles(row, column);
+        outer:
         for (int i = 1; i <= countOfMines; ++i) {
-            int row = (int) (Math.random() * this.grid.length);
-            int column = (int) (Math.random() * this.grid[0].length);
-            if (this.grid[row][column].isMined()) {
+            int tmpRow = (int) (Math.random() * this.countOfColumns);
+            int tmpColumn = (int) (Math.random() * this.countOfRows);
+            if (this.grid[tmpRow][tmpColumn].isMined()) {
                 --i;
                 continue;
             }
-            this.grid[row][column].setMined(true);
+            for (int j = rowStart; j <= rowEnd; ++j) {
+                for (int k = columnStart; k <= columnEnd; ++k) {
+                    if (tmpRow == j && tmpColumn == k) {
+                        --i;
+                        continue outer;
+                    }
+                }
+            }
+            this.grid[tmpRow][tmpColumn].setMined(true);
         }
         for (int i = 0; i < countOfColumns; ++i) {
             for (int j = 0; j < countOfRows; ++j) {
@@ -213,6 +227,14 @@ public class GridOfMines {
 
     public int getCountOfMines() {
         return this.countOfMines;
+    }
+
+    public boolean isFilled() {
+        return this.filled;
+    }
+
+    public void setFilled(boolean filled) {
+        this.filled = filled;
     }
 }
 
