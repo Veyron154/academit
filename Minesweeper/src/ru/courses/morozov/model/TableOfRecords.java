@@ -10,27 +10,23 @@ public class TableOfRecords {
     private int capacity;
 
     @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable) throws IOException, ClassNotFoundException {
+    public TableOfRecords(String pathToTable) throws TableOfRecordsLoadException {
         this.capacity = 5;
         this.pathToTable = pathToTable;
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
-                (pathToTable))) {
-            this.listOfRecords = (List<Record>) inputStream.readObject();
-        } catch (FileNotFoundException e) {
-            File newTableOfRecords = new File(pathToTable);
-            try {
-                if (newTableOfRecords.createNewFile()) {
-                    listOfRecords = new ArrayList<>();
-                    save();
-                }
-            } catch (IOException e2) {
-                e2.printStackTrace();
+        try {
+            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
+                    (pathToTable))) {
+                this.listOfRecords = (List<Record>) inputStream.readObject();
+            } catch (FileNotFoundException e) {
+                throw new TableOfRecordsLoadException();
             }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
     @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable, int capacity) throws IOException, ClassNotFoundException {
+    public TableOfRecords(String pathToTable, int capacity) throws TableOfRecordsLoadException {
         new TableOfRecords(pathToTable);
         this.capacity = capacity;
     }
@@ -53,14 +49,18 @@ public class TableOfRecords {
         }
     }
 
-    public void save() throws IOException {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream
-                (pathToTable))) {
-            outputStream.writeObject(listOfRecords);
+    public void save() throws TableOfRecordSaveException {
+        try {
+            try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream
+                    (pathToTable))) {
+                outputStream.writeObject(listOfRecords);
+            }
+        } catch (IOException e) {
+            throw new TableOfRecordSaveException();
         }
     }
 
-    public String tableToString() throws IOException, ClassNotFoundException {
+    public String tableToString() {
         int tmpSize = listOfRecords.size();
         if (listOfRecords.isEmpty()) {
             return "Рекордов ещё нет!";

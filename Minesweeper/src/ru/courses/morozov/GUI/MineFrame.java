@@ -1,22 +1,23 @@
 package ru.courses.morozov.GUI;
 
-import ru.courses.morozov.model.GridOfMines;
-import ru.courses.morozov.model.Record;
-import ru.courses.morozov.model.TableOfRecords;
+import ru.courses.morozov.model.*;
 
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
+import java.util.List;
 
 public class MineFrame {
     private final int SIZE_OF_BUTTON = 25;
     private final String PATH_TO_RESOURCE = "Minesweeper/src/ru/courses/morozov/resources/";
-    private final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
 
     private int mineCounter;
     private int timerText;
@@ -40,11 +41,31 @@ public class MineFrame {
         int TEXT_COLUMNS = 3;
         mineCounterField = new JTextField(TEXT_COLUMNS);
         timerField = new JTextField(TEXT_COLUMNS);
+        final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
         try {
             tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
-        } catch (IOException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
-                    "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
+        } catch (TableOfRecordsLoadException e) {
+            File newTableOfRecords = new File(PATH_TO_TABLE);
+            try {
+                if (newTableOfRecords.createNewFile()) {
+                    List<Record> listOfRecords = new ArrayList<>();
+                    try {
+                        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream
+                                (PATH_TO_TABLE))) {
+                            outputStream.writeObject(listOfRecords);
+                        }
+                    } catch (IOException e1) {
+                        JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
+                                "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+            } catch (IOException e2) {
+                JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
+                        "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
+            } catch (TableOfRecordsLoadException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -256,19 +277,10 @@ public class MineFrame {
         gameMenu.add(newGame);
 
         JMenuItem highScore = new JMenuItem("Таблица рекордов");
-        highScore.addActionListener(e1 -> {
-            try {
+        highScore.addActionListener(e1 ->
                 JOptionPane.showMessageDialog(mineFrame, tableOfRecords.tableToString(), "Таблица рекордов",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException | ClassNotFoundException e) {
-                try {
-                    tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
-                } catch (IOException | ClassNotFoundException e2) {
-                    JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
-                            "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+                        JOptionPane.INFORMATION_MESSAGE)
+        );
         highScore.setMnemonic('а');
         highScore.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
         gameMenu.add(highScore);
@@ -364,7 +376,7 @@ public class MineFrame {
                 .format(new Date())));
         try {
             tableOfRecords.save();
-        } catch (IOException e1) {
+        } catch (TableOfRecordSaveException e) {
             JOptionPane.showMessageDialog(mineFrame, "Результат не сохранён",
                     "Ошибка сохранения результата", JOptionPane.ERROR_MESSAGE);
         }
