@@ -70,7 +70,8 @@ public class NewGameDialog {
             int tmpRows = Integer.valueOf(countOfRowsField.getText());
             int tmpColumns = Integer.valueOf(countOfColumnsField.getText());
             int tmpMines = Integer.valueOf(countOfMinesField.getText());
-            int maxFeasibleCountOfMines = (tmpColumns * tmpRows * 85) / 100;
+            final int MAX_PERCENT_OCCUPANCY_OF_GRID = 85;
+            int maxFeasibleCountOfMines = (tmpColumns * tmpRows * MAX_PERCENT_OCCUPANCY_OF_GRID) / 100;
             final int MIN_COUNT_OF_ROWS = 9;
             final int MAX_COUNT_OF_ROWS = 24;
             final int MIN_COUNT_OF_COLUMNS = 9;
