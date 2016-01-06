@@ -27,7 +27,7 @@ public class TableOfRecords {
 
     @SuppressWarnings("unchecked")
     public TableOfRecords(String pathToTable, int capacity) throws TableOfRecordsLoadException {
-        new TableOfRecords(pathToTable);
+        this(pathToTable);
         this.capacity = capacity;
     }
 

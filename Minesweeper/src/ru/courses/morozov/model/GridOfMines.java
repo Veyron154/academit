@@ -18,15 +18,7 @@ public class GridOfMines {
     private boolean filled;
 
     public GridOfMines() {
-        countOfColumns = 9;
-        countOfRows = 9;
-        countOfMines = 10;
-        this.grid = new Cell[countOfColumns][countOfRows];
-        for (int i = 0; i < grid.length; ++i) {
-            for (int j = 0; j < grid[0].length; ++j) {
-                grid[i][j] = new Cell(i, j);
-            }
-        }
+        this(9, 9, 10);
     }
 
     public GridOfMines(int countOfColumns, int countOfRows, int countOfMines) {
