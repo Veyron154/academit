@@ -18,15 +18,15 @@ public class NewGameDialog {
     private JTextField countOfColumnsField;
     private JTextField countOfMinesField;
 
-    private boolean correct = false;
+    private boolean correct;
 
-    public NewGameDialog(JFrame mainFrame) {
+    public NewGameDialog(JFrame mainFrame, int startCountOfColumns, int startCountOfRows, int startCountOfMines) {
         this.mainFrame = mainFrame;
         newGameFrame = new JDialog(mainFrame);
         newGamePanel = new JPanel(new GridLayout(4, 2, BORDER, BORDER));
-        countOfRowsField = new JTextField();
-        countOfColumnsField = new JTextField();
-        countOfMinesField = new JTextField();
+        countOfRowsField = new JTextField(Integer.toString(startCountOfRows));
+        countOfColumnsField = new JTextField(Integer.toString(startCountOfColumns));
+        countOfMinesField = new JTextField(Integer.toString(startCountOfMines));
     }
 
     public void createDialog() {
@@ -78,23 +78,23 @@ public class NewGameDialog {
             final int MIN_COUNT_OF_MINES = 10;
             final int MAX_COUNT_OF_MINES = 668;
             if (tmpRows < MIN_COUNT_OF_ROWS || tmpRows > MAX_COUNT_OF_ROWS) {
-                JOptionPane.showMessageDialog(mainFrame, "Высота поля должна быть в пределах от " + MIN_COUNT_OF_ROWS +
-                        " до " + MAX_COUNT_OF_ROWS, "Введите значения", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainFrame, String.format("Высота поля должна быть в пределах от %d до %d",
+                        MIN_COUNT_OF_ROWS, MAX_COUNT_OF_ROWS), "Введите значения", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (tmpColumns < MIN_COUNT_OF_COLUMNS || tmpColumns > MAX_COUNT_OF_COLUMNS) {
-                JOptionPane.showMessageDialog(mainFrame, "Ширина поля должна быть в пределах от " + MIN_COUNT_OF_COLUMNS
-                        + " до " + MAX_COUNT_OF_COLUMNS, "Введите значения", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainFrame, String.format("Ширина поля должна быть в пределах от %d до %d",
+                        MIN_COUNT_OF_COLUMNS, MAX_COUNT_OF_COLUMNS), "Введите значения", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (tmpMines < MIN_COUNT_OF_MINES || tmpMines > MAX_COUNT_OF_MINES) {
-                JOptionPane.showMessageDialog(mainFrame, "Число мин должно быть в пределах от " + MIN_COUNT_OF_MINES +
-                        " до " + MAX_COUNT_OF_MINES, "Введите значения", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(mainFrame, String.format("Число мин должно быть в пределах от %d до %d",
+                        MIN_COUNT_OF_MINES, MAX_COUNT_OF_MINES), "Введите значения", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (tmpMines > maxFeasibleCountOfMines) {
-                JOptionPane.showMessageDialog(mainFrame, "Число мин не должно превышать " + maxFeasibleCountOfMines
-                                + " в зависимости от текущих значений ширины и высоты", "Введите значения",
+                JOptionPane.showMessageDialog(mainFrame, String.format("Число мин не должно превышать %d в " +
+                                "зависимости от текущих значений ширины и высоты", maxFeasibleCountOfMines), "Введите значения",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }

@@ -147,7 +147,8 @@ public class MineFrame {
     }
 
     private void showNewGameFrame() {
-        NewGameDialog newGameFrame = new NewGameDialog(mineFrame);
+        NewGameDialog newGameFrame = new NewGameDialog(mineFrame, grid.getCountOfColumns(), grid.getCountOfRows(),
+                grid.getCountOfMines());
         newGameFrame.createDialog();
         if (newGameFrame.isCorrect()) {
             clean();
