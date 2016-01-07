@@ -43,28 +43,16 @@ public class MineFrame {
         timerField = new JTextField(TEXT_COLUMNS);
         final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
         try {
-            tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
-        } catch (TableOfRecordsLoadException e) {
-            File newTableOfRecords = new File(PATH_TO_TABLE);
+            final int DEFAULT_CAPACITY_OF_TABLE = 5;
+            tableOfRecords = new TableOfRecords(PATH_TO_TABLE, DEFAULT_CAPACITY_OF_TABLE);
+        } catch (TableOfRecordsLoadException | TableOfRecordSaveException e) {
             try {
-                if (newTableOfRecords.createNewFile()) {
-                    List<Record> listOfRecords = new ArrayList<>();
-                    try {
-                        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream
-                                (PATH_TO_TABLE))) {
-                            outputStream.writeObject(listOfRecords);
-                        }
-                    } catch (IOException e1) {
-                        JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
-                                "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
                 tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
-            } catch (IOException e2) {
+                JOptionPane.showMessageDialog(mineFrame, "Создан новый файл таблицы рекордов.\nПуть: " + PATH_TO_TABLE,
+                        "Создание файла", JOptionPane.INFORMATION_MESSAGE);
+            } catch (TableOfRecordSaveException e1) {
                 JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
-                        "Ошибка создания таблицы рекордов", JOptionPane.ERROR_MESSAGE);
-            } catch (TableOfRecordsLoadException e1) {
-                e1.printStackTrace();
+                        "Ошибка создания таблицы рекордов", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

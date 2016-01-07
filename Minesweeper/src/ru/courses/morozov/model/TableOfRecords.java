@@ -10,8 +10,9 @@ public class TableOfRecords {
     private int capacity;
 
     @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable) throws TableOfRecordsLoadException {
-        this.capacity = 5;
+    public TableOfRecords(String pathToTable, int capacity) throws TableOfRecordsLoadException,
+            TableOfRecordSaveException {
+        this.capacity = capacity;
         this.pathToTable = pathToTable;
         try {
             try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
@@ -21,14 +22,22 @@ public class TableOfRecords {
                 throw new TableOfRecordsLoadException();
             }
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new TableOfRecordsLoadException(e);
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable, int capacity) throws TableOfRecordsLoadException {
-        this(pathToTable);
-        this.capacity = capacity;
+    public TableOfRecords(String pathToTable) throws TableOfRecordSaveException {
+        this.pathToTable = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+        this.capacity = 5;
+        File newTableOfRecords = new File(pathToTable);
+        try {
+            if (newTableOfRecords.createNewFile()) {
+                listOfRecords = new ArrayList<>();
+                save();
+            }
+        } catch (IOException e2) {
+            throw new TableOfRecordSaveException(e2);
+        }
     }
 
     public void add(Record record) {

@@ -4,6 +4,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class GridOfMines {
+    private static final int DEFAULT_GRID_WIDTH = 9;
+    private static final int DEFAULT_GRID_HEIGHT = 9;
+    private static final int DEFAULT_COUNT_OF_MINES = 10;
+
     private Cell[][] grid;
 
     private int countOfColumns;
@@ -17,8 +21,8 @@ public class GridOfMines {
 
     private boolean filled;
 
-    public GridOfMines() {
-        this(9, 9, 10);
+    public GridOfMines(){
+        this(DEFAULT_GRID_WIDTH, DEFAULT_GRID_HEIGHT, DEFAULT_COUNT_OF_MINES);
     }
 
     public GridOfMines(int countOfColumns, int countOfRows, int countOfMines) {
