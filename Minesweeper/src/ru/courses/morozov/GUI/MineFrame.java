@@ -7,13 +7,8 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 public class MineFrame {
     private final int SIZE_OF_BUTTON = 25;
