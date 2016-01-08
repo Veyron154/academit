@@ -279,7 +279,7 @@ public class MineFrame {
 
         JMenuItem about = new JMenuItem("О программе");
         about.addActionListener(e1 -> JOptionPane.showMessageDialog
-                (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 1.7", "О программе",
+                (mineFrame, "Игра сапёр\nАвтор: Павел Морозов\nacademITschool, 2015\nv 2.4", "О программе",
                         JOptionPane.INFORMATION_MESSAGE));
         about.setMnemonic('м');
         about.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));

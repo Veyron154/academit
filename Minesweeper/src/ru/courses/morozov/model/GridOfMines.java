@@ -122,8 +122,8 @@ public class GridOfMines {
     }
 
     public boolean isLose() {
-        for (int i = 0; i < countOfColumns; ++i) {
-            for (int j = 0; j < countOfRows; ++j) {
+        for (int i = 0; i < this.countOfColumns; ++i) {
+            for (int j = 0; j < this.countOfRows; ++j) {
                 if (grid[i][j].isOpened() && grid[i][j].isMined()) {
                     return true;
                 }
@@ -226,6 +226,27 @@ public class GridOfMines {
 
     public int getCountOfMines() {
         return this.countOfMines;
+    }
+
+    public void setCountOfColumns(int countOfColumns){
+        this.countOfColumns = countOfColumns;
+    }
+
+    public void setCountOfRows(int countOfRows){
+        this.countOfRows = countOfRows;
+    }
+
+    public void setCountOfMines(int countOfMines){
+        this.countOfMines = countOfMines;
+    }
+
+    public void setGrid(){
+        this.grid = new Cell[countOfColumns][countOfRows];
+        for (int i = 0; i < grid.length; ++i) {
+            for (int j = 0; j < grid[0].length; ++j) {
+                grid[i][j] = new Cell(i, j);
+            }
+        }
     }
 
     public boolean isFilled() {
