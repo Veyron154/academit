@@ -37,15 +37,15 @@ public class MineFrame {
         mineCounterField = new JTextField(TEXT_COLUMNS);
         timerField = new JTextField(TEXT_COLUMNS);
         final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
+        final int DEFAULT_CAPACITY_OF_TABLE = 5;
         try {
-            final int DEFAULT_CAPACITY_OF_TABLE = 5;
-            tableOfRecords = new TableOfRecords(PATH_TO_TABLE, DEFAULT_CAPACITY_OF_TABLE);
+            tableOfRecords = new TableOfRecords(PATH_TO_TABLE, DEFAULT_CAPACITY_OF_TABLE, false);
         } catch (TableOfRecordsLoadException | TableOfRecordSaveException e) {
             try {
-                tableOfRecords = new TableOfRecords(PATH_TO_TABLE);
+                tableOfRecords = new TableOfRecords(PATH_TO_TABLE, DEFAULT_CAPACITY_OF_TABLE, true);
                 JOptionPane.showMessageDialog(mineFrame, "Создан новый файл таблицы рекордов.\nПуть: " + PATH_TO_TABLE,
                         "Создание файла", JOptionPane.INFORMATION_MESSAGE);
-            } catch (TableOfRecordSaveException e1) {
+            } catch (TableOfRecordSaveException | TableOfRecordsLoadException e1) {
                 JOptionPane.showMessageDialog(mineFrame, "Ошибка создания таблицы рекордов",
                         "Ошибка создания таблицы рекордов", JOptionPane.INFORMATION_MESSAGE);
             }

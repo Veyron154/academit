@@ -10,23 +10,34 @@ public class TableOfRecords {
     private int capacity;
 
     @SuppressWarnings("unchecked")
-    public TableOfRecords(String pathToTable, int capacity) throws TableOfRecordsLoadException,
+    public TableOfRecords(String pathToTable, int capacity, boolean recreateFile) throws TableOfRecordsLoadException,
             TableOfRecordSaveException {
         this.capacity = capacity;
         this.pathToTable = pathToTable;
+        if (recreateFile) {
+            File newTableOfRecords = new File(pathToTable);
+            try {
+                if (newTableOfRecords.createNewFile()) {
+                    listOfRecords = new ArrayList<>();
+                    save();
+                }
+            } catch (IOException e2) {
+                throw new TableOfRecordSaveException(e2);
+            }
+        }
         try {
             try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream
                     (pathToTable))) {
                 this.listOfRecords = (List<Record>) inputStream.readObject();
             } catch (FileNotFoundException e) {
-                throw new TableOfRecordsLoadException();
+                throw new TableOfRecordsLoadException(e);
             }
         } catch (IOException | ClassNotFoundException e) {
             throw new TableOfRecordsLoadException(e);
         }
     }
 
-    public TableOfRecords(String pathToTable) throws TableOfRecordSaveException {
+    /*public TableOfRecords(String pathToTable) throws TableOfRecordSaveException {
         this.pathToTable = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
         this.capacity = 5;
         File newTableOfRecords = new File(pathToTable);
@@ -38,7 +49,7 @@ public class TableOfRecords {
         } catch (IOException e2) {
             throw new TableOfRecordSaveException(e2);
         }
-    }
+    }*/
 
     public void add(Record record) {
         if (listOfRecords.size() < capacity) {
