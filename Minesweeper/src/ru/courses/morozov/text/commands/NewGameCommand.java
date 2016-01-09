@@ -1,6 +1,7 @@
 package ru.courses.morozov.text.commands;
 
 import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.text.ValuesScanner;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -30,33 +31,20 @@ public class NewGameCommand extends Command {
         final int MIN_COUNT_OF_MINES = 10;
         final int MAX_COUNT_OF_MINES = 668;
 
-        System.out.println("Введите ширину поля: ");
+        ValuesScanner valuesScanner = new ValuesScanner();
+        countOfColumns = valuesScanner.scan("Введите ширину поля: ", MIN_COUNT_OF_COLUMNS, MAX_COUNT_OF_COLUMNS);
+        countOfRows = valuesScanner.scan("Введите высоту поля: ", MIN_COUNT_OF_ROWS, MAX_COUNT_OF_ROWS);
+        final int MAX_PERCENT_OCCUPANCY_OF_GRID = 85;
+        int maxFeasibleCountOfMines = (countOfColumns * countOfRows * MAX_PERCENT_OCCUPANCY_OF_GRID) / 100;
+        int tmpCountOfMines;
         while (true) {
-            int tmpCountOfColumns = scanner.nextInt();
-            if (tmpCountOfColumns >= MIN_COUNT_OF_COLUMNS && tmpCountOfColumns <= MAX_COUNT_OF_COLUMNS) {
-                countOfColumns = tmpCountOfColumns;
-                break;
-            }
-            System.out.printf("Ширина поля должна быть в пределах от %d до %d%n", MIN_COUNT_OF_COLUMNS,
-                    MAX_COUNT_OF_COLUMNS);
-        }
-        System.out.println("Введите высоту поля: ");
-        while (true) {
-            int tmpCountOfRows = scanner.nextInt();
-            if (tmpCountOfRows >= MIN_COUNT_OF_ROWS && tmpCountOfRows <= MAX_COUNT_OF_ROWS) {
-                countOfRows = tmpCountOfRows;
-                break;
-            }
-            System.out.printf("Высота поля должна быть в пределах от %d до %d%n", MIN_COUNT_OF_ROWS, MAX_COUNT_OF_ROWS);
-        }
-        System.out.println("Введите число мин: ");
-        while (true) {
-            int tmpCountOfMines = scanner.nextInt();
-            if (tmpCountOfMines >= MIN_COUNT_OF_MINES && tmpCountOfMines <= MAX_COUNT_OF_MINES) {
+            tmpCountOfMines = valuesScanner.scan("Введите число мин: ", MIN_COUNT_OF_MINES, MAX_COUNT_OF_MINES);
+            if (tmpCountOfMines <= maxFeasibleCountOfMines) {
                 countOfMines = tmpCountOfMines;
                 break;
             }
-            System.out.printf("Число мин должно быть в пределах от %d до %d%n", MIN_COUNT_OF_MINES, MAX_COUNT_OF_MINES);
+            System.out.printf("Число мин не должно превышать %d в зависимости от текущих значений ширины и высоты%n",
+                    maxFeasibleCountOfMines);
         }
     }
 
