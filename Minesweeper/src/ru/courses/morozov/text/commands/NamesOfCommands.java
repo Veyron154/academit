@@ -1,7 +1,7 @@
 package ru.courses.morozov.text.commands;
 
 public enum NamesOfCommands {
-    OPEN_CELL("Открыть ячейк", new OpenCellCommand()),
+    OPEN_CELL("Открыть ячейку", new OpenCellCommand()),
     SET_FLAG("Поставить флаг", new SetFlagCommand()),
     SET_MARK("Поставить вопрос", new SetMarkCommand()),
     REMOVE_MARKS("Убрать знаки", new RemoveMarksCommand()),
