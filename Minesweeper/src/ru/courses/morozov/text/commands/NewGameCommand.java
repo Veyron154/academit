@@ -1,11 +1,11 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
 import ru.courses.morozov.model.GridOfMines;
 
 import java.util.Locale;
 import java.util.Scanner;
 
-public class NewGameStarter extends Command {
+public class NewGameCommand extends Command {
     private int countOfColumns;
     private int countOfRows;
     private int countOfMines;
@@ -37,7 +37,7 @@ public class NewGameStarter extends Command {
                 countOfColumns = tmpCountOfColumns;
                 break;
             }
-            System.out.printf("Ширина поля должна быть в пределах от %d до %d\n", MIN_COUNT_OF_COLUMNS,
+            System.out.printf("Ширина поля должна быть в пределах от %d до %d%n", MIN_COUNT_OF_COLUMNS,
                     MAX_COUNT_OF_COLUMNS);
         }
         System.out.println("Введите высоту поля: ");
@@ -47,7 +47,7 @@ public class NewGameStarter extends Command {
                 countOfRows = tmpCountOfRows;
                 break;
             }
-            System.out.printf("Высота поля должна быть в пределах от %d до %d\n", MIN_COUNT_OF_ROWS, MAX_COUNT_OF_ROWS);
+            System.out.printf("Высота поля должна быть в пределах от %d до %d%n", MIN_COUNT_OF_ROWS, MAX_COUNT_OF_ROWS);
         }
         System.out.println("Введите число мин: ");
         while (true) {
@@ -56,7 +56,7 @@ public class NewGameStarter extends Command {
                 countOfMines = tmpCountOfMines;
                 break;
             }
-            System.out.printf("Число мин должно быть в пределах от %d до %d\n", MIN_COUNT_OF_MINES, MAX_COUNT_OF_MINES);
+            System.out.printf("Число мин должно быть в пределах от %d до %d%n", MIN_COUNT_OF_MINES, MAX_COUNT_OF_MINES);
         }
     }
 

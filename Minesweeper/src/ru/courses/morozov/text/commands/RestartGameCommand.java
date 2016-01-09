@@ -1,8 +1,8 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
 import ru.courses.morozov.model.GridOfMines;
 
-public class GameRestarter extends Command {
+public class RestartGameCommand extends Command {
     private GridOfMines grid;
 
     public void execute() {

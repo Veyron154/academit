@@ -1,6 +1,7 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
-public class InfoPrinter extends Command {
+
+public class InfoCommand extends Command {
     public void execute() {
         System.out.println("*****");
         System.out.println("Игра сапёр");

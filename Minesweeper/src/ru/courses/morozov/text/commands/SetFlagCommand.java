@@ -1,19 +1,19 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
 import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.text.commands.Command;
 
 import java.util.Locale;
 import java.util.Scanner;
 
-public class AroundCellOpener extends Command {
+public class SetFlagCommand extends Command {
     private int row;
     private int column;
     private GridOfMines grid;
 
     public void execute() {
-        if (grid.isOpened(column, row) && grid.checkFlags(column, row)) {
-            grid.openButtonsAroundLabel(column, row);
-        }
+        grid.setFlag(column, row, true);
+        grid.setMark(column, row, false);
     }
 
     public void scan() {

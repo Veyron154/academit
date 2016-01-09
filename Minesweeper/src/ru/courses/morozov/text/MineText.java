@@ -1,6 +1,7 @@
 package ru.courses.morozov.text;
 
 import ru.courses.morozov.model.*;
+import ru.courses.morozov.text.commands.NamesOfCommands;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -82,7 +83,7 @@ public class MineText {
             System.out.printf("%2d|", i);
         }
         for (int i = 0; i < grid.getCountOfRows(); ++i) {
-            System.out.printf("\n%2d|", i);
+            System.out.printf("%n%2d|", i);
             for (int j = 0; j < grid.getCountOfColumns(); ++j) {
                 if (grid.isFlagged(j, i)) {
                     System.out.print(" F|");
@@ -112,7 +113,7 @@ public class MineText {
             System.out.printf("%2d|", i);
         }
         for (int i = 0; i < grid.getCountOfRows(); ++i) {
-            System.out.printf("\n%2d|", i);
+            System.out.printf("%n%2d|", i);
             for (int j = 0; j < grid.getCountOfColumns(); ++j) {
                 if (grid.isMined(j, i)) {
                     System.out.print(" *|");

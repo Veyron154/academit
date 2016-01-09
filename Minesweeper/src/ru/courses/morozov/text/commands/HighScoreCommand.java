@@ -1,11 +1,11 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
 
 import ru.courses.morozov.model.TableOfRecordSaveException;
 import ru.courses.morozov.model.TableOfRecords;
 import ru.courses.morozov.model.TableOfRecordsLoadException;
 
-public class HighScorePrinter extends Command {
+public class HighScoreCommand extends Command {
 
     public void execute() {
         final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";

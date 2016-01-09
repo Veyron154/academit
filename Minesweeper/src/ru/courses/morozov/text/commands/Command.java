@@ -1,4 +1,4 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
 import ru.courses.morozov.model.GridOfMines;
 

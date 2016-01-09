@@ -1,18 +1,24 @@
-package ru.courses.morozov.text;
+package ru.courses.morozov.text.commands;
 
-        import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.text.commands.Command;
 
-        import java.util.Locale;
-        import java.util.Scanner;
+import java.util.Locale;
+import java.util.Scanner;
 
-public class MarkRemover extends Command {
+public class OpenCellCommand extends Command {
     private int row;
     private int column;
     private GridOfMines grid;
 
     public void execute() {
-        grid.setFlag(column, row, false);
-        grid.setMark(column, row, false);
+        if (!grid.isFilled()) {
+            grid.mining(column, row);
+            grid.setFilled(true);
+        }
+        if (!grid.isFlagged(column, row)) {
+            grid.open(column, row);
+        }
     }
 
     public void scan() {
@@ -34,7 +40,7 @@ public class MarkRemover extends Command {
                 column = tmpColumn;
                 break;
             }
-            System.out.println("Индекс должен находиться в пределах от 0 до " + (grid.getCountOfRows() - 1));
+            System.out.println("Индекс должен находиться в пределах от 0 до " + (grid.getCountOfColumns() - 1));
         }
     }
 
