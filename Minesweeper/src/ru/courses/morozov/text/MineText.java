@@ -15,13 +15,13 @@ public class MineText {
     private Timer timer;
     private int timerCount;
     private TableOfRecords tableOfRecords;
-    private Determinant determinant;
+    private CommandExecutor commandExecutor;
 
     public MineText() {
         scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
         grid = new GridOfMines();
-        determinant = new Determinant(grid);
+        commandExecutor = new CommandExecutor(grid);
         timerCount = 0;
         final String PATH_TO_TABLE = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
         final int DEFAULT_CAPACITY_OF_TABLE = 5;
@@ -42,7 +42,7 @@ public class MineText {
         timer.start();
         while (!grid.isWin() && !grid.isLose()) {
             printGrid();
-            determinant.createCommand(printMenu());
+            commandExecutor.executeCommand(printMenu());
         }
         if (grid.isLose()) {
             timer.stop();

@@ -1,30 +1,20 @@
 package ru.courses.morozov.text.commands;
 
-import ru.courses.morozov.model.GridOfMines;
-import ru.courses.morozov.text.ValuesScanner;
+import ru.courses.morozov.model.GridOfMinesAbsenceException;
 
 public class OpenCellCommand extends Command {
-    private int row;
-    private int column;
-    private GridOfMines grid;
 
-    public void execute() {
-        if (!grid.isFilled()) {
-            grid.mining(column, row);
-            grid.setFilled(true);
+    public void execute() throws GridOfMinesAbsenceException {
+        if (getGrid() == null) {
+            throw new GridOfMinesAbsenceException();
         }
-        if (!grid.isFlagged(column, row)) {
-            grid.open(column, row);
+        scan();
+        if (!getGrid().isFilled()) {
+            getGrid().mining(getColumn(), getRow());
+            getGrid().setFilled(true);
         }
-    }
-
-    public void scan() {
-        ValuesScanner valuesScanner = new ValuesScanner();
-        row = valuesScanner.scan("Введите вертикальный индекс ячейки: ", 0, grid.getCountOfRows() - 1);
-        column = valuesScanner.scan("Введите горизонтальный индекс ячейки: ", 0, grid.getCountOfColumns() - 1);
-    }
-
-    public void setGrid(GridOfMines grid) {
-        this.grid = grid;
+        if (!getGrid().isFlagged(getColumn(), getRow())) {
+            getGrid().open(getColumn(), getRow());
+        }
     }
 }

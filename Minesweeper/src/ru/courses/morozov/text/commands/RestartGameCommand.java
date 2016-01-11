@@ -1,16 +1,14 @@
 package ru.courses.morozov.text.commands;
 
-import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.model.GridOfMinesAbsenceException;
 
 public class RestartGameCommand extends Command {
-    private GridOfMines grid;
 
-    public void execute() {
-        grid.clean();
-        grid.setFilled(false);
-    }
-
-    public void setGrid(GridOfMines grid) {
-        this.grid = grid;
+    public void execute() throws GridOfMinesAbsenceException {
+        if (getGrid() == null) {
+            throw new GridOfMinesAbsenceException();
+        }
+        getGrid().clean();
+        getGrid().setFilled(false);
     }
 }

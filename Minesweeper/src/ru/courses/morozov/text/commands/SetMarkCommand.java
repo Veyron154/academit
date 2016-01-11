@@ -1,25 +1,15 @@
 package ru.courses.morozov.text.commands;
 
-import ru.courses.morozov.model.GridOfMines;
-import ru.courses.morozov.text.ValuesScanner;
+import ru.courses.morozov.model.GridOfMinesAbsenceException;
 
 public class SetMarkCommand extends Command {
-    private int row;
-    private int column;
-    private GridOfMines grid;
 
-    public void execute() {
-        grid.setFlag(column, row, false);
-        grid.setMark(column, row, true);
-    }
-
-    public void scan() {
-        ValuesScanner valuesScanner = new ValuesScanner();
-        row = valuesScanner.scan("Введите вертикальный индекс ячейки: ", 0, grid.getCountOfRows() - 1);
-        column = valuesScanner.scan("Введите горизонтальный индекс ячейки: ", 0, grid.getCountOfColumns() - 1);
-    }
-
-    public void setGrid(GridOfMines grid) {
-        this.grid = grid;
+    public void execute() throws GridOfMinesAbsenceException {
+        if (getGrid() == null) {
+            throw new GridOfMinesAbsenceException();
+        }
+        scan();
+        getGrid().setFlag(getColumn(), getRow(), false);
+        getGrid().setMark(getColumn(), getRow(), true);
     }
 }

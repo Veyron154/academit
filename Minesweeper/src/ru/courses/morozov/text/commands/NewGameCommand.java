@@ -1,6 +1,6 @@
 package ru.courses.morozov.text.commands;
 
-import ru.courses.morozov.model.GridOfMines;
+import ru.courses.morozov.model.GridOfMinesAbsenceException;
 import ru.courses.morozov.text.ValuesScanner;
 
 import java.util.Locale;
@@ -10,14 +10,17 @@ public class NewGameCommand extends Command {
     private int countOfColumns;
     private int countOfRows;
     private int countOfMines;
-    private GridOfMines grid;
 
-    public void execute() {
-        grid.setCountOfColumns(countOfColumns);
-        grid.setCountOfRows(countOfRows);
-        grid.setCountOfMines(countOfMines);
-        grid.setGrid();
-        grid.setFilled(false);
+    public void execute() throws GridOfMinesAbsenceException {
+        if (getGrid() == null) {
+            throw new GridOfMinesAbsenceException();
+        }
+        scan();
+        getGrid().setCountOfColumns(countOfColumns);
+        getGrid().setCountOfRows(countOfRows);
+        getGrid().setCountOfMines(countOfMines);
+        getGrid().setGrid();
+        getGrid().setFilled(false);
     }
 
     public void scan() {
@@ -46,9 +49,5 @@ public class NewGameCommand extends Command {
             System.out.printf("Число мин не должно превышать %d в зависимости от текущих значений ширины и высоты%n",
                     maxFeasibleCountOfMines);
         }
-    }
-
-    public void setGrid(GridOfMines grid) {
-        this.grid = grid;
     }
 }
