@@ -1,7 +1,6 @@
 package ru.courses.morozov;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class VisitDepthGraph {
     private GraphNode[] nodes;
