@@ -8,22 +8,31 @@ public class GraphMain {
             nodes[i] = new GraphNode(i + 1);
         }
 
-        int[][] graph = new int[countOfNodes][countOfNodes];
-        graph[0] = new int[]{0, 1, 0, 0, 0, 0, 0};
-        graph[1] = new int[]{1, 0, 1, 1, 1, 1, 0};
-        graph[2] = new int[]{0, 1, 0, 0, 0, 0, 1};
-        graph[3] = new int[]{0, 1, 0, 0, 0, 0, 0};
-        graph[4] = new int[]{0, 1, 0, 0, 0, 1, 0};
-        graph[5] = new int[]{0, 1, 0, 0, 1, 0, 1};
-        graph[6] = new int[]{0, 0, 1, 0, 0, 1, 0};
+        int[][] graph = new int[][]{
+                {0, 1, 0, 0, 0, 0, 0},
+                {1, 0, 1, 1, 1, 1, 0},
+                {0, 1, 0, 0, 0, 0, 1},
+                {0, 1, 0, 0, 0, 0, 0},
+                {0, 1, 0, 0, 0, 1, 0},
+                {0, 1, 0, 0, 1, 0, 1},
+                {0, 0, 1, 0, 0, 1, 0}
+        };
 
+        printTable(graph);
 
         //VisitWidthGraph visitWidthGraph = new VisitWidthGraph(nodes, graph);
-        //visitWidthGraph.printTable();
         //visitWidthGraph.visit(nodes[0]);
 
         VisitDepthGraph visitDepthGraph = new VisitDepthGraph(nodes, graph);
-        visitDepthGraph.printTable();
         visitDepthGraph.visit(nodes[0]);
+    }
+
+    public static void printTable(int[][] graph) {
+        for (int[] row : graph) {
+            for (int edge : row) {
+                System.out.print(edge + " ");
+            }
+            System.out.println();
+        }
     }
 }

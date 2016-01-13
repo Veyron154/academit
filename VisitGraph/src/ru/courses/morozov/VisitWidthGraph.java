@@ -30,13 +30,4 @@ public class VisitWidthGraph {
             }
         }
     }
-
-    public void printTable() {
-        for (int[] row : graph) {
-            for (int edge : row) {
-                System.out.print(edge + " ");
-            }
-            System.out.println();
-        }
-    }
 }
