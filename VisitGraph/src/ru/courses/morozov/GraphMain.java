@@ -8,7 +8,7 @@ public class GraphMain {
             nodes[i] = new GraphNode(i + 1);
         }
 
-        int[][] graph = new int[][]{
+        int[][] graph = {
                 {0, 1, 0, 0, 0, 0, 0},
                 {1, 0, 1, 1, 1, 1, 0},
                 {0, 1, 0, 0, 0, 0, 1},
