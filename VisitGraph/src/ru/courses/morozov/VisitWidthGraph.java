@@ -21,12 +21,22 @@ public class VisitWidthGraph {
         while (!queue.isEmpty()) {
             GraphNode graphNode = queue.remove();
             graphNode.printID();
+            int[] row = graph[graphNode.getIndexID() - 1];
             for (int i = 0; i < graph.length; ++i) {
-                if (graph[graphNode.getIndexID() - 1][i] == 1 && !executedNodes.contains(nodes[i])) {
+                if (row[i] == 1 && !executedNodes.contains(nodes[i])) {
                     queue.add(nodes[i]);
                     executedNodes.add(nodes[i]);
                 }
             }
+        }
+    }
+
+    public void printTable() {
+        for (int[] row : graph) {
+            for (int edge : row) {
+                System.out.print(edge + " ");
+            }
+            System.out.println();
         }
     }
 }

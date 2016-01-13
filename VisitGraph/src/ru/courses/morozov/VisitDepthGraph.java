@@ -16,10 +16,20 @@ public class VisitDepthGraph {
     public void visit(GraphNode node) {
         node.printID();
         executedNode.add(node);
+        int[] row = graph[node.getIndexID() - 1];
         for (int i = 0; i < graph.length; ++i) {
-            if (graph[node.getIndexID() - 1][i] == 1 && !executedNode.contains(nodes[i])) {
+            if (row[i] == 1 && !executedNode.contains(nodes[i])) {
                 visit(nodes[i]);
             }
+        }
+    }
+
+    public void printTable() {
+        for (int[] row : graph) {
+            for (int edge : row) {
+                System.out.print(edge + " ");
+            }
+            System.out.println();
         }
     }
 }

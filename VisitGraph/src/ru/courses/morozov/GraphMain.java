@@ -9,26 +9,21 @@ public class GraphMain {
         }
 
         int[][] graph = new int[countOfNodes][countOfNodes];
-        graph[0][1] = 1;
-        graph[1][0] = 1;
-        graph[1][2] = 1;
-        graph[1][3] = 1;
-        graph[1][4] = 1;
-        graph[1][5] = 1;
-        graph[2][1] = 1;
-        graph[2][6] = 1;
-        graph[3][1] = 1;
-        graph[4][1] = 1;
-        graph[4][5] = 1;
-        graph[5][1] = 1;
-        graph[5][4] = 1;
-        graph[5][6] = 1;
-        graph[6][2] = 1;
-        graph[6][5] = 1;
+        graph[0] = new int[]{0, 1, 0, 0, 0, 0, 0};
+        graph[1] = new int[]{1, 0, 1, 1, 1, 1, 0};
+        graph[2] = new int[]{0, 1, 0, 0, 0, 0, 1};
+        graph[3] = new int[]{0, 1, 0, 0, 0, 0, 0};
+        graph[4] = new int[]{0, 1, 0, 0, 0, 1, 0};
+        graph[5] = new int[]{0, 1, 0, 0, 1, 0, 1};
+        graph[6] = new int[]{0, 0, 1, 0, 0, 1, 0};
 
-        VisitWidthGraph visitWidthGraph = new VisitWidthGraph(nodes, graph);
-        visitWidthGraph.visit(nodes[0]);
-        //VisitDepthGraph visitDepthGraph = new VisitDepthGraph(nodes, graph);
-        //visitDepthGraph.visit(nodes[0]);
+
+        //VisitWidthGraph visitWidthGraph = new VisitWidthGraph(nodes, graph);
+        //visitWidthGraph.printTable();
+        //visitWidthGraph.visit(nodes[0]);
+
+        VisitDepthGraph visitDepthGraph = new VisitDepthGraph(nodes, graph);
+        visitDepthGraph.printTable();
+        visitDepthGraph.visit(nodes[0]);
     }
 }
