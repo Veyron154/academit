@@ -1,28 +1,29 @@
 package ru.courses.morozov;
 
+import java.util.ArrayList;
+
 public class TreeNode {
     private int indexID;
-    private TreeNode[] children;
+    private ArrayList<TreeNode> children;
 
-    public TreeNode(int indexID, int countOfChildren) {
+    public TreeNode(int indexID) {
         this.indexID = indexID;
-        this.children = new TreeNode[countOfChildren];
+        children = new ArrayList<>();
     }
 
     public void printID() {
         System.out.println(indexID);
     }
 
-    public void setChild(TreeNode child) {
-        for (int i = 0; i < children.length; ++i) {
-            if (children[i] == null) {
-                children[i] = child;
-                break;
-            }
-        }
+    public void addChild(TreeNode child) {
+        children.add(child);
     }
 
-    public TreeNode[] getChildren() {
+    public ArrayList<TreeNode> getChildren() {
         return this.children;
+    }
+
+    public int getIndexID(){
+        return this.indexID;
     }
 }
