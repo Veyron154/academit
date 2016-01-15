@@ -1,10 +1,5 @@
 package ru.courses.morozov;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class TreeMain {
     public static void main(String[] args) {
         TreeNode treeNode1 = new TreeNode(1);
