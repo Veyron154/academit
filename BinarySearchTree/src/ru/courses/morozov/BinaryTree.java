@@ -16,6 +16,9 @@ public class BinaryTree {
     }
 
     public boolean contains(BinaryTreeNode searchingNode) {
+        if(root == null){
+            throw new BinaryTreeRootNullException();
+        }
         BinaryTreeNode node = root;
         int searchingNodeID = searchingNode.getIndexID();
 
@@ -39,6 +42,9 @@ public class BinaryTree {
     }
 
     public void addNode(BinaryTreeNode addedNode) {
+        if(root == null){
+            throw new BinaryTreeRootNullException();
+        }
         BinaryTreeNode node = root;
         int addedNodeID = addedNode.getIndexID();
 
@@ -63,6 +69,9 @@ public class BinaryTree {
     }
 
     public void removeNode(BinaryTreeNode removedNode) {
+        if(root == null){
+            throw new BinaryTreeRootNullException();
+        }
         BinaryTreeNode leftChild = removedNode.getLeftChild();
         BinaryTreeNode rightChild = removedNode.getRightChild();
 
@@ -131,6 +140,9 @@ public class BinaryTree {
     }
 
     private boolean isCorrect(BinaryTreeNode root) throws IllegalBinaryTreeNodesException{
+        if(root == null){
+            throw new BinaryTreeRootNullException();
+        }
         Queue<BinaryTreeNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
@@ -156,7 +168,7 @@ public class BinaryTree {
 
     public String toString () {
         if(root == null){
-            return "У дерева отсутствует корень";
+            throw new BinaryTreeRootNullException();
         }
         return addNodeToString(root);
     }
