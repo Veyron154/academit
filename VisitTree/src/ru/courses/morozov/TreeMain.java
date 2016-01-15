@@ -28,10 +28,10 @@ public class TreeMain {
         treeNode4.addChild(treeNode9);
         treeNode7.addChild(treeNode10);
 
-        print(treeNode1);
+        printTree(treeNode1);
         System.out.println();
         VisitWidth visitWidth = new VisitWidth();
-        //visitWidth.visit(treeNode1);
+        visitWidth.visit(treeNode1);
         //VisitDepth visitDepth = new VisitDepth();
         //visitDepth.visit(treeNode1);
     }
@@ -42,29 +42,9 @@ public class TreeMain {
         for(int i = 0; i < root.getChildren().size(); ++i){
             printTree(root.getChildren().get(i));
         }
-        System.out.print(")");
-    }
-
-    public static void print(TreeNode root){
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        while (!queue.isEmpty()){
-            TreeNode node = queue.remove();
-            StringBuilder builder = new StringBuilder();
-            builder.append(node.getIndexID());
-            for(int i = 0; i < node.getChildren().size(); ++i){
-                queue.add(node.getChildren().get(i));
-                /*builder.append(node.getChildren().get(i).getIndexID())
-                        .append(" - ");
-                if(i == node.getChildren().size() - 1){
-                    builder.append('\n').append("|").append('\n');
-                }
-                System.out.print(builder.toString());*/
-            }
-            if(node.getChildren().size() > 0){
-                System.out.println();
-                System.out.println("|");
-            }
+        if(root.getChildren().size() == 0){
+            System.out.print("x");
         }
+        System.out.print(")");
     }
 }

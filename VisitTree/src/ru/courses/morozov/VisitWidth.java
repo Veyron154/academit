@@ -10,9 +10,7 @@ public class VisitWidth {
         while (!queue.isEmpty()) {
             TreeNode treeNode = queue.remove();
             treeNode.printID();
-            for(int i = 0; i < treeNode.getChildren().size(); ++i){
-                queue.add(treeNode.getChildren().get(i));
-            }
+            queue.addAll(treeNode.getChildren());
         }
     }
 }
