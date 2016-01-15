@@ -21,27 +21,12 @@ public class BinaryTreeMain {
 
         BinaryTree tree = new BinaryTree(node4);
 
-        printTree(tree.getRoot());
-        System.out.println();
-        tree.addNode(node8);
-        printTree(tree.getRoot());
-        System.out.println();
-        tree.removeNode(node4);
-        printTree(tree.getRoot());
-        System.out.println();
         System.out.println(tree.contains(node3));
         System.out.println(tree.contains(node9));
-    }
-
-    public static void printTree(BinaryTreeNode root) {
-        System.out.print("(");
-        System.out.print(root.getIndexID());
-        if (root.getLeftChild() != null) {
-            printTree(root.getLeftChild());
-        }
-        if (root.getRightChild() != null) {
-            printTree(root.getRightChild());
-        }
-        System.out.print(")");
+        System.out.println(tree.toString());
+        tree.addNode(node8);
+        System.out.println(tree.toString());
+        tree.removeNode(node4);
+        System.out.println(tree.toString());
     }
 }

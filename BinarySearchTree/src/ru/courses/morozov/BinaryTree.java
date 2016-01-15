@@ -7,27 +7,10 @@ public class BinaryTree {
     private BinaryTreeNode root;
 
     public BinaryTree(BinaryTreeNode root) {
-        Queue<BinaryTreeNode> queue = new LinkedList<>();
-        queue.add(root);
-        while (!queue.isEmpty()) {
-            BinaryTreeNode node = queue.remove();
-            BinaryTreeNode leftChild = node.getLeftChild();
-            BinaryTreeNode rightChild = node.getRightChild();
-
-            if (leftChild != null) {
-                if (leftChild.getIndexID() > node.getIndexID()) {
-                    System.out.println("Узлы не соответствуют двоичному дереву");
-                    return;
-                }
-                queue.add(leftChild);
-            }
-            if (rightChild != null) {
-                if (rightChild.getIndexID() <= node.getIndexID()) {
-                    System.out.println("Узлы не соответствуют двоичному дереву");
-                    return;
-                }
-                queue.add(rightChild);
-            }
+        try {
+            isCorrect(root);
+        } catch (IllegalBinaryTreeNodesException e) {
+            System.out.println("Введённые узлы не соответствуют бинарному дереву");
         }
         this.root = root;
     }
@@ -84,6 +67,13 @@ public class BinaryTree {
         BinaryTreeNode rightChild = removedNode.getRightChild();
 
         if (removedNode == root) {
+            if(rightChild == null && leftChild == null){
+                root = null;
+            }
+            if(rightChild == null){
+                root = leftChild;
+                return;
+            }
             root = rightChild;
             BinaryTreeNode tmpNode = rightChild;
             while (tmpNode.getLeftChild() != null) {
@@ -140,7 +130,54 @@ public class BinaryTree {
         }
     }
 
-    public BinaryTreeNode getRoot() {
-        return this.root;
+    private boolean isCorrect(BinaryTreeNode root) throws IllegalBinaryTreeNodesException{
+        Queue<BinaryTreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            BinaryTreeNode node = queue.remove();
+            BinaryTreeNode leftChild = node.getLeftChild();
+            BinaryTreeNode rightChild = node.getRightChild();
+
+            if (leftChild != null) {
+                if (leftChild.getIndexID() > node.getIndexID()) {
+                    throw new IllegalBinaryTreeNodesException();
+                }
+                queue.add(leftChild);
+            }
+            if (rightChild != null) {
+                if (rightChild.getIndexID() <= node.getIndexID()) {
+                    throw new IllegalBinaryTreeNodesException();
+                }
+                queue.add(rightChild);
+            }
+        }
+        return true;
+    }
+
+    public String toString () {
+        if(root == null){
+            return "У дерева отсутствует корень";
+        }
+        return addNodeToString(root);
+    }
+
+    private String addNodeToString(BinaryTreeNode node){
+        StringBuilder builder = new StringBuilder();
+        builder.append("(")
+                .append(node.getIndexID());
+        if(node.getLeftChild() == null){
+            builder.append("x");
+        }
+        if(node.getLeftChild() != null){
+            builder.append(addNodeToString(node.getLeftChild()));
+        }
+        if(node.getRightChild() != null){
+            builder.append(addNodeToString(node.getRightChild()));
+        }
+        if(node.getRightChild() == null){
+            builder.append("x");
+        }
+        builder.append(")");
+        return builder.toString();
     }
 }
