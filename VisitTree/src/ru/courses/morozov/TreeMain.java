@@ -17,6 +17,7 @@ public class TreeMain {
         TreeNode treeNode8 = new TreeNode(8);
         TreeNode treeNode9 = new TreeNode(9);
         TreeNode treeNode10 = new TreeNode(10);
+        TreeNode treeNode11 = new TreeNode(11);
 
         treeNode1.addChild(treeNode2);
         treeNode1.addChild(treeNode3);
@@ -27,6 +28,7 @@ public class TreeMain {
         treeNode4.addChild(treeNode8);
         treeNode4.addChild(treeNode9);
         treeNode7.addChild(treeNode10);
+        treeNode10.addChild(treeNode11);
 
         print(treeNode1);
         //printTree(treeNode1);
@@ -52,6 +54,8 @@ public class TreeMain {
     public static void print(TreeNode root) {
         HashMap<TreeNode, Integer> mapOfNodes = new HashMap<>();
         int rootWidth = countWidthOfNode(root, mapOfNodes);
+        int countOfNods = mapOfNodes.size();
+        int countOfPrintedNods = 0;
         Deque<TreeNode> deque = new LinkedList<>();
         deque.add(root);
         int currentWidth = 0;
@@ -65,6 +69,7 @@ public class TreeMain {
                 System.out.print(" ");
             } else {
                 System.out.print(node.getIndexID());
+                countOfPrintedNods++;
             }
             for (int i = (nodeWidth / 2) + 1; i < nodeWidth; ++i) {
                 System.out.print(" ");
@@ -77,7 +82,7 @@ public class TreeMain {
                 currentWidth = 0;
             }
             deque.addAll(node.getChildren());
-            if (node.getChildren().size() == 0 && node.getIndexID() != -1) {
+            if (node.getChildren().size() == 0 && countOfPrintedNods < countOfNods) {
                 deque.add(new TreeNode(-1));
                 mapOfNodes.put(deque.getLast(), nodeWidth);
             }
