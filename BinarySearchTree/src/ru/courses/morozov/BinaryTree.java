@@ -7,12 +7,9 @@ public class BinaryTree {
     private BinaryTreeNode root;
 
     public BinaryTree(BinaryTreeNode root) {
-        try {
-            isCorrect(root);
-        } catch (IllegalBinaryTreeNodesException e) {
-            System.out.println("Введённые узлы не соответствуют бинарному дереву");
+        if(isCorrect(root)) {
+            this.root = root;
         }
-        this.root = root;
     }
 
     public boolean contains(BinaryTreeNode searchingNode) {

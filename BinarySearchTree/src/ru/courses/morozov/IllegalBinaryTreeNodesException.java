@@ -1,6 +1,6 @@
 package ru.courses.morozov;
 
-public class IllegalBinaryTreeNodesException extends Exception{
+public class IllegalBinaryTreeNodesException extends RuntimeException{
     public IllegalBinaryTreeNodesException(){
         super();
     }
