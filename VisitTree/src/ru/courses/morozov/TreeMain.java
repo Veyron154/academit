@@ -1,5 +1,6 @@
 package ru.courses.morozov;
 
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -51,17 +52,12 @@ public class TreeMain {
     public static void print(TreeNode root) {
         HashMap<TreeNode, Integer> mapOfNodes = new HashMap<>();
         int rootWidth = countWidthOfNode(root, mapOfNodes);
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(root);
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.add(root);
         int currentWidth = 0;
-        while (!queue.isEmpty()) {
-            TreeNode node = queue.remove();
-            int nodeWidth;
-            if (mapOfNodes.containsKey(node)) {
-                nodeWidth = mapOfNodes.get(node);
-            } else {
-                nodeWidth = 1;
-            }
+        while (!deque.isEmpty()) {
+            TreeNode node = deque.remove();
+            int nodeWidth = mapOfNodes.get(node);
             for (int i = 1; i <= (nodeWidth / 2); ++i) {
                 System.out.print(" ");
             }
@@ -80,9 +76,10 @@ public class TreeMain {
                 System.out.println();
                 currentWidth = 0;
             }
-            queue.addAll(node.getChildren());
+            deque.addAll(node.getChildren());
             if (node.getChildren().size() == 0 && node.getIndexID() != -1) {
-                queue.add(new TreeNode(-1));
+                deque.add(new TreeNode(-1));
+                mapOfNodes.put(deque.getLast(), nodeWidth);
             }
         }
         System.out.println();
