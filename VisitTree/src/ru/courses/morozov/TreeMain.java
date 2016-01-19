@@ -56,11 +56,20 @@ public class TreeMain {
         int currentWidth = 0;
         while (!queue.isEmpty()) {
             TreeNode node = queue.remove();
-            int nodeWidth = mapOfNodes.get(node);
+            int nodeWidth;
+            if (mapOfNodes.containsKey(node)) {
+                nodeWidth = mapOfNodes.get(node);
+            } else {
+                nodeWidth = 1;
+            }
             for (int i = 1; i <= (nodeWidth / 2); ++i) {
                 System.out.print(" ");
             }
-            System.out.print(node.getIndexID());
+            if (node.getIndexID() == -1) {
+                System.out.print(" ");
+            } else {
+                System.out.print(node.getIndexID());
+            }
             for (int i = (nodeWidth / 2) + 1; i < nodeWidth; ++i) {
                 System.out.print(" ");
             }
@@ -72,6 +81,9 @@ public class TreeMain {
                 currentWidth = 0;
             }
             queue.addAll(node.getChildren());
+            if (node.getChildren().size() == 0 && node.getIndexID() != -1) {
+                queue.add(new TreeNode(-1));
+            }
         }
         System.out.println();
     }
