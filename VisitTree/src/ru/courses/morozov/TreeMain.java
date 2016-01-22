@@ -71,12 +71,10 @@ public class TreeMain {
                 System.out.print(node.getIndexID());
                 countOfPrintedNods++;
             }
-            for (int i = (nodeWidth / 2) + 1; i < nodeWidth; ++i) {
+            for (int i = (nodeWidth / 2) + 1; i <= nodeWidth; ++i) {
                 System.out.print(" ");
             }
-            System.out.print(" ");
-            currentWidth = currentWidth + nodeWidth;
-            ++currentWidth;
+            currentWidth += nodeWidth + 1;
             if (currentWidth >= rootWidth) {
                 System.out.println();
                 currentWidth = 0;
