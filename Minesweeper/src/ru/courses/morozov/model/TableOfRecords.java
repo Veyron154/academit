@@ -37,20 +37,6 @@ public class TableOfRecords {
         }
     }
 
-    /*public TableOfRecords(String pathToTable) throws TableOfRecordSaveException {
-        this.pathToTable = "Minesweeper/src/ru/courses/morozov/resources/table_of_records.bin";
-        this.capacity = 5;
-        File newTableOfRecords = new File(pathToTable);
-        try {
-            if (newTableOfRecords.createNewFile()) {
-                listOfRecords = new ArrayList<>();
-                save();
-            }
-        } catch (IOException e2) {
-            throw new TableOfRecordSaveException(e2);
-        }
-    }*/
-
     public void add(Record record) {
         if (listOfRecords.size() < capacity) {
             this.listOfRecords.add(record);
