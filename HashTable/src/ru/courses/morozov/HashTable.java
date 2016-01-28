@@ -23,7 +23,7 @@ public class HashTable<E> implements Collection<E> {
     }
 
     private int getIndex(Object object) {
-        return object.hashCode() % hashTable.length;
+        return Math.abs(object.hashCode() % hashTable.length);
     }
 
     public boolean add(E object) {
@@ -136,9 +136,7 @@ public class HashTable<E> implements Collection<E> {
 
     public boolean addAll(@NotNull Collection<? extends E> inputCollection) {
         int tmpSize = this.size;
-        for (E element : inputCollection) {
-            this.add(element);
-        }
+        inputCollection.forEach(this::add);
         return tmpSize != this.size;
     }
 

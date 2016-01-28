@@ -5,7 +5,6 @@ import java.util.Arrays;
 public class HashMain {
     public static void main(String[] args) {
         HashTable<String> ht = new HashTable<>();
-
         ht.add("qwe");
         ht.add("123");
         ht.add("asd");
@@ -32,6 +31,5 @@ public class HashMain {
         HashTable<String> ht3 = new HashTable<>();
 
         System.out.println(ht.addAll(ht3));
-
     }
 }
