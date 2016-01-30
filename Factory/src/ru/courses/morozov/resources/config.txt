@@ -1,0 +1,8 @@
+BodyStorageCapacity=30
+EngineStorageCapacity=30
+AccessoriesStorageCapacity=30
+CarStorageCapacity=20
+AccessoryProviders=3
+Workers=5
+Dealers=4
+LogSale=true
