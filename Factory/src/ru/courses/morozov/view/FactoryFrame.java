@@ -57,6 +57,7 @@ public class FactoryFrame {
             frame.add(createDealersPanel(), BorderLayout.SOUTH);
             frame.pack();
             frame.setLocationRelativeTo(null);
+            frame.setMinimumSize(new Dimension(frame.getWidth(), frame.getHeight()));
             frame.setVisible(true);
         });
     }
