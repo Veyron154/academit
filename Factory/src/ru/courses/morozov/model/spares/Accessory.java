@@ -1,4 +1,4 @@
-package ru.courses.morozov.model;
+package ru.courses.morozov.model.spares;
 
 public class Accessory {
     private int id;

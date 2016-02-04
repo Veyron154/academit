@@ -1,6 +1,6 @@
 package ru.courses.morozov.model.threads;
 
-import ru.courses.morozov.model.Car;
+import ru.courses.morozov.model.spares.Car;
 import ru.courses.morozov.model.FactoryManager;
 
 import java.io.*;

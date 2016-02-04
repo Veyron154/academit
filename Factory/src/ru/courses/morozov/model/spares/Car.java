@@ -1,4 +1,8 @@
-package ru.courses.morozov.model;
+package ru.courses.morozov.model.spares;
+
+import ru.courses.morozov.model.spares.Accessory;
+import ru.courses.morozov.model.spares.Body;
+import ru.courses.morozov.model.spares.Engine;
 
 public class Car {
     private Body body;

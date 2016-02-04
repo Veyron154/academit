@@ -1,6 +1,6 @@
 package ru.courses.morozov.model.threads;
 
-import ru.courses.morozov.model.Body;
+import ru.courses.morozov.model.spares.Body;
 import ru.courses.morozov.model.FactoryManager;
 
 public class BodyProvider implements Runnable {

@@ -1,6 +1,6 @@
 package ru.courses.morozov.model.threads;
 
-import ru.courses.morozov.model.Engine;
+import ru.courses.morozov.model.spares.Engine;
 import ru.courses.morozov.model.FactoryManager;
 
 public class EngineProvider implements Runnable {

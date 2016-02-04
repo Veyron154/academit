@@ -1,5 +1,9 @@
 package ru.courses.morozov.model;
 
+import ru.courses.morozov.model.spares.Accessory;
+import ru.courses.morozov.model.spares.Body;
+import ru.courses.morozov.model.spares.Car;
+import ru.courses.morozov.model.spares.Engine;
 import ru.courses.morozov.model.threads.*;
 import ru.courses.morozov.view.FactoryFrame;
 
