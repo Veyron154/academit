@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Первая страница</title>
+</head>
+<body>
+<form>
+    <label>
+        Текстовое поле ввода:<br/>
+        <input type="text" name="text-field" value="Текст"/><br/>
+    </label>
+    <hr/>
+
+    <label>
+        Многострочное поле ввода:<br/>
+        <textarea name="text-area" rows="3">Текст</textarea>
+    </label>
+    <hr/>
+
+    Радио-баттоны:<br/>
+    <label>
+        <input type="radio" name="radio-buttons" value="radio1" checked/>
+        Радио 1<br/>
+    </label>
+    <label>
+        <input type="radio" name="radio-buttons" value="radio2"/>
+        Радио 2
+    </label>
+    <hr/>
+
+    Чекбоксы:<br/>
+    <label>
+        <input type="checkbox" name="check1" checked/>
+        Чекбокс 1<br/>
+    </label>
+    <label>
+        <input type="checkbox" name="check2"/>
+        Чекбокс 2<br/>
+    </label>
+    <hr/>
+
+    <label>
+        Выпадающий список:<br/>
+        <select name="select">
+            <option value="1">Вариант 1</option>
+            <option value="2">Вариант 2</option>
+            <option value="3">Вариант 3</option>
+        </select>
+    </label>
+    <hr/>
+
+    <label>
+        Выпадающий список с множественным выбором:<br/>
+        <select multiple size="3" name="multiple-select">
+            <option value="1" selected>Вариант 1</option>
+            <option value="2">Вариант 2</option>
+            <option value="3" selected>Вариант 3</option>
+            <option value="4">Вариант 4</option>
+        </select>
+    </label>
+    <hr/>
+
+    <input type="submit" name="button" value="Кнопка"/>
+</form>
+</body>
+</html>
