@@ -3,48 +3,60 @@ body, html {
 }
 
 body {
-    background: linear-gradient(to bottom, #FFFFFF, #DEDEE0);
+    background: linear-gradient(to bottom, #FFFFFF, #DEDEE0) fixed;
+}
+
+.main {
+    width: 980px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .header {
-    background-color: #FED61C;
-    height: 4.5%;
     width: 100%;
-    padding: 1.125% 0;
+    background-color: #FED61C;
+    height: 65px;
 }
 
-ul {
-    padding: 0;
+.top {
+    background-color: #FED61C;
+    height: 100%;
+    width: 980px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.top ul {
+    padding: 17px 0;
     margin: 0;
     list-style: none;
-    height: 100%;
+    vertical-align: middle;
 }
 
-li {
+.top li {
     display: inline-block;
-    width: 14.21%;
-    height: 100%;
+    width: 139px;
+    height: 22px;
     margin: 0 -4px 0 0;
-    padding: 0;
+    padding: 4px 0;
     text-align: center;
     border-right: 1px solid #926E00;
-    font-size: 100%;
 }
 
-li:last-child {
+.top li:last-child {
     border: none;
 }
 
-.header a {
+.top a {
     color: #926E00;
     display: block;
     text-decoration: none;
-    font-size: 28px;
+    font-size: 21px;
     font-family: Cambria, fantasy;
 }
 
 .lower-case {
-    font-size: 17px;
+    font-size: 15px;
 }
 
 .current a > span {
@@ -52,150 +64,185 @@ li:last-child {
     border-bottom: 2px solid;
 }
 
-.header a:hover > span {
+.top a:hover > span {
     border-bottom: 2px solid;
 }
 
-form {
+.main-form {
     font-family: "Trebuchet MS", serif;
-    height: 57%;
 }
 
 .main-table {
-    width: 98%;
-    height: 73%;
-    margin: 0 1%;
+    width: 966px;
+    margin: 0 7px;
     border-collapse: collapse;
     color: #767877;
 }
 
 .main-table th {
-    font-size: 16px;
+    height: 35px;
+    font-size: 13px;
+    font-weight: bold;
     border-bottom: 2px solid #E2E2E2;
-    padding: 7px 8px;
+    vertical-align: middle;
     color: #767877;
 }
 
-.th-address, .th-comment {
-    text-align: left;
+.main-table tbody {
+    overflow-y: scroll;
+    max-height: 252px;
 }
 
-.main-table .th-how-many {
+.main-table thead > tr, .main-table tbody, .table-previous-application thead > tr, .table-previous-application tbody {
+    display: block;
+}
+
+.th-comment {
     text-align: left;
-    padding-left: 2%;
+    padding-left: 8px;
+    width: 243px;
+}
+
+.th-address {
+    text-align: left;
+    padding-left: 0;
+}
+
+.main-table thead .th-how-many {
+    text-align: left;
+    padding-left: 15px;
+    width: 215px;
 }
 
 .main-table td {
+    height: 42px;
     text-align: center;
-    padding: 5px 5px;
+    vertical-align: middle;
 }
 
 .main-table td:nth-child(1), .main-table th:nth-child(1) {
-    width: 9.5%;
+    width: 90px;
 }
 
 .main-table td:nth-child(2), .main-table th:nth-child(2) {
-    width: 3%;
+    width: 40px;
+    padding: 0;
 }
 
 .main-table td:nth-child(3), .main-table th:nth-child(3) {
-    width: 24%;
+    padding-left: 10px;
+    max-width: 240px;
+    min-width: 240px;
 }
 
 .main-table td:nth-child(4), .main-table th:nth-child(4) {
-    width: 8%;
+    width: 70px;
+    padding: 0;
 }
 
-.main-table td:nth-child(5), .main-table th:nth-child(5) {
-    width: 22%;
+.main-table td:nth-child(5) {
+    width: 230px;
 }
 
 .main-table td:nth-child(6), .main-table th:nth-child(6) {
-    width: 4.5%;
+    width: 35px;
 }
 
-.main-table td:nth-child(7), .main-table th:nth-child(7) {
-    width: 25%;
+.main-table td:nth-child(7) {
+    width: 230px;
 }
 
 .main-table td:nth-child(1) {
-    font-size: 20px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .main-table td:nth-child(2) {
-    font-size: 18px;
+    font-size: 15px;
+    font-weight: bold;
 }
 
 .main-table td:nth-child(3) {
-    font-size: 15px;
+    font-size: 12px;
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .main-table td:nth-child(4) {
     font-weight: bold;
-    font-size: 24px;
+    font-size: 18px;
 }
 
 .main-table td:nth-child(6) input {
-    width: 35px;
-    height: 18px;
+    width: 25px;
+    height: 14px;
+    padding-left: 5px;
 }
 
 .main-table td:nth-child(7) input {
-    width: 90%;
-    height: 18px;
-    padding: 0 5%;
+    width: 190px;
+    height: 16px;
+    padding: 0 10px;
 }
 
 .button-panel {
-    height: 27%;
+    padding-top: 30px;
 }
 
 .button-panel button {
-    margin-top: 1.5%;
-    height: 45%;
-    width: 19%;
+    cursor: pointer;
+    height: 45px;
+    width: 188px;
     color: #F2FADD;
-    font-size: 20px;
+    font-size: 17px;
     font-family: "Trebuchet MS", serif;
     background: linear-gradient(to bottom, #92BC3F, #7EA53B);
 }
 
 .button-archive {
     float: left;
-    margin-left: 3%;
+    margin-left: 25px;
 }
 
 .button-cancel {
-    margin-right: 1%;
+    margin-right: 13px;
     float: right;
 }
 
 .button-panel [type="submit"] {
+    cursor: pointer;
     display: inline-block;
-    height: 45%;
-    width: 19%;
+    height: 45px;
+    width: 188px;
     color: #8C8C8C;
-    font-size: 20px;
+    font-size: 17px;
     font-family: Consolas, serif;
     background: linear-gradient(to bottom, #FFFFFF, #DEDEE0);
     float: right;
-    margin-top: 1.5%;
-    margin-right: 3%;
+    margin-right: 25px;
+}
+
+.clearfix:after {
+    content: '';
+    display: table;
+    clear: both;
 }
 
 .table-status {
+    margin-bottom: 5px;
+    margin-top: 35px;
     height: 50px;
     color: #727272;
-    padding-right: 3%;
-    padding-left: 3%;
     font-family: "Trebuchet MS", serif;
 }
 
 .table-header {
+    margin-left: 25px;
     line-height: 50px;
     vertical-align: middle;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
 }
 
@@ -204,9 +251,12 @@ form {
     vertical-align: middle;
     float: right;
     margin-right: 20px;
+    font-size: 13px;
 }
 
 .refresh {
+    cursor: pointer;
+    margin-right: 35px;
     float: right;
     width: 48px;
     height: 100%;
@@ -215,54 +265,80 @@ form {
 }
 
 .table-previous-application {
-    height: 26%;
-    border-collapse: collapse;
+    height: 175px;
     width: 100%;
     font-family: "Trebuchet MS", serif;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: block;
+    box-shadow: 0 -7px 20px -10px #646464;
 }
 
 .table-previous-application th {
+    height: 33px;
     vertical-align: middle;
-    background-color: #FED61C;
     color: #795B00;
     border-right: 1px dotted #795B00;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     text-align: left;
-    padding-left: 15px;
+    padding-left: 10px;
+}
+
+.table-previous-application thead {
+    display: block;
+    background-color: #FED61C;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .table-previous-application th:last-child {
     border-right: none;
 }
 
-.table-previous-application tr {
-    height: 18%;
-}
-
 .table-previous-application td {
     vertical-align: middle;
     border: 1px dotted #646464;
     color: #646464;
-    padding-left: 15px;
+    padding-left: 10px;
+    height: 33px;
 }
 
-.table-previous-application td:first-child {
-    width: 15%;
+.table-previous-application tbody {
+    padding: 0 20px;
+}
+
+.table-previous-application th:first-child {
+    padding-left: 30px;
+    width: 135px;
     border-left: none;
 }
 
-.table-previous-application td:nth-child(2) {
-    width: 14%;
+.table-previous-application td:first-child {
+    width: 135px;
+    border-left: none;
 }
 
-.table-previous-application td:nth-child(3) {
-    width: 14.7%;
+.table-previous-application td:nth-child(2), .table-previous-application th:nth-child(2) {
+    width: 130px;
 }
 
-.table-previous-application td:nth-child(4) {
-    width: 17.8%;
+.table-previous-application td:nth-child(3), .table-previous-application th:nth-child(3) {
+    width: 130px;
+}
+
+.table-previous-application td:nth-child(4), .table-previous-application th:nth-child(4) {
+    width: 165px;
 }
 
 .table-previous-application td:last-child {
+    position: relative;
+    width: 330px;
+    border-right: none;
+}
+
+.table-previous-application th:last-child {
+    width: 350px;
     border-right: none;
 }
 
@@ -279,9 +355,11 @@ form {
 }
 
 .trashcan {
+    position: absolute;
+    cursor: pointer;
     border: none;
-    float: right;
-    margin-right: 10%;
+    top: 4px;
+    right: 25px;
     width: 25px;
     height: 25px;
     background-image: url("trashcan.jpg");
