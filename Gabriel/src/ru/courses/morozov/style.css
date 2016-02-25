@@ -89,7 +89,7 @@ body {
 }
 
 .main-table tbody {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 252px;
 }
 
@@ -304,7 +304,7 @@ body {
     height: 33px;
 }
 
-.table-previous-application tbody {
+.table-previous-application .tbody-inner {
     padding: 0 20px;
 }
 
@@ -314,7 +314,21 @@ body {
     border-left: none;
 }
 
-.table-previous-application td:first-child {
+.table-previous-application .td-inner {
+    border: none;
+    padding: 0;
+}
+
+.table-previous-application .tbody-outer {
+    max-height: 132px;
+    overflow-y: auto;
+}
+
+.table-previous-application .tbody-inner {
+    width: 923px;
+}
+
+.tbody-inner td:first-child {
     width: 135px;
     border-left: none;
 }
@@ -333,7 +347,7 @@ body {
 
 .table-previous-application td:last-child {
     position: relative;
-    width: 330px;
+    width: 315px;
     border-right: none;
 }
 
@@ -359,7 +373,7 @@ body {
     cursor: pointer;
     border: none;
     top: 4px;
-    right: 25px;
+    right: 10px;
     width: 25px;
     height: 25px;
     background-image: url("trashcan.jpg");
