@@ -297,8 +297,11 @@ body {
 }
 
 .table-previous-application td {
+    position: relative;
     vertical-align: middle;
     border: 1px dotted #646464;
+    border-right: none;
+    border-bottom-color: #FFFFFF;
     color: #646464;
     padding-left: 10px;
     height: 33px;
@@ -329,8 +332,16 @@ body {
 }
 
 .tbody-inner td:first-child {
-    width: 135px;
+    width: 134px;
     border-left: none;
+}
+
+.td-inner tbody:first-child td {
+    border-top: none;
+}
+
+.td-inner tbody:last-child td {
+    border-bottom: none;
 }
 
 .table-previous-application td:nth-child(2), .table-previous-application th:nth-child(2) {
@@ -342,12 +353,12 @@ body {
 }
 
 .table-previous-application td:nth-child(4), .table-previous-application th:nth-child(4) {
-    width: 165px;
+    width: 164px;
 }
 
 .table-previous-application td:last-child {
     position: relative;
-    width: 315px;
+    width: 312px;
     border-right: none;
 }
 
@@ -356,16 +367,12 @@ body {
     border-right: none;
 }
 
-.table-previous-application tr:last-child td {
-    border-bottom: none;
-}
-
 .table-previous-application .tr-under-consideration {
     background-color: #B2D2F8;
 }
 
 .table-previous-application .tr-under-consideration td {
-    border-color: #DEDEE0;
+    border-left-color: #FFFFFF;
 }
 
 .trashcan {
