@@ -265,7 +265,7 @@ body {
 }
 
 .table-previous-application {
-    height: 175px;
+    height: 145px;
     width: 100%;
     font-family: "Trebuchet MS", serif;
     font-size: 13px;
@@ -323,7 +323,7 @@ body {
 }
 
 .table-previous-application .tbody-outer {
-    max-height: 132px;
+    max-height: 112px;
     overflow-y: auto;
 }
 
