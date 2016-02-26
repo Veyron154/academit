@@ -9,8 +9,8 @@ console.log(list.slice(0, 5));
 console.log(list.slice(list.length - 5));
 
 var sum = 0;
-for (i = 0; i < list.length; ++i){
-    if (list[i] % 2 == 0){
+for (i = 0; i < list.length; ++i) {
+    if (list[i] % 2 == 0) {
         sum += list[i];
     }
 }
