@@ -1,10 +1,6 @@
-var a;
-var b;
-var c;
-
-a = scanNumber("a");
-b = scanNumber("b");
-c = scanNumber("c");
+var a = scanNumber("a");
+var b = scanNumber("b");
+var c = scanNumber("c");
 
 var d = Math.pow(b, 2) - 4 * a * c;
 
@@ -16,7 +12,7 @@ if (d < 0) {
 } else {
     var x1 = (-b + Math.sqrt(d)) / (2 * a);
     var x2 = (-b - Math.sqrt(d)) / (2 * a);
-    console.log("x1 = " + x1 + "\nx2 = " + x2)
+    console.log("x1 = " + x1 + "\nx2 = " + x2);
 }
 
 function scanNumber(numberString) {
@@ -25,7 +21,7 @@ function scanNumber(numberString) {
         if (isNaN(tmpVar)) {
             alert("Введите число");
         } else {
-            return tmpVar
+            return tmpVar;
         }
     }
 }
