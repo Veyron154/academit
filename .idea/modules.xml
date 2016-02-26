@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/HashTable/HashTable.iml" filepath="$PROJECT_DIR$/HashTable/HashTable.iml" />
       <module fileurl="file://$PROJECT_DIR$/IO/IO.iml" filepath="$PROJECT_DIR$/IO/IO.iml" />
       <module fileurl="file://$PROJECT_DIR$/IntroHtml/IntroHtml.iml" filepath="$PROJECT_DIR$/IntroHtml/IntroHtml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/IntroJs/IntroJs.iml" filepath="$PROJECT_DIR$/IntroJs/IntroJs.iml" />
       <module fileurl="file://$PROJECT_DIR$/Lambda/Lambda.iml" filepath="$PROJECT_DIR$/Lambda/Lambda.iml" />
       <module fileurl="file://$PROJECT_DIR$/Matrix/Matrix.iml" filepath="$PROJECT_DIR$/Matrix/Matrix.iml" />
       <module fileurl="file://$PROJECT_DIR$/Minesweeper/Minesweeper.iml" filepath="$PROJECT_DIR$/Minesweeper/Minesweeper.iml" />
@@ -20,7 +21,6 @@
       <module fileurl="file://$PROJECT_DIR$/Vector/Vector.iml" filepath="$PROJECT_DIR$/Vector/Vector.iml" />
       <module fileurl="file://$PROJECT_DIR$/VisitGraph/VisitGraph.iml" filepath="$PROJECT_DIR$/VisitGraph/VisitGraph.iml" />
       <module fileurl="file://$PROJECT_DIR$/VisitTree/VisitTree.iml" filepath="$PROJECT_DIR$/VisitTree/VisitTree.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Work/Work.iml" filepath="$PROJECT_DIR$/Work/Work.iml" />
       <module fileurl="file://$PROJECT_DIR$/academit.iml" filepath="$PROJECT_DIR$/academit.iml" />
     </modules>
   </component>
