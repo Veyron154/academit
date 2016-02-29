@@ -3,40 +3,54 @@ $(document).ready(function () {
     var inputs = $(".main-table td:nth-child(6) input");
 
     for (var i = 0; i < sliders.length; ++i) {
+        var maxValue = 1000;
+        var minValue = 0;
+        var minStep = 10;
         sliders.eq(i).slider({
-            min: 0,
-            max: 1000,
-            step: 10,
+            min: minValue,
+            max: maxValue,
+            step: minStep,
             slide: function (x) {
                 return function () {
                     var sliderValue = sliders.eq(x).slider("value");
                     inputs.eq(x).val(sliderValue);
-                    if (sliderValue >= 100) {
-                        sliders.eq(x).slider("option", "step", 100);
-                    } else {
-                        sliders.eq(x).slider("option", "step", 10);
+                    var stepSwitchValue = 100;
+                    if (sliderValue >= stepSwitchValue) {
+                        var maxStep = 100;
+                        sliders.eq(x).slider("option", "step", maxStep);
                     }
                 };
             }(i),
-            stop: function (x) {
+            stop: function (x, minValue, minStep) {
                 return function () {
                     var sliderValue = sliders.eq(x).slider("value");
                     inputs.eq(x).val(sliderValue);
-                    if (sliderValue === 0) {
-                        sliders.eq(x).slider("option", "step", 10);
+                    if (sliderValue === minValue) {
+                        sliders.eq(x).slider("option", "step", minStep);
                     }
                 };
-            }(i)
+            }(i, minValue, minStep)
         });
 
-        inputs.eq(i).change(function (x) {
+        inputs.eq(i).change(function (x, maxValue) {
             return function () {
                 var inputValue = inputs.eq(x).val();
-                if (inputValue % 10 !== 0) {
-                    inputs.eq(x).val(inputValue - (inputValue % 10));
+                var valueCoefficient = 10;
+                if (inputValue % valueCoefficient !== 0) {
+                    inputs.eq(x).val(inputValue - (inputValue % valueCoefficient));
+                }
+                if (inputValue > maxValue) {
+                    inputs.eq(x).val(maxValue);
                 }
                 sliders.eq(x).slider("value", inputValue);
             };
-        }(i));
+        }(i, maxValue));
+
+        inputs.eq(i).keypress(function (e) {
+            var chr = String.fromCharCode(e.which);
+            if (chr < '0' || chr > '9') {
+                return false;
+            }
+        });
     }
 });
