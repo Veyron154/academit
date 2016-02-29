@@ -6,6 +6,9 @@
     <script src="jquery-1.12.1.js" type="text/javascript"></script>
     <script src="jquery-ui.js" type="text/javascript"></script>
     <script src="script.js" type="text/javascript"></script>
+    <script src="scrollbar.js" type="text/javascript"></script>
+    <script src="mousewheel.js" type="text/javascript"></script>
+    <link href="scrollbar.css" type="text/css" rel="stylesheet" />
     <link href="jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="reset.css" type="text/css" rel="stylesheet" />
     <link href="style.css" type="text/css" rel="stylesheet" />
@@ -38,14 +41,14 @@
                         <th class="th-comment">Комментарий</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="scroll-pane">
                     <tr>
                         <td>421-7176-1</td>
                         <td>А</td>
                         <td>РФ, г. Москва, ул. Усиевича, д. 22, корп. 1</td>
                         <td>10</td>
                         <td><div class="slider"></div></td>
-                        <td><input type="text" value="0" title="Сколько необходимо ещё ЕТ"/></td>
+                        <td><input type="text" value="0" title="Сколько необходимо ещё ЕТ" /></td>
                         <td><input type="text" placeholder="Какой-то комментарий" title="Комментарий"/></td>
                     </tr>
                     <tr>
@@ -125,7 +128,7 @@
                     <th>Заказано</th>
                 </tr>
             </thead>
-            <tbody class="tbody-outer">
+            <tbody class="tbody-outer scroll-pane">
                 <tr>
                     <td class="td-inner" colspan="5">
                         <table>

@@ -53,4 +53,13 @@ $(document).ready(function () {
             }
         });
     }
+
+    $(".main-table .scroll-pane").jScrollPane({
+        verticalDragMaxHeight: 35
+    });
+
+    $(".table-previous-application .scroll-pane").jScrollPane({
+        verticalDragMaxHeight: 18
+    });
+
 });

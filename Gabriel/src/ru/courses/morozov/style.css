@@ -349,7 +349,7 @@ body {
 }
 
 .table-previous-application .tbody-inner {
-    width: 923px;
+    width: 940px;
 }
 
 .tbody-inner td:first-child {
@@ -379,7 +379,7 @@ body {
 
 .table-previous-application td:last-child {
     position: relative;
-    width: 312px;
+    width: 330px;
     border-right: none;
 }
 
@@ -406,3 +406,45 @@ body {
     height: 25px;
     background-image: url("trashcan.jpg");
 }
+
+.jspVerticalBar {
+    position: absolute;
+    top: 0;
+    right: 7px;
+    width: 2px;
+    height: 100%;
+}
+
+.jspDrag {
+    position: relative;
+    top: 0;
+    left: -5px;
+    width: 12px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 7px;
+}
+
+.table-previous-application .jspVerticalBar {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 2px;
+    height: 100%;
+}
+
+.table-previous-application .jspDrag {
+    position: relative;
+    top: 0;
+    left: -3px;
+    width: 8px;
+    height: 12px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.jspTrack {
+    background: linear-gradient(90deg, #F0F2F1, #D3D5D2);
+    position: relative;
+}
+
