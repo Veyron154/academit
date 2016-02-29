@@ -176,15 +176,36 @@ body {
 }
 
 .main-table td:nth-child(6) input {
-    width: 25px;
+    width: 27px;
     height: 14px;
-    padding-left: 5px;
+    padding-left: 2px;
+    font-size: 11px;
 }
 
 .main-table td:nth-child(7) input {
     width: 190px;
     height: 16px;
     padding: 0 10px;
+    font-size: 11px;
+}
+
+.main-table .slider {
+    height: 6px;
+    width: 215px;
+    vertical-align: middle;
+}
+
+.ui-slider .ui-slider-handle {
+    border-radius: 50%;
+    position: absolute;
+    z-index: 100;
+    top: -7px;
+    cursor: pointer;
+}
+
+.ui-slider-horizontal {
+    background: linear-gradient(to bottom, #FFFFFF, #DEDEE0);
+    border-radius: 0;
 }
 
 .button-panel {
