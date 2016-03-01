@@ -197,9 +197,12 @@ body {
 
 .ui-slider .ui-slider-handle {
     border-radius: 50%;
+    height: 17px;
+    width: 17px;
     position: absolute;
     z-index: 100;
-    top: -7px;
+    top: -6px;
+    background: url("../images/slider.jpg") 50% 50%;
     cursor: pointer;
 }
 
@@ -282,7 +285,7 @@ body {
     width: 48px;
     height: 100%;
     border: none;
-    background: url("refresh.jpg") no-repeat;
+    background: url("../images/refresh.jpg") no-repeat;
 }
 
 .table-previous-application {
@@ -404,10 +407,10 @@ body {
     right: 10px;
     width: 25px;
     height: 25px;
-    background-image: url("trashcan.jpg");
+    background-image: url("../images/trashcan.jpg");
 }
 
-.jspVerticalBar {
+.main-table .jspVerticalBar {
     position: absolute;
     top: 0;
     right: 7px;
@@ -415,14 +418,14 @@ body {
     height: 100%;
 }
 
-.jspDrag {
+.main-table .jspDrag {
     position: relative;
     top: 0;
     left: -5px;
     width: 12px;
-    height: 25px;
     cursor: pointer;
     border-radius: 7px;
+    background: url("../images/scrollbar.jpg") 50% 50%;
 }
 
 .table-previous-application .jspVerticalBar {
@@ -441,6 +444,7 @@ body {
     height: 12px;
     cursor: pointer;
     border-radius: 2px;
+    background: url("../images/scrollbar2.jpg") 50% 50%;
 }
 
 .jspTrack {

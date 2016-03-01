@@ -55,11 +55,11 @@ $(document).ready(function () {
     }
 
     $(".main-table .scroll-pane").jScrollPane({
-        verticalDragMaxHeight: 35
+        verticalDragMaxHeight: 27
     });
 
     $(".table-previous-application .scroll-pane").jScrollPane({
-        verticalDragMaxHeight: 18
+        verticalDragMaxHeight: 14
     });
 
 });

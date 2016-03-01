@@ -578,7 +578,7 @@ function isArrayLike( obj ) {
 }
 var Sizzle =
 /*!
- * Sizzle CSS Selector Engine v2.2.1
+ * Sizzle css Selector Engine v2.2.1
  * http://sizzlejs.com/
  *
  * Copyright jQuery Foundation and other contributors
@@ -663,7 +663,7 @@ var i,
 	attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
 		// Operator (capture 2)
 		"*([*^$|!~]?=)" + whitespace +
-		// "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
+		// "Attribute values must be css identifiers [capture 5] or strings [capture 3 or capture 4]"
 		"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
 		"*\\]",
 
@@ -716,7 +716,7 @@ var i,
 	rsibling = /[+~]/,
 	rescape = /'|\\/g,
 
-	// CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
+	// css escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
 	runescape = new RegExp( "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)", "ig" ),
 	funescape = function( _, escaped, escapedWhitespace ) {
 		var high = "0x" + escaped - 0x10000;
@@ -2895,7 +2895,7 @@ var rootjQuery,
 				if ( match[ 1 ] ) {
 					context = context instanceof jQuery ? context[ 0 ] : context;
 
-					// scripts is true for back-compat
+					// js is true for back-compat
 					// Intentionally let the error be thrown if parseHTML is not present
 					jQuery.merge( this, jQuery.parseHTML(
 						match[ 1 ],
@@ -3630,7 +3630,7 @@ jQuery.ready.promise = function( obj ) {
 		if ( document.readyState === "complete" ||
 			( document.readyState !== "loading" && !document.documentElement.doScroll ) ) {
 
-			// Handle it asynchronously to allow scripts the opportunity to delay ready
+			// Handle it asynchronously to allow js the opportunity to delay ready
 			window.setTimeout( jQuery.ready );
 
 		// Standards-based browsers support DOMContentLoaded
@@ -4275,7 +4275,7 @@ jQuery.fn.extend( {
 		// Check if elements with layout shrink-wrap their children
 		if ( typeof div.style.zoom !== "undefined" ) {
 
-			// Reset CSS: box-sizing; display; margin; border
+			// Reset css: box-sizing; display; margin; border
 			div.style.cssText =
 
 				// Support: Firefox<29, Android 2.3
@@ -4573,7 +4573,7 @@ function getAll( context, tag ) {
 }
 
 
-// Mark scripts as having already been evaluated
+// Mark js as having already been evaluated
 function setGlobalEval( elems, refElements ) {
 	var elem,
 		i = 0;
@@ -5960,7 +5960,7 @@ function fixCloneNodeIssues( src, dest ) {
 		dest.removeAttribute( jQuery.expando );
 	}
 
-	// IE blanks contents when cloning scripts, and tries to evaluate newly-set text
+	// IE blanks contents when cloning js, and tries to evaluate newly-set text
 	if ( nodeName === "script" && dest.text !== src.text ) {
 		disableScript( dest ).text = src.text;
 		restoreScript( dest );
@@ -6054,7 +6054,7 @@ function domManip( collection, args, callback, ignored ) {
 				if ( i !== iNoClone ) {
 					node = jQuery.clone( node, true, true );
 
-					// Keep references to cloned scripts for later restoration
+					// Keep references to cloned js for later restoration
 					if ( hasScripts ) {
 
 						// Support: Android<4.1, PhantomJS<2
@@ -6069,10 +6069,10 @@ function domManip( collection, args, callback, ignored ) {
 			if ( hasScripts ) {
 				doc = scripts[ scripts.length - 1 ].ownerDocument;
 
-				// Reenable scripts
+				// Reenable js
 				jQuery.map( scripts, restoreScript );
 
-				// Evaluate executable scripts on first document insertion
+				// Evaluate executable js on first document insertion
 				for ( i = 0; i < hasScripts; i++ ) {
 					node = scripts[ i ];
 					if ( rscriptType.test( node.type || "" ) &&
@@ -6081,7 +6081,7 @@ function domManip( collection, args, callback, ignored ) {
 
 						if ( node.src ) {
 
-							// Optional AJAX dependency, but won't run scripts if not present
+							// Optional AJAX dependency, but won't run js if not present
 							if ( jQuery._evalUrl ) {
 								jQuery._evalUrl( node.src );
 							}
@@ -6643,7 +6643,7 @@ var documentElement = document.documentElement;
 			// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
 			contents = div.appendChild( document.createElement( "div" ) );
 
-			// Reset CSS: box-sizing; display; margin; border; padding
+			// Reset css: box-sizing; display; margin; border; padding
 			contents.style.cssText = div.style.cssText =
 
 				// Support: Android 2.3
@@ -7125,7 +7125,7 @@ jQuery.extend( {
 				return;
 			}
 
-			// If a number was passed in, add the unit (except for certain CSS properties)
+			// If a number was passed in, add the unit (except for certain css properties)
 			if ( type === "number" ) {
 				value += ret && ret[ 3 ] || ( jQuery.cssNumber[ origName ] ? "" : "px" );
 			}
@@ -7142,7 +7142,7 @@ jQuery.extend( {
 				( value = hooks.set( elem, value, extra ) ) !== undefined ) {
 
 				// Support: IE
-				// Swallow errors from 'invalid' CSS values (#5509)
+				// Swallow errors from 'invalid' css values (#5509)
 				try {
 					style[ name ] = value;
 				} catch ( e ) {}
@@ -10349,7 +10349,7 @@ function createActiveXHR() {
 
 
 
-// Prevent auto-execution of scripts when no explicit dataType was provided (See gh-2432)
+// Prevent auto-execution of js when no explicit dataType was provided (See gh-2432)
 jQuery.ajaxPrefilter( function( s ) {
 	if ( s.crossDomain ) {
 		s.contents.script = false;
@@ -10560,7 +10560,7 @@ support.createHTMLDocument = ( function() {
 // data: string of html
 // context (optional): If specified, the fragment will be created in this context,
 // defaults to document
-// keepScripts (optional): If true, will include scripts passed in the html string
+// keepScripts (optional): If true, will include js passed in the html string
 jQuery.parseHTML = function( data, context, keepScripts ) {
 	if ( !data || typeof data !== "string" ) {
 		return null;
@@ -10570,7 +10570,7 @@ jQuery.parseHTML = function( data, context, keepScripts ) {
 		context = false;
 	}
 
-	// document.implementation stops scripts or inline event handlers from
+	// document.implementation stops js or inline event handlers from
 	// being executed immediately
 	context = context || ( support.createHTMLDocument ?
 		document.implementation.createHTMLDocument( "" ) :
@@ -10645,7 +10645,7 @@ jQuery.fn.load = function( url, params, callback ) {
 			self.html( selector ?
 
 				// If a selector was specified, locate the right elements in a dummy div
-				// Exclude scripts to avoid IE 'Permission Denied' errors
+				// Exclude js to avoid IE 'Permission Denied' errors
 				jQuery( "<div>" ).append( jQuery.parseHTML( responseText ) ).find( selector ) :
 
 				// Otherwise use the full result
