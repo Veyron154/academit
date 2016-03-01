@@ -1,58 +1,55 @@
 $(document).ready(function () {
     var sliders = $(".slider");
     var inputs = $(".main-table td:nth-child(6) input");
+    var maxValue = 1000;
+    var minValue = 0;
+    var minStep = 10;
 
-    for (var i = 0; i < sliders.length; ++i) {
-        var maxValue = 1000;
-        var minValue = 0;
-        var minStep = 10;
-        sliders.eq(i).slider({
+    sliders.each(function (i) {
+        $(this).slider({
             min: minValue,
             max: maxValue,
             step: minStep,
-            slide: function (x) {
-                return function () {
-                    var sliderValue = sliders.eq(x).slider("value");
-                    inputs.eq(x).val(sliderValue);
-                    var stepSwitchValue = 100;
-                    if (sliderValue >= stepSwitchValue) {
-                        var maxStep = 100;
-                        sliders.eq(x).slider("option", "step", maxStep);
-                    }
-                };
-            }(i),
-            stop: function (x, minValue, minStep) {
-                return function () {
-                    var sliderValue = sliders.eq(x).slider("value");
-                    inputs.eq(x).val(sliderValue);
-                    if (sliderValue === minValue) {
-                        sliders.eq(x).slider("option", "step", minStep);
-                    }
-                };
-            }(i, minValue, minStep)
-        });
-
-        inputs.eq(i).change(function (x, maxValue) {
-            return function () {
-                var inputValue = inputs.eq(x).val();
-                var valueCoefficient = 10;
-                if (inputValue % valueCoefficient !== 0) {
-                    inputs.eq(x).val(inputValue - (inputValue % valueCoefficient));
+            slide: function () {
+                var sliderValue = sliders.eq(i).slider("value");
+                inputs.eq(i).val(sliderValue);
+                var stepSwitchValue = 100;
+                if (sliderValue >= stepSwitchValue) {
+                    var maxStep = 100;
+                    sliders.eq(i).slider("option", "step", maxStep);
                 }
-                if (inputValue > maxValue) {
-                    inputs.eq(x).val(maxValue);
+            },
+            stop: function () {
+                var sliderValue = sliders.eq(i).slider("value");
+                inputs.eq(i).val(sliderValue);
+                if (sliderValue === minValue) {
+                    sliders.eq(i).slider("option", "step", minStep);
                 }
-                sliders.eq(x).slider("value", inputValue);
-            };
-        }(i, maxValue));
+            }
+        })
+    });
 
-        inputs.eq(i).keypress(function (e) {
+    inputs.each(function (i) {
+        $(this).change(function () {
+            var inputValue = inputs.eq(i).val();
+            var valueCoefficient = 10;
+            if (inputValue % valueCoefficient !== 0) {
+                inputs.eq(i).val(inputValue - (inputValue % valueCoefficient));
+            }
+            if (inputValue > maxValue) {
+                inputs.eq(i).val(maxValue);
+            }
+            if (inputValue === "") {
+                inputs.eq(i).val("0");
+            }
+            sliders.eq(i).slider("value", inputValue);
+        }).keypress(function (e) {
             var chr = String.fromCharCode(e.which);
             if (chr < '0' || chr > '9') {
                 return false;
             }
         });
-    }
+    });
 
     $(".main-table .scroll-pane").jScrollPane({
         verticalDragMaxHeight: 27

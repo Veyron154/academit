@@ -36,13 +36,6 @@
     background: red;
 }
 
-.jspVerticalBar *,
-.jspHorizontalBar *
-{
-    margin: 0;
-    padding: 0;
-}
-
 .jspCap
 {
     display: none;
@@ -81,6 +74,8 @@
     text-indent: -20000px;
     display: block;
     cursor: pointer;
+    padding: 0;
+    margin: 0;
 }
 
 .jspArrow.jspDisabled
@@ -113,7 +108,7 @@
     height: 100%;
 }
 
-/* Yuk! css Hack for IE6 3 pixel bug :( */
+/* Yuk! CSS Hack for IE6 3 pixel bug :( */
 * html .jspCorner
 {
     margin: 0 -3px 0 0;
