@@ -124,26 +124,3 @@ var rowNumbered = function () {
         $(this).text(i + 1);
     });
 };
-
-var deleteButtonClick = function () {
-    var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked)");
-    var messageString = "следующие контакты? :</br>";
-    $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(2)").each(function () {
-        messageString += $(this).text() + "</br>";
-    });
-    if (rows.length === 0) {
-        rows = $(this).parents("tr");
-        messageString = "контакт: " + $(this).parents("tr").children("td:nth-child(2)").text() + " ?";
-    }
-
-    $.confirm({
-        title: "Подтверждение удаления",
-        content: "Вы действительно хотите удалить " + messageString,
-        confirmButton: "OK",
-        cancelButton: "Отмена",
-        confirm: function () {
-            rows.remove();
-            rowNumbered();
-        }
-    });
-};
