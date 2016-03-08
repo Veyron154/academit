@@ -1,0 +1,95 @@
+body {
+    background-color: aqua;
+}
+
+.main {
+    height: 100%;
+    width: 810px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1 {
+    font-size: 25px;
+    padding-left: 10px;
+}
+
+.table-phone-book {
+    width: 810px;
+    border-collapse: collapse;
+}
+
+.table {
+    height: 300px;
+}
+
+.table-phone-book thead {
+    display: block;
+}
+
+.table-phone-book tbody {
+    display: block;
+    max-height: 260px;
+    width: 807px;
+    overflow-y: auto;
+}
+
+.table-phone-book th {
+    vertical-align: middle;
+    height: 30px;
+    background-color: gold;
+    border: 1px solid;
+    border-bottom: none;
+}
+
+.table-phone-book th:first-child, .table-phone-book td:first-child {
+    width: 30px;
+    text-align: center;
+}
+
+.table-phone-book th:nth-child(2), .table-phone-book td:nth-child(2) {
+    padding-left: 10px;
+    width: 200px;
+}
+
+.table-phone-book th:nth-child(3), .table-phone-book td:nth-child(3) {
+    padding-left: 10px;
+    width: 200px;
+}
+
+.table-phone-book th:nth-child(4), .table-phone-book td:nth-child(4) {
+    padding-left: 10px;
+    width: 198px;
+}
+
+.table-phone-book th:nth-child(5), .table-phone-book td:nth-child(5) {
+    text-align: center;
+    width: 63px;
+}
+
+.table-phone-book td:nth-child(5) button {
+    color: red;
+}
+
+.table-phone-book th:last-child, .table-phone-book td:last-child {
+    text-align: center;
+    width: 98px;
+}
+
+.table-phone-book td {
+    vertical-align: middle;
+    border: 1px solid;
+    height: 30px;
+    background-color: #5cb85c;
+}
+
+.main form {
+    margin-left: 10px;
+}
+
+.submit {
+    margin: 15px;
+    height: 30px;
+    width: 60px;
+    cursor: pointer;
+}
