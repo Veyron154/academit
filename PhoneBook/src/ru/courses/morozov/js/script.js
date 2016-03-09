@@ -95,9 +95,9 @@ $(document).ready(function () {
         var rows = $(".table-phone-book tbody tr");
         rows.hide();
         var tableData = $(".table-phone-book tbody tr td");
-        var filterText = $(".text-filter").val();
+        var filterText = $(".text-filter").val().toLowerCase();
         tableData.each(function () {
-            if ($(this).text().indexOf(filterText) !== -1) {
+            if ($(this).text().toLowerCase().indexOf(filterText) !== -1) {
                 $(this).parents("tr").show();
             }
         });
