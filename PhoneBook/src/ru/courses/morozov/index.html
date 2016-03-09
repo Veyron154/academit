@@ -16,10 +16,12 @@
     <div class="main">
         <h1>Телефонная книга</h1>
         <label>
-            Фильтр: <input class="text-filter" type="text" />
+            Фильтр: <input class="text-filter form-control" type="text" />
         </label>
-        <button class="button-filter-ok">Применить</button>
-        <button class="button-filter-clear">Очистить</button>
+        <span class="btn-group">
+            <button class="btn btn-default button-filter-ok">Применить</button>
+            <button class="btn btn-default button-filter-clear">Очистить</button>
+        </span>
         <div class="table">
             <table class="table-phone-book">
                 <thead>
@@ -37,14 +39,14 @@
             </table>
         </div>
         <h1>Заполнение телефонной книги</h1>
-        <form>
-            <input class="input-phone-book" type="text" placeholder="Фамилия" title="Фамилия" id="surname"
+        <form class="input-group">
+            <input class="input-phone-book form-control" type="text" placeholder="Фамилия" title="Фамилия" id="surname"
                    autocomplete="off" /><br />
-            <input class="input-phone-book" type="text" placeholder="Имя" title="Имя" id="name" autocomplete="off" />
-            <br />
-            <input class="input-phone-book" type="tel" placeholder="8-XXX-XXX-XXXX" title="Номер телефона" id="phone"
+            <input class="input-phone-book form-control" type="text" placeholder="Имя" title="Имя" id="name"
                    autocomplete="off" /><br />
-            <input type="submit" class="submit" value="OK" />
+            <input class="input-phone-book form-control" type="tel" placeholder="8-XXX-XXX-XXXX" title="Номер телефона"
+                   id="phone" autocomplete="off" /><br />
+            <input type="submit" class="btn btn-default submit" value="OK" />
         </form>
     </div>
 </body>

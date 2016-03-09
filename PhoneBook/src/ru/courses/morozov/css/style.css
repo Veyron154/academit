@@ -88,7 +88,7 @@ h1 {
 }
 
 .submit {
-    margin: 15px;
+    margin: 5px;
     height: 30px;
     width: 60px;
     cursor: pointer;
@@ -96,4 +96,10 @@ h1 {
 
 .empty {
     background-color: pink;
+}
+
+.input-phone-book {
+    margin: 2px;
+    width: 250px;
+
 }
