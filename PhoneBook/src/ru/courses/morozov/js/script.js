@@ -88,15 +88,7 @@ $(document).ready(function () {
 
     $(".top-checkbox").change(function () {
         var checkboxes = $(".table-phone-book tr td:first-child [type='checkbox']");
-        if ($(this).prop("checked") == true) {
-            checkboxes.each(function () {
-                $(this).prop("checked", true);
-            })
-        } else {
-            checkboxes.each(function () {
-                $(this).prop("checked", false);
-            })
-        }
+        checkboxes.prop("checked", $(this).prop("checked"));
     });
 
     $(".button-filter-ok").click(function () {
