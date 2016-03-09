@@ -56,7 +56,7 @@ $(document).ready(function () {
         var tdPhone = $("<td></td>").text(phone.val());
         tr.append(tdPhone);
         var deleteButton = $("<button>X</button>").click(function () {
-            var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked)");
+            var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked):visible");
             var messageString = "следующие контакты? </br>";
             $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(3)").each(function () {
                 messageString += $(this).text() + "</br>";
