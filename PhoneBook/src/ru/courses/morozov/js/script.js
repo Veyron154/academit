@@ -26,7 +26,7 @@ $(document).ready(function () {
         var phone = $("#phone");
 
         var isUniquePhone = true;
-        var phones = $(".table-phone-book tr td:nth-child(4)");
+        var phones = $(".table-phone-book tr td:nth-child(5)");
 
         phones.each(function () {
             if ($(this).text() === phone.val()) {
@@ -45,6 +45,8 @@ $(document).ready(function () {
 
         var tr = $("<tr></tr>");
         $(".table-phone-book tbody").append(tr);
+        var checkBox = $("<input />").attr("type", "checkbox");
+        tr.append($("<td></td>").html(checkBox));
         var tdIndex = $("<td></td>");
         tr.append(tdIndex);
         var tdSurname = $("<td></td>").text(surname.val());
@@ -56,12 +58,12 @@ $(document).ready(function () {
         var deleteButton = $("<button>X</button>").click(function () {
             var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked)");
             var messageString = "следующие контакты? :</br>";
-            $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(2)").each(function () {
+            $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(3)").each(function () {
                 messageString += $(this).text() + "</br>";
             });
             if (rows.length === 0) {
                 rows = $(this).parents("tr");
-                messageString = "контакт: " + $(this).parents("tr").children("td:nth-child(2)").text() + " ?";
+                messageString = "контакт: " + $(this).parents("tr").children("td:nth-child(3)").text() + " ?";
             }
 
             $.confirm({
@@ -76,8 +78,6 @@ $(document).ready(function () {
             });
         });
         tr.append($("<td></td>").html(deleteButton));
-        var checkBox = $("<input />").attr("type", "checkbox");
-        tr.append($("<td></td>").html(checkBox));
 
         rowNumbered();
 
@@ -87,7 +87,7 @@ $(document).ready(function () {
     });
 
     $(".top-checkbox").change(function () {
-        var checkboxes = $(".table-phone-book tr td:last-child [type='checkbox']");
+        var checkboxes = $(".table-phone-book tr td:first-child [type='checkbox']");
         if ($(this).prop("checked") == true) {
             checkboxes.each(function () {
                 $(this).prop("checked", true);
@@ -119,7 +119,7 @@ $(document).ready(function () {
 });
 
 var rowNumbered = function () {
-    var rowsIndices = $(".table-phone-book tr td:first-child");
+    var rowsIndices = $(".table-phone-book tr td:nth-child(2)");
     rowsIndices.each(function (i) {
         $(this).text(i + 1);
     });

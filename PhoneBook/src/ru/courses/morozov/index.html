@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>PhoneBook</title>
-    <link href="css/jquery-confirm.min.css" type="text/css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    <link href="css/jquery-confirm.min.css" type="text/css" rel="stylesheet" />
     <link href="css/bootstrap-theme.min.css" type="text/css" rel="stylesheet" />
     <link href="css/style.css" type="text/css" rel="stylesheet" />
     <script src="js/jquery-1.12.1.js" type="text/javascript"></script>
@@ -24,12 +24,12 @@
             <table class="table-phone-book">
                 <thead>
                     <tr>
+                        <th>Выделить <input class="top-checkbox" type="checkbox" title="Выделить все"/></th>
                         <th>№</th>
                         <th>Фамилия</th>
                         <th>Имя</th>
                         <th>Номер телефона</th>
                         <th>Удалить</th>
-                        <th>Выделить <input class="top-checkbox" type="checkbox" title="Выделить все"/></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,12 +38,12 @@
         </div>
         <h1>Заполнение телефонной книги</h1>
         <form>
-            <input class="input-phone-book" type="text" placeholder="Фамилия" pattern="[А-ЯЁ][а-яё]+" title="Фамилия"
-                   id="surname" autocomplete="off" /><br />
-            <input class="input-phone-book" type="text" placeholder="Имя" pattern="[А-ЯЁ][а-яё]+" title="Имя" id="name"
+            <input class="input-phone-book" type="text" placeholder="Фамилия" title="Фамилия" id="surname"
                    autocomplete="off" /><br />
-            <input class="input-phone-book" type="tel" placeholder="8-XXX-XXX-XXXX"
-                   pattern="8-[0-9]{3}-[0-9]{3}-[0-9]{4}" title="Номер телефона" id="phone" autocomplete="off" /><br />
+            <input class="input-phone-book" type="text" placeholder="Имя" title="Имя" id="name" autocomplete="off" />
+            <br />
+            <input class="input-phone-book" type="tel" placeholder="8-XXX-XXX-XXXX" title="Номер телефона" id="phone"
+                   autocomplete="off" /><br />
             <input type="submit" class="submit" value="OK" />
         </form>
     </div>

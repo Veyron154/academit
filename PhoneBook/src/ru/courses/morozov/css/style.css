@@ -43,13 +43,13 @@ h1 {
 }
 
 .table-phone-book th:first-child, .table-phone-book td:first-child {
-    width: 30px;
     text-align: center;
+    width: 98px;
 }
 
 .table-phone-book th:nth-child(2), .table-phone-book td:nth-child(2) {
-    padding-left: 10px;
-    width: 200px;
+    width: 30px;
+    text-align: center;
 }
 
 .table-phone-book th:nth-child(3), .table-phone-book td:nth-child(3) {
@@ -59,21 +59,21 @@ h1 {
 
 .table-phone-book th:nth-child(4), .table-phone-book td:nth-child(4) {
     padding-left: 10px;
-    width: 198px;
+    width: 200px;
 }
 
 .table-phone-book th:nth-child(5), .table-phone-book td:nth-child(5) {
-    text-align: center;
-    width: 63px;
-}
-
-.table-phone-book td:nth-child(5) button {
-    color: red;
+    padding-left: 10px;
+    width: 198px;
 }
 
 .table-phone-book th:last-child, .table-phone-book td:last-child {
     text-align: center;
-    width: 98px;
+    width: 63px;
+}
+
+.table-phone-book td:last-child button {
+    color: red;
 }
 
 .table-phone-book td {
