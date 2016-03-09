@@ -93,3 +93,7 @@ h1 {
     width: 60px;
     cursor: pointer;
 }
+
+.empty {
+    background-color: pink;
+}

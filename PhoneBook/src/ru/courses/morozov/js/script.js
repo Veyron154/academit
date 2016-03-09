@@ -7,7 +7,7 @@ $(document).ready(function () {
 
         inputs.each(function () {
             if ($(this).val() == "") {
-                $(this).css("background-color", "pink");
+                $(this).addClass("empty");
                 isCorrect = false;
             }
         });
@@ -57,7 +57,7 @@ $(document).ready(function () {
         tr.append(tdPhone);
         var deleteButton = $("<button>X</button>").click(function () {
             var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked)");
-            var messageString = "следующие контакты? :</br>";
+            var messageString = "следующие контакты? </br>";
             $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(3)").each(function () {
                 messageString += $(this).text() + "</br>";
             });
@@ -73,17 +73,19 @@ $(document).ready(function () {
                 cancelButton: "Отмена",
                 confirm: function () {
                     rows.remove();
-                    rowNumbered();
+                    numberedRow();
                 }
             });
         });
         tr.append($("<td></td>").html(deleteButton));
 
-        rowNumbered();
+        numberedRow();
 
         inputs.each(function () {
-            $(this).css("background-color", "white").val("");
+            $(this).removeClass("empty").val("");
         });
+
+        $(".button-filter-clear").trigger("click");
     });
 
     $(".top-checkbox").change(function () {
@@ -110,7 +112,7 @@ $(document).ready(function () {
     });
 });
 
-var rowNumbered = function () {
+var numberedRow = function () {
     var rowsIndices = $(".table-phone-book tr td:nth-child(2)");
     rowsIndices.each(function (i) {
         $(this).text(i + 1);
