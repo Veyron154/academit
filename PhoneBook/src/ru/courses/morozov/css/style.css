@@ -1,5 +1,5 @@
 body {
-    background-color: aqua;
+    background-color: #DCDCDC;
 }
 
 .main {
@@ -15,12 +15,8 @@ h1 {
 }
 
 .table-phone-book {
-    width: 810px;
+    width: 820px;
     border-collapse: collapse;
-}
-
-.table {
-    height: 300px;
 }
 
 .table-phone-book thead {
@@ -29,22 +25,24 @@ h1 {
 
 .table-phone-book tbody {
     display: block;
-    max-height: 260px;
-    width: 807px;
+    min-height: 50px;
+    max-height: 250px;
+    width: 820px;
     overflow-y: auto;
 }
 
 .table-phone-book th {
     vertical-align: middle;
-    height: 30px;
-    background-color: gold;
+    height: 40px;
+    background-color: #5A4181;
+    color: #ffffff;
     border: 1px solid;
     border-bottom: none;
 }
 
 .table-phone-book th:first-child, .table-phone-book td:first-child {
     text-align: center;
-    width: 98px;
+    width: 110px;
 }
 
 .table-phone-book th:nth-child(2), .table-phone-book td:nth-child(2) {
@@ -73,14 +71,17 @@ h1 {
 }
 
 .table-phone-book td:last-child button {
-    color: red;
+    color: #FFFFFF;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 0;
 }
 
 .table-phone-book td {
     vertical-align: middle;
     border: 1px solid;
     height: 30px;
-    background-color: #5cb85c;
+    background-color: #368BE0;
 }
 
 .main form {
@@ -89,17 +90,14 @@ h1 {
 
 .submit {
     margin: 5px;
-    height: 30px;
-    width: 60px;
     cursor: pointer;
-}
-
-.empty {
-    background-color: pink;
 }
 
 .input-phone-book {
     margin: 2px;
     width: 250px;
+}
 
+.col-sm {
+    height: 25px;
 }

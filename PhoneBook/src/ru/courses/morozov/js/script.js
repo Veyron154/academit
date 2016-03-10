@@ -7,8 +7,10 @@ $(document).ready(function () {
 
         inputs.each(function () {
             if ($(this).val() == "") {
-                $(this).addClass("empty");
+                $(this).parents(".form-group").addClass("has-error");
                 isCorrect = false;
+            } else {
+                $(this).parents(".form-group").removeClass("has-error");
             }
         });
 
@@ -31,6 +33,7 @@ $(document).ready(function () {
         phones.each(function () {
             if ($(this).text() === phone.val()) {
                 isUniquePhone = false;
+                return false;
             }
         });
 
@@ -55,7 +58,7 @@ $(document).ready(function () {
         tr.append(tdName);
         var tdPhone = $("<td></td>").text(phone.val());
         tr.append(tdPhone);
-        var deleteButton = $("<button>X</button>").click(function () {
+        var deleteButton = $("<button>X</button>").addClass("btn btn-danger").click(function () {
             var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked):visible");
             var messageString = "следующие контакты? <br />";
             $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(3)").each(function () {
@@ -73,16 +76,17 @@ $(document).ready(function () {
                 cancelButton: "Отмена",
                 confirm: function () {
                     rows.remove();
-                    numberedRow();
+                    renumberRow();
                 }
             });
         });
         tr.append($("<td></td>").html(deleteButton));
 
-        numberedRow();
+        renumberRow();
 
         inputs.each(function () {
-            $(this).removeClass("empty").val("");
+            $(this).parents(".form-group").removeClass("has-error");
+            $(this).val("");
         });
 
         $(".button-filter-clear").trigger("click");
@@ -112,7 +116,7 @@ $(document).ready(function () {
     });
 });
 
-var numberedRow = function () {
+var renumberRow = function () {
     var rowsIndices = $(".table-phone-book tr td:nth-child(2)");
     rowsIndices.each(function (i) {
         $(this).text(i + 1);
