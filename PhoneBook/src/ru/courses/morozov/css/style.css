@@ -1,87 +1,50 @@
-body {
-    background-color: #DCDCDC;
-}
-
-.main {
-    height: 100%;
-    width: 810px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
 h1 {
     font-size: 25px;
-    padding-left: 10px;
+    margin: 10px 0;
 }
 
-.table-phone-book {
-    width: 820px;
-    border-collapse: collapse;
+.form-inline {
+    margin: 2px 0;
 }
 
-.table-phone-book thead {
-    display: block;
-}
-
-.table-phone-book tbody {
-    display: block;
-    min-height: 50px;
-    max-height: 250px;
-    width: 820px;
-    overflow-y: auto;
-}
-
-.table-phone-book th {
-    vertical-align: middle;
-    height: 40px;
-    background-color: #5A4181;
-    color: #ffffff;
-    border: 1px solid;
-    border-bottom: none;
+label {
+    margin: 0;
 }
 
 .table-phone-book th:first-child, .table-phone-book td:first-child {
     text-align: center;
-    width: 110px;
+    width: 9%;
 }
 
 .table-phone-book th:nth-child(2), .table-phone-book td:nth-child(2) {
-    width: 30px;
+    width: 3%;
     text-align: center;
 }
 
 .table-phone-book th:nth-child(3), .table-phone-book td:nth-child(3) {
     padding-left: 10px;
-    width: 200px;
+    width: 27%;
 }
 
 .table-phone-book th:nth-child(4), .table-phone-book td:nth-child(4) {
     padding-left: 10px;
-    width: 200px;
+    width: 27%;
 }
 
 .table-phone-book th:nth-child(5), .table-phone-book td:nth-child(5) {
     padding-left: 10px;
-    width: 198px;
+    width: 27%;
 }
 
 .table-phone-book th:last-child, .table-phone-book td:last-child {
     text-align: center;
-    width: 63px;
+    width: 7%;
 }
 
 .table-phone-book td:last-child button {
-    color: #FFFFFF;
-    font-weight: bold;
-    width: 100%;
-    border-radius: 0;
-}
-
-.table-phone-book td {
+    width: 40px;
     vertical-align: middle;
-    border: 1px solid;
-    height: 30px;
-    background-color: #368BE0;
+    border-radius: 0;
 }
 
 .main form {
@@ -89,7 +52,7 @@ h1 {
 }
 
 .submit {
-    margin: 5px;
+    margin: 2px 2px 2px 0;
     cursor: pointer;
 }
 

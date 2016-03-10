@@ -58,7 +58,7 @@ $(document).ready(function () {
         tr.append(tdName);
         var tdPhone = $("<td></td>").text(phone.val());
         tr.append(tdPhone);
-        var deleteButton = $("<button>X</button>").addClass("btn btn-danger").click(function () {
+        var deleteButton = $("<button type='button' class='btn btn-default'></button>").click(function () {
             var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked):visible");
             var messageString = "следующие контакты? <br />";
             $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(3)").each(function () {
@@ -80,6 +80,7 @@ $(document).ready(function () {
                 }
             });
         });
+        deleteButton.html("<span class='glyphicon glyphicon-remove-sign' aria-hidden='true'></span>");
         tr.append($("<td></td>").html(deleteButton));
 
         renumberRow();
