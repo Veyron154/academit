@@ -1,23 +1,19 @@
 h1 {
     font-size: 25px;
-    margin: 10px 0;
+    margin: 10px 0 25px;
 }
 
 .form-inline {
     margin: 2px 0;
 }
 
-label {
-    margin: 0;
-}
-
 .table-phone-book th:first-child, .table-phone-book td:first-child {
     text-align: center;
-    width: 9%;
+    width: 6%;
 }
 
 .table-phone-book th:nth-child(2), .table-phone-book td:nth-child(2) {
-    width: 3%;
+    width: 6%;
     text-align: center;
 }
 
@@ -56,11 +52,10 @@ label {
     cursor: pointer;
 }
 
-.input-phone-book {
-    margin: 2px;
-    width: 250px;
+.form-inline {
+    margin-bottom: 15px;
 }
 
-.col-sm {
-    height: 25px;
+.button-filter-ok, .button-filter-clear {
+    margin: 0 5px;
 }
