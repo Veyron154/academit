@@ -28,7 +28,7 @@ $(document).ready(function () {
         var phone = $("#phone");
 
         var isUniquePhone = true;
-        var phones = $(".table-phone-book tr td:nth-child(5)");
+        var phones = $(".table-phone-book tbody .fifth-column");
 
         phones.each(function () {
             if ($(this).text() === phone.val()) {
@@ -49,24 +49,24 @@ $(document).ready(function () {
         var tr = $("<tr></tr>");
         $(".table-phone-book tbody").append(tr);
         var checkBox = $("<input />").attr("type", "checkbox");
-        tr.append($("<td></td>").html(checkBox));
-        var tdIndex = $("<td></td>");
+        tr.append($("<td class='first-column'></td>").html(checkBox));
+        var tdIndex = $("<td class='second-column'></td>");
         tr.append(tdIndex);
-        var tdSurname = $("<td></td>").text(surname.val());
+        var tdSurname = $("<td class='third-column'></td>").text(surname.val());
         tr.append(tdSurname);
-        var tdName = $("<td></td>").text(name.val());
+        var tdName = $("<td class='fourth-column'></td>").text(name.val());
         tr.append(tdName);
-        var tdPhone = $("<td></td>").text(phone.val());
+        var tdPhone = $("<td class='fifth-column'></td>").text(phone.val());
         tr.append(tdPhone);
         var deleteButton = $("<button type='button' class='btn btn-default'></button>").click(function () {
             var rows = $(".table-phone-book tr:has(td [type='checkbox']:checked):visible");
             var messageString = "следующие контакты? <br />";
-            $(".table-phone-book tr:has(td [type='checkbox']:checked) td:nth-child(3)").each(function () {
+            $(".table-phone-book tr:has(td [type='checkbox']:checked) .third-column").each(function () {
                 messageString += $(this).text() + "<br />";
             });
             if (rows.length === 0) {
                 rows = $(this).parents("tr");
-                messageString = "контакт: " + $(this).parents("tr").children("td:nth-child(3)").text() + " ?";
+                messageString = "контакт: " + $(this).parents("tr").children(".third-column").text() + " ?";
             }
 
             $.confirm({
@@ -81,7 +81,7 @@ $(document).ready(function () {
             });
         });
         deleteButton.html("<span class='glyphicon glyphicon-remove-sign' aria-hidden='true'></span>");
-        tr.append($("<td></td>").html(deleteButton));
+        tr.append($("<td class='sixth-column'></td>").html(deleteButton));
 
         renumberRow();
 
@@ -118,7 +118,7 @@ $(document).ready(function () {
 });
 
 var renumberRow = function () {
-    var rowsIndices = $(".table-phone-book tr td:nth-child(2)");
+    var rowsIndices = $(".table-phone-book tbody .second-column");
     rowsIndices.each(function (i) {
         $(this).text(i + 1);
     });
