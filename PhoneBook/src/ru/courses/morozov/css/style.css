@@ -58,4 +58,8 @@ h1 {
 .button-filter-ok, .button-filter-clear {
     margin: 0 5px;
 }
+
+label {
+    margin: 0;
+}
 /* form */
