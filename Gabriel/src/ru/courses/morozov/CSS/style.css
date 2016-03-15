@@ -4,6 +4,8 @@ body, html {
 
 body {
     background: linear-gradient(to bottom, #FFFFFF, #DEDEE0) fixed;
+    font-family: "Trebuchet MS", serif;
+
 }
 
 .main {
@@ -24,6 +26,7 @@ body {
     width: 980px;
     margin-left: auto;
     margin-right: auto;
+    font-size: 20px;
 }
 
 .top ul {
@@ -66,10 +69,6 @@ body {
 
 .top a:hover > span {
     border-bottom: 2px solid;
-}
-
-.main-form {
-    font-family: "Trebuchet MS", serif;
 }
 
 .main-table {
@@ -221,7 +220,6 @@ body {
     width: 188px;
     color: #F2FADD;
     font-size: 17px;
-    font-family: "Trebuchet MS", serif;
     background: linear-gradient(to bottom, #92BC3F, #7EA53B);
 }
 
@@ -259,7 +257,6 @@ body {
     margin-top: 35px;
     height: 50px;
     color: #727272;
-    font-family: "Trebuchet MS", serif;
 }
 
 .table-header {
@@ -291,7 +288,6 @@ body {
 .table-previous-application {
     height: 145px;
     width: 100%;
-    font-family: "Trebuchet MS", serif;
     font-size: 13px;
     font-weight: bold;
     border-radius: 5px;
