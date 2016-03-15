@@ -58,5 +58,4 @@ $(document).ready(function () {
     $(".table-previous-application .scroll-pane").jScrollPane({
         verticalDragMaxHeight: 14
     });
-
 });

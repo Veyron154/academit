@@ -5,7 +5,8 @@ body, html {
 body {
     background: linear-gradient(to bottom, #FFFFFF, #DEDEE0) fixed;
     font-family: "Trebuchet MS", serif;
-
+    color: #727272;
+    width: 100%;
 }
 
 .main {
@@ -14,6 +15,7 @@ body {
     margin-left: auto;
 }
 
+/* header */
 .header {
     width: 100%;
     background-color: #FED61C;
@@ -26,7 +28,6 @@ body {
     width: 980px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 20px;
 }
 
 .top ul {
@@ -70,7 +71,9 @@ body {
 .top a:hover > span {
     border-bottom: 2px solid;
 }
+/* end header */
 
+/* main table*/
 .main-table {
     width: 966px;
     margin: 0 7px;
@@ -119,49 +122,49 @@ body {
     vertical-align: middle;
 }
 
-.main-table td:nth-child(1), .main-table th:nth-child(1) {
+.first-column {
     width: 90px;
 }
 
-.main-table td:nth-child(2), .main-table th:nth-child(2) {
+.second-column {
     width: 40px;
     padding: 0;
 }
 
-.main-table td:nth-child(3), .main-table th:nth-child(3) {
+.third-column {
     padding-left: 10px;
     max-width: 240px;
     min-width: 240px;
 }
 
-.main-table td:nth-child(4), .main-table th:nth-child(4) {
+.fourth-column {
     width: 70px;
     padding: 0;
 }
 
-.main-table td:nth-child(5) {
+tbody .fifth-column {
     width: 230px;
 }
 
-.main-table td:nth-child(6), .main-table th:nth-child(6) {
+.sixth-column {
     width: 35px;
 }
 
-.main-table td:nth-child(7) {
+tbody .seventh-column {
     width: 230px;
 }
 
-.main-table td:nth-child(1) {
+tbody .first-column {
     font-size: 14px;
     font-weight: bold;
 }
 
-.main-table td:nth-child(2) {
+tbody .second-column {
     font-size: 15px;
     font-weight: bold;
 }
 
-.main-table td:nth-child(3) {
+tbody .third-column {
     font-size: 12px;
     text-align: left;
     white-space: nowrap;
@@ -169,25 +172,26 @@ body {
     text-overflow: ellipsis;
 }
 
-.main-table td:nth-child(4) {
+tbody .fourth-column {
     font-weight: bold;
     font-size: 18px;
 }
 
-.main-table td:nth-child(6) input {
+tbody .sixth-column input {
     width: 27px;
     height: 14px;
     padding-left: 2px;
     font-size: 11px;
 }
 
-.main-table td:nth-child(7) input {
+tbody .seventh-column input {
     width: 190px;
     height: 16px;
     padding: 0 10px;
     font-size: 11px;
 }
 
+/* slider */
 .main-table .slider {
     height: 6px;
     width: 215px;
@@ -209,6 +213,8 @@ body {
     background: linear-gradient(to bottom, #FFFFFF, #DEDEE0);
     border-radius: 0;
 }
+/* end slider */
+/* end main table */
 
 .button-panel {
     padding-top: 30px;
@@ -221,6 +227,10 @@ body {
     color: #F2FADD;
     font-size: 17px;
     background: linear-gradient(to bottom, #92BC3F, #7EA53B);
+}
+
+.button-panel button:hover {
+    background: linear-gradient(to bottom, #92BC3F, #587327);
 }
 
 .button-archive {
@@ -246,6 +256,11 @@ body {
     margin-right: 25px;
 }
 
+.button-panel [type="submit"]:hover {
+    background: linear-gradient(to bottom, #FFFFFF, #8C8C8C);
+    color: #FFFFFF;
+}
+
 .clearfix:after {
     content: '';
     display: table;
@@ -256,7 +271,6 @@ body {
     margin-bottom: 5px;
     margin-top: 35px;
     height: 50px;
-    color: #727272;
 }
 
 .table-header {
@@ -285,6 +299,7 @@ body {
     background: url("../images/refresh.jpg") no-repeat;
 }
 
+/* lower table */
 .table-previous-application {
     height: 145px;
     width: 100%;
@@ -405,7 +420,9 @@ body {
     height: 25px;
     background-image: url("../images/trashcan.jpg");
 }
+/* end lower table */
 
+/* scrollbar */
 .main-table .jspVerticalBar {
     position: absolute;
     top: 0;
@@ -447,4 +464,4 @@ body {
     background: linear-gradient(90deg, #F0F2F1, #D3D5D2);
     position: relative;
 }
-
+/* end scrollbar */
