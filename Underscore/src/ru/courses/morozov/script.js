@@ -38,12 +38,14 @@ var people = [
     }
 ];
 
-var average = _.chain(people)
+var sum = _.chain(people)
     .pluck("age")
     .reduce(function (memo, age) {
-        return memo + age / _.size(people);
+        return memo + age;
     }, 0)
     .value();
+
+var average = sum / _.size(people);
 console.log(average);
 
 var sortedPeople = _.chain(people)
