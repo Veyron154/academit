@@ -91,7 +91,7 @@ body {
     color: #767877;
 }
 
-.scroll-pane {
+.main-table .scroll-pane {
     overflow-y: auto;
     max-height: 252px;
 }
@@ -127,52 +127,52 @@ body {
     vertical-align: middle;
 }
 
-.first-column {
+.main-table .first-column {
     width: 90px;
 }
 
-.second-column {
+.main-table .second-column {
     width: 40px;
     padding: 0;
 }
 
-.third-column {
+.main-table .third-column {
     padding-left: 10px;
     max-width: 240px;
     min-width: 240px;
 }
 
-.fourth-column {
+.main-table .fourth-column {
     width: 70px;
     padding: 0;
 }
 
-tbody .fifth-column {
+.main-table tbody .fifth-column {
     width: 230px;
 }
 
-.sixth-column {
+.main-table .sixth-column {
     width: 35px;
 }
 
-tbody .seventh-column {
+.main-table tbody .seventh-column {
     width: 243px;
     text-align: left;
     padding-left: 8px;
 }
 
-tbody .first-column {
+.main-table tbody .first-column {
     width: 90px;
     font-size: 14px;
     font-weight: bold;
 }
 
-tbody .second-column {
+.main-table tbody .second-column {
     font-size: 15px;
     font-weight: bold;
 }
 
-tbody .third-column {
+.main-table tbody .third-column {
     font-size: 12px;
     text-align: left;
     white-space: nowrap;
@@ -180,19 +180,19 @@ tbody .third-column {
     text-overflow: ellipsis;
 }
 
-tbody .fourth-column {
+.main-table tbody .fourth-column {
     font-weight: bold;
     font-size: 18px;
 }
 
-tbody .sixth-column input {
+.main-table tbody .sixth-column input {
     width: 27px;
     height: 14px;
     padding-left: 2px;
     font-size: 11px;
 }
 
-tbody .seventh-column input {
+.main-table tbody .seventh-column input {
     width: 190px;
     height: 16px;
     padding: 0 10px;
@@ -336,11 +336,11 @@ tbody .seventh-column input {
     border-top-right-radius: 5px;
 }
 
-.table-previous-application th:last-child {
+.table-previous-application th.fifth-column {
     border-right: none;
 }
 
-.table-previous-application td {
+.table-previous-application .tbody-inner td {
     position: relative;
     vertical-align: middle;
     border: 1px dotted #646464;
@@ -352,66 +352,58 @@ tbody .seventh-column input {
 }
 
 .table-previous-application .tbody-inner {
-    padding: 0 20px;
+    border-collapse: separate;
+    width: 980px;
 }
 
-.table-previous-application th:first-child {
+.table-previous-application th.first-column {
     padding-left: 30px;
     width: 135px;
     border-left: none;
 }
 
-.table-previous-application .td-inner {
-    border: none;
-    padding: 0;
-}
-
-.table-previous-application .tbody-outer {
+.table-previous-application .scroll-pane {
     max-height: 112px;
     overflow-y: auto;
 }
 
-.table-previous-application .tbody-inner {
-    width: 940px;
-}
-
-.table-previous-application .tbody-inner td:first-child {
-    width: 134px;
+.table-previous-application .tbody-inner .first-column {
+    padding-left: 30px;
+    width: 133px;
     border-left: none;
 }
 
-.td-inner tbody:first-child td {
+.table-previous-application .tbody-inner tr:first-child td {
     border-top: none;
 }
 
-.td-inner tbody:last-child td {
+.table-previous-application .tbody-inner tr:last-child td {
     border-bottom: none;
 }
 
-.table-previous-application td:nth-child(2), .table-previous-application th:nth-child(2) {
+.table-previous-application .second-column {
     width: 130px;
 }
 
-.table-previous-application td:nth-child(3), .table-previous-application th:nth-child(3) {
+.table-previous-application .third-column {
     width: 130px;
 }
 
-.table-previous-application td:nth-child(4), .table-previous-application th:nth-child(4) {
+.table-previous-application .fourth-column {
     width: 164px;
 }
 
-.table-previous-application td:last-child {
-    position: relative;
-    width: 330px;
+.table-previous-application .tbody-inner .fifth-column {
+    width: 349px;
     border-right: none;
 }
 
-.table-previous-application th:last-child {
+.table-previous-application th.fifth-column {
     width: 350px;
     border-right: none;
 }
 
-.table-previous-application .tr-under-consideration {
+.table-previous-application .under-consideration {
     background-color: #B2D2F8;
 }
 
@@ -424,7 +416,7 @@ tbody .seventh-column input {
     cursor: pointer;
     border: none;
     top: 4px;
-    right: 10px;
+    right: 40px;
     width: 25px;
     height: 25px;
     background-image: url("../images/trashcan.jpg");
