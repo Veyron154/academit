@@ -353,7 +353,8 @@ body {
 
 .table-previous-application .tbody-inner {
     border-collapse: separate;
-    width: 980px;
+    margin: 0 20px;
+    width: 940px;
 }
 
 .table-previous-application th.first-column {
@@ -368,16 +369,16 @@ body {
 }
 
 .table-previous-application .tbody-inner .first-column {
-    padding-left: 30px;
+    padding-left: 10px;
     width: 133px;
     border-left: none;
 }
 
-.table-previous-application .tbody-inner tr:first-child td {
+.table-previous-application .under-consideration .tbody-inner tr:first-child td {
     border-top: none;
 }
 
-.table-previous-application .tbody-inner tr:last-child td {
+.table-previous-application .considered .tbody-inner tr:last-child td {
     border-bottom: none;
 }
 
@@ -394,7 +395,7 @@ body {
 }
 
 .table-previous-application .tbody-inner .fifth-column {
-    width: 349px;
+    width: 329px;
     border-right: none;
 }
 
@@ -405,6 +406,11 @@ body {
 
 .table-previous-application .under-consideration {
     background-color: #B2D2F8;
+    width: 980px;
+}
+
+.table-previous-application .considered {
+    width: 980px;
 }
 
 .table-previous-application .tr-under-consideration td {
