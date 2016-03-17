@@ -56,7 +56,6 @@ body {
     display: block;
     text-decoration: none;
     font-size: 21px;
-    font-family: Cambria, fantasy;
 }
 
 .lower-case {
@@ -353,8 +352,22 @@ body {
 
 .table-previous-application .tbody-inner {
     border-collapse: separate;
-    margin: 0 20px;
-    width: 940px;
+    width: 968px;
+    margin-right: 12px;
+}
+
+
+.table-previous-application .scroll-pane {
+    max-height: 112px;
+    overflow-y: auto;
+}
+
+.table-previous-application .tbody-inner tr:first-child td {
+    border-top: none;
+}
+
+.table-previous-application  .tbody-inner tr:last-child td {
+    border-bottom: none;
 }
 
 .table-previous-application th.first-column {
@@ -363,23 +376,10 @@ body {
     border-left: none;
 }
 
-.table-previous-application .scroll-pane {
-    max-height: 112px;
-    overflow-y: auto;
-}
-
 .table-previous-application .tbody-inner .first-column {
-    padding-left: 10px;
+    padding-left: 30px;
     width: 133px;
     border-left: none;
-}
-
-.table-previous-application .under-consideration .tbody-inner tr:first-child td {
-    border-top: none;
-}
-
-.table-previous-application .considered .tbody-inner tr:last-child td {
-    border-bottom: none;
 }
 
 .table-previous-application .second-column {
@@ -395,7 +395,7 @@ body {
 }
 
 .table-previous-application .tbody-inner .fifth-column {
-    width: 329px;
+    width: 337px;
     border-right: none;
 }
 
@@ -406,15 +406,6 @@ body {
 
 .table-previous-application .under-consideration {
     background-color: #B2D2F8;
-    width: 980px;
-}
-
-.table-previous-application .considered {
-    width: 980px;
-}
-
-.table-previous-application .tr-under-consideration td {
-    border-left-color: #FFFFFF;
 }
 
 .trashcan {
