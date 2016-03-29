@@ -262,7 +262,7 @@ public class FactoryFrame {
     }
 
     public void showConfigNoFindMessage() {
-        JOptionPane.showMessageDialog(frame, "Конфигурационный файл не найден", "Ошибка загрузки файла",
-                JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Конфигурационный файл не найден\nЗагружены значения по умолчанию",
+                "Ошибка загрузки файла", JOptionPane.ERROR_MESSAGE);
     }
 }

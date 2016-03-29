@@ -1,12 +1,10 @@
 package ru.courses.morozov;
 
-import ru.courses.morozov.model.FactoryManager;
-import ru.courses.morozov.view.FactoryFrame;
+        import ru.courses.morozov.model.FactoryManager;
 
 public class FactoryMain {
     public static void main(String[] args) {
-        String pathToConfigFile = "Factory/src/ru/courses/morozov/resources/config.txt";
-        FactoryManager manager = new FactoryManager(pathToConfigFile);
+        FactoryManager manager = new FactoryManager();
         manager.start();
     }
 }
