@@ -52,20 +52,16 @@ public class FactoryManager {
     private Dealer[] dealers;
     private Controller controller;
 
+    private ConfigReader configReader;
     private boolean logRecording;
 
-    public FactoryManager(String pathToConfigFile) {
+    public FactoryManager() {
         frame = new FactoryFrame(this);
 
         bodyStorageLock = new Object();
         engineStorageLock = new Object();
         accessoriesStorageLock = new Object();
         carStorageLock = new Object();
-
-        bodyStorage = new ArrayList<>();
-        engineStorage = new ArrayList<>();
-        accessoriesStorage = new ArrayList<>();
-        carStorage = new ArrayList<>();
 
         accessoryID = 1;
         carID = 1;
@@ -75,7 +71,13 @@ public class FactoryManager {
         accessoriesProducedCount = 0;
         carBoughtCount = 0;
 
-        readConfigFile(pathToConfigFile);
+        configReader = new ConfigReader(frame);
+        setFactoryOptions();
+
+        bodyStorage = new ArrayList<>();
+        engineStorage = new ArrayList<>();
+        accessoriesStorage = new ArrayList<>();
+        carStorage = new ArrayList<>();
 
         bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()));
         engineProvider = new EngineProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfEngineSlider()));
@@ -148,7 +150,7 @@ public class FactoryManager {
 
     public void addToAccessoriesStorage() {
         synchronized (accessoriesStorageLock) {
-            while ((accessoriesStorage.size() >= accessoriesStorageCapacity)) {
+            while (accessoriesStorage.size() >= accessoriesStorageCapacity) {
                 try {
                     accessoriesStorageLock.wait();
                 } catch (InterruptedException e) {
@@ -156,8 +158,8 @@ public class FactoryManager {
                 }
             }
             accessoriesStorage.add(new Accessory(accessoryID));
-            ++accessoryID;
             ++accessoriesProducedCount;
+            ++accessoryID;
             frame.setAccessoriesProducedText(Integer.toString(accessoriesProducedCount));
             frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.size()));
             accessoriesStorageLock.notifyAll();
@@ -275,28 +277,15 @@ public class FactoryManager {
         }
     }
 
-    public void readConfigFile(String pathToFile) {
-        try {
-            try (BufferedReader reader = new BufferedReader(new FileReader(pathToFile))) {
-                String string = reader.readLine();
-                bodyStorageCapacity = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                engineStorageCapacity = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                accessoriesStorageCapacity = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                carStorageCapacity = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                countOfAccessoriesProviders = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                countOfWorkers = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                countOfDealers = Integer.parseInt(string.substring(string.indexOf('=') + 1));
-                string = reader.readLine();
-                logRecording = Boolean.parseBoolean(string.substring(string.indexOf('=') + 1));
-            }
-        } catch (IOException e) {
-            frame.showConfigNoFindMessage();
-        }
+    public void setFactoryOptions() {
+        configReader.read();
+        bodyStorageCapacity = configReader.getBodyStorageCapacity();
+        engineStorageCapacity = configReader.getEngineStorageCapacity();
+        accessoriesStorageCapacity = configReader.getAccessoryStorageCapacity();
+        carStorageCapacity = configReader.getCarStorageCapacity();
+        countOfAccessoriesProviders = configReader.getAccessoryProviders();
+        countOfWorkers = configReader.getWorkers();
+        countOfDealers = configReader.getDealers();
+        logRecording = configReader.isLogSale();
     }
 }
