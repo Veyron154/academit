@@ -15,14 +15,11 @@ import java.util.concurrent.TimeUnit;
 public class FactoryManager {
     private FactoryFrame frame;
 
-    private final Object bodyStorageLock;
-    private final Object engineStorageLock;
-    private final Object accessoriesStorageLock;
     private final Object carStorageLock;
 
-    private ArrayList<Body> bodyStorage;
-    private ArrayList<Engine> engineStorage;
-    private ArrayList<Accessory> accessoriesStorage;
+    private Storage<Body> bodyStorage;
+    private Storage<Engine> engineStorage;
+    private Storage<Accessory> accessoriesStorage;
     private ArrayList<Car> carStorage;
 
     private ExecutorService executorService;
@@ -38,8 +35,6 @@ public class FactoryManager {
     private int accessoryID;
     private int carID;
     private int countOfRequests;
-    private int bodyProducedCount;
-    private int engineProducedCount;
     private int accessoriesProducedCount;
     private int carBoughtCount;
 
@@ -55,25 +50,23 @@ public class FactoryManager {
     public FactoryManager() {
         frame = new FactoryFrame(this);
 
-        bodyStorageLock = new Object();
-        engineStorageLock = new Object();
-        accessoriesStorageLock = new Object();
+        Object bodyStorageLock = new Object();
+        Object engineStorageLock = new Object();
+        Object accessoriesStorageLock = new Object();
         carStorageLock = new Object();
 
         accessoryID = 1;
         carID = 1;
         countOfRequests = 0;
-        bodyProducedCount = 0;
-        engineProducedCount = 0;
         accessoriesProducedCount = 0;
         carBoughtCount = 0;
 
         configReader = new ConfigReader(frame);
         setFactoryOptions();
 
-        bodyStorage = new ArrayList<>();
-        engineStorage = new ArrayList<>();
-        accessoriesStorage = new ArrayList<>();
+        bodyStorage = new Storage<>(bodyStorageCapacity, bodyStorageLock);
+        engineStorage = new Storage<>(engineStorageCapacity, engineStorageLock);
+        accessoriesStorage = new Storage<>(accessoriesStorageCapacity, accessoriesStorageLock);
         carStorage = new ArrayList<>();
 
         bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()));
@@ -112,43 +105,23 @@ public class FactoryManager {
     }
 
     public void addToBodyStorage(Body body) throws InterruptedException {
-        synchronized (bodyStorageLock) {
-            while (bodyStorage.size() >= bodyStorageCapacity) {
-                bodyStorageLock.wait();
-            }
-            bodyStorage.add(body);
-            ++bodyProducedCount;
-            frame.setBodyProducedText(Integer.toString(bodyProducedCount));
-            frame.setBodyStorageText(Integer.toString(bodyStorage.size()));
-            bodyStorageLock.notifyAll();
-        }
+        bodyStorage.putSpare(body);
+        frame.setBodyProducedText(Integer.toString(bodyStorage.getProducedCount()));
+        frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
     }
 
     public void addToEngineStorage(Engine engine) throws InterruptedException{
-        synchronized (engineStorageLock) {
-            while (engineStorage.size() >= engineStorageCapacity) {
-                engineStorageLock.wait();
-            }
-            engineStorage.add(engine);
-            ++engineProducedCount;
-            frame.setEngineProducedText(Integer.toString(engineProducedCount));
-            frame.setEngineStorageText(Integer.toString(engineStorage.size()));
-            engineStorageLock.notifyAll();
-        }
+        engineStorage.putSpare(engine);
+        frame.setEngineProducedText(Integer.toString(engineStorage.getProducedCount()));
+        frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
     }
 
     public void addToAccessoriesStorage() throws InterruptedException{
-        synchronized (accessoriesStorageLock) {
-            while (accessoriesStorage.size() >= accessoriesStorageCapacity) {
-                accessoriesStorageLock.wait();
-            }
-            accessoriesStorage.add(new Accessory(accessoryID));
-            ++accessoriesProducedCount;
-            ++accessoryID;
-            frame.setAccessoriesProducedText(Integer.toString(accessoriesProducedCount));
-            frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.size()));
-            accessoriesStorageLock.notifyAll();
-        }
+        accessoriesStorage.putSpare(new Accessory(accessoryID));
+        ++accessoriesProducedCount;
+        ++accessoryID;
+        frame.setAccessoriesProducedText(Integer.toString(accessoriesProducedCount));
+        frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
     }
 
     public Car getCarFromStorage() throws InterruptedException{
@@ -169,38 +142,12 @@ public class FactoryManager {
         Body body;
         Engine engine;
         Accessory accessory;
-        synchronized (bodyStorageLock) {
-            while (bodyStorage.size() == 0) {
-                bodyStorageLock.wait();
-            }
-            body = bodyStorage.remove(bodyStorage.size() - 1);
-            frame.setBodyStorageText(Integer.toString(bodyStorage.size()));
-            bodyStorageLock.notifyAll();
-        }
-        synchronized (engineStorageLock) {
-            while (engineStorage.size() == 0) {
-                try {
-                    engineStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            engine = engineStorage.remove(engineStorage.size() - 1);
-            frame.setEngineStorageText(Integer.toString(engineStorage.size()));
-            engineStorageLock.notifyAll();
-        }
-        synchronized (accessoriesStorageLock) {
-            while (accessoriesStorage.size() == 0) {
-                try {
-                    accessoriesStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            accessory = accessoriesStorage.remove(accessoriesStorage.size() - 1);
-            frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.size()));
-            accessoriesStorageLock.notifyAll();
-        }
+        body = bodyStorage.getSpare();
+        frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
+        engine = engineStorage.getSpare();
+        frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
+        accessory = accessoriesStorage.getSpare();
+        frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
         synchronized (carStorageLock) {
             while (carStorage.size() >= carStorageCapacity) {
                 try {
@@ -223,7 +170,7 @@ public class FactoryManager {
             while (carStorage.size() >= carStorageCapacity) {
                 carStorageLock.wait();
             }
-            while (countOfRequests < carStorageCapacity) {
+            while (countOfRequests  + carStorage.size() < carStorageCapacity) {
                 executorService.submit(new Worker(this));
                 ++countOfRequests;
                 frame.setInProductionText(Integer.toString(countOfRequests));

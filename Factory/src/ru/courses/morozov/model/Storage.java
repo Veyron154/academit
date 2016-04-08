@@ -15,14 +15,10 @@ public class Storage<T> {
         producedCount = 0;
     }
 
-    public boolean putSpare(T spare){
+    public boolean putSpare(T spare) throws InterruptedException{
         synchronized (lock){
             while (storage.size() >= capacity){
-                try {
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                lock.wait();
             }
             storage.add(spare);
             ++producedCount;
@@ -31,16 +27,12 @@ public class Storage<T> {
         }
     }
 
-    public T getSpare(){
+    public T getSpare() throws InterruptedException{
         synchronized (lock) {
             while (storage.size() <= 0){
-                try {
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                lock.wait();
             }
-            T withdrawSpare = storage.get(storage.size() - 1);
+            T withdrawSpare = storage.remove(storage.size() - 1);
             lock.notifyAll();
             return withdrawSpare;
         }
