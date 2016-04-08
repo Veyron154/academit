@@ -24,6 +24,7 @@ public class BodyProvider implements Runnable {
                 manager.addToBodyStorage(new Body(bodyID));
                 ++bodyID;
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 return;
             }
         }

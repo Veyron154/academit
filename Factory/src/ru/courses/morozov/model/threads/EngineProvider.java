@@ -24,6 +24,7 @@ public class EngineProvider implements Runnable {
                 manager.addToEngineStorage(new Engine(engineID));
                 ++engineID;
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 return;
             }
         }

@@ -10,6 +10,10 @@ public class Worker implements Runnable {
     }
 
     public void run() {
-        manager.createCar();
+        try {
+            manager.createCar();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -7,9 +7,6 @@ import ru.courses.morozov.model.spares.Engine;
 import ru.courses.morozov.model.threads.*;
 import ru.courses.morozov.view.FactoryFrame;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -114,14 +111,10 @@ public class FactoryManager {
         controllerThread.start();
     }
 
-    public void addToBodyStorage(Body body) {
+    public void addToBodyStorage(Body body) throws InterruptedException {
         synchronized (bodyStorageLock) {
             while (bodyStorage.size() >= bodyStorageCapacity) {
-                try {
-                    bodyStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                bodyStorageLock.wait();
             }
             bodyStorage.add(body);
             ++bodyProducedCount;
@@ -131,14 +124,10 @@ public class FactoryManager {
         }
     }
 
-    public void addToEngineStorage(Engine engine) {
+    public void addToEngineStorage(Engine engine) throws InterruptedException{
         synchronized (engineStorageLock) {
             while (engineStorage.size() >= engineStorageCapacity) {
-                try {
-                    engineStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                engineStorageLock.wait();
             }
             engineStorage.add(engine);
             ++engineProducedCount;
@@ -148,14 +137,10 @@ public class FactoryManager {
         }
     }
 
-    public void addToAccessoriesStorage() {
+    public void addToAccessoriesStorage() throws InterruptedException{
         synchronized (accessoriesStorageLock) {
             while (accessoriesStorage.size() >= accessoriesStorageCapacity) {
-                try {
-                    accessoriesStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                accessoriesStorageLock.wait();
             }
             accessoriesStorage.add(new Accessory(accessoryID));
             ++accessoriesProducedCount;
@@ -166,14 +151,10 @@ public class FactoryManager {
         }
     }
 
-    public Car getCarFromStorage() {
+    public Car getCarFromStorage() throws InterruptedException{
         synchronized (carStorageLock) {
             while (carStorage.size() == 0) {
-                try {
-                    carStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                carStorageLock.wait();
             }
             Car boughtCar = carStorage.remove(carStorage.size() - 1);
             ++carBoughtCount;
@@ -184,17 +165,13 @@ public class FactoryManager {
         }
     }
 
-    public void createCar() {
+    public void createCar() throws InterruptedException{
         Body body;
         Engine engine;
         Accessory accessory;
         synchronized (bodyStorageLock) {
             while (bodyStorage.size() == 0) {
-                try {
-                    bodyStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                bodyStorageLock.wait();
             }
             body = bodyStorage.remove(bodyStorage.size() - 1);
             frame.setBodyStorageText(Integer.toString(bodyStorage.size()));
@@ -241,14 +218,10 @@ public class FactoryManager {
         }
     }
 
-    public void requestToFactory() {
+    public void requestToFactory() throws InterruptedException{
         synchronized (carStorageLock) {
             while (carStorage.size() >= carStorageCapacity) {
-                try {
-                    carStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                carStorageLock.wait();
             }
             while (countOfRequests < carStorageCapacity) {
                 executorService.submit(new Worker(this));

@@ -21,6 +21,7 @@ public class AccessoryProvider implements Runnable {
                 Thread.sleep(preparationTime);
                 manager.addToAccessoriesStorage();
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 return;
             }
         }

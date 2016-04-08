@@ -49,6 +49,7 @@ public class Dealer implements Runnable {
                     logger.write(loggingString);
                 }
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 return;
             }
         }

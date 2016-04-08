@@ -13,10 +13,11 @@ public class Controller implements Runnable {
         while (true) {
             try {
                 Thread.sleep(1000);
+                manager.requestToFactory();
             } catch (InterruptedException e) {
+                e.printStackTrace();
                 return;
             }
-            manager.requestToFactory();
         }
     }
 }
