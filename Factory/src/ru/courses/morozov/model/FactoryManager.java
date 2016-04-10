@@ -33,10 +33,8 @@ public class FactoryManager {
     private int countOfWorkers;
     private int countOfDealers;
 
-    private int accessoryID;
     private int carID;
     private int countOfRequests;
-    private int accessoriesProducedCount;
     private int carBoughtCount;
 
     private BodyProvider bodyProvider;
@@ -53,10 +51,8 @@ public class FactoryManager {
 
         carStorageLock = new Object();
 
-        accessoryID = 1;
         carID = 1;
         countOfRequests = 0;
-        accessoriesProducedCount = 0;
         carBoughtCount = 0;
 
         configReader = new ConfigReader();
@@ -67,10 +63,14 @@ public class FactoryManager {
         accessoriesStorage = new Storage<>(accessoriesStorageCapacity);
         carStorage = new ArrayList<>();
 
-        bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()));
-        engineProvider = new EngineProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfEngineSlider()));
+        IdCreator accessoryIdCreator = new IdCreator();
+
+        bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()),
+                new IdCreator());
+        engineProvider = new EngineProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfEngineSlider()),
+                new IdCreator());
         accessoryProvider = new AccessoryProvider(this,
-                TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfAccessoriesSlider()));
+                TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfAccessoriesSlider()), accessoryIdCreator);
         dealers = new Dealer[countOfDealers];
         controller = new Controller(this);
 
@@ -114,12 +114,12 @@ public class FactoryManager {
         frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
     }
 
-    public void addToAccessoriesStorage() throws InterruptedException {
-        accessoriesStorage.putSpare(new Accessory(accessoryID));
-        ++accessoriesProducedCount;
-        ++accessoryID;
-        frame.setAccessoriesProducedText(Integer.toString(accessoriesProducedCount));
-        frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
+    public void addToAccessoriesStorage(Accessory accessory) throws InterruptedException {
+        synchronized (new Object()) {
+            accessoriesStorage.putSpare(accessory);
+            frame.setAccessoriesProducedText(Integer.toString(accessoriesStorage.getProducedCount()));
+            frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
+        }
     }
 
     public Car getCarFromStorage() throws InterruptedException {
