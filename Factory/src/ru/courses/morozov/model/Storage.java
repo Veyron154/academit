@@ -8,10 +8,10 @@ public class Storage<T> {
     private int producedCount;
     private final Object lock;
 
-    public Storage(int capacity, Object lock){
+    public Storage(int capacity){
         storage = new ArrayList<>();
         this.capacity = capacity;
-        this.lock = lock;
+        lock = new Object();
         producedCount = 0;
     }
 

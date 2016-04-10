@@ -51,9 +51,6 @@ public class FactoryManager {
     public FactoryManager() {
         frame = new FactoryFrame(this);
 
-        Object bodyStorageLock = new Object();
-        Object engineStorageLock = new Object();
-        Object accessoriesStorageLock = new Object();
         carStorageLock = new Object();
 
         accessoryID = 1;
@@ -65,9 +62,9 @@ public class FactoryManager {
         configReader = new ConfigReader();
         setFactoryOptions();
 
-        bodyStorage = new Storage<>(bodyStorageCapacity, bodyStorageLock);
-        engineStorage = new Storage<>(engineStorageCapacity, engineStorageLock);
-        accessoriesStorage = new Storage<>(accessoriesStorageCapacity, accessoriesStorageLock);
+        bodyStorage = new Storage<>(bodyStorageCapacity);
+        engineStorage = new Storage<>(engineStorageCapacity);
+        accessoriesStorage = new Storage<>(accessoriesStorageCapacity);
         carStorage = new ArrayList<>();
 
         bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()));
