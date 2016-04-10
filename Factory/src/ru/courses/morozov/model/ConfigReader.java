@@ -1,13 +1,10 @@
 package ru.courses.morozov.model;
 
-import ru.courses.morozov.view.FactoryFrame;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class ConfigReader {
-    private FactoryFrame frame;
     private StringBuilder builder;
 
     private int bodyStorageCapacity;
@@ -19,8 +16,7 @@ public class ConfigReader {
     private int dealers;
     private boolean logSale;
 
-    public ConfigReader(FactoryFrame frame) {
-        this.frame = frame;
+    public ConfigReader() {
         builder = new StringBuilder();
         int defaultBodyStorageCapacity = 20;
         int defaultEngineStorageCapacity = 20;
@@ -40,7 +36,7 @@ public class ConfigReader {
         logSale = true;
     }
 
-    public void read() {
+    public void read() throws IOException {
         String pathToConfig = "Factory/src/ru/courses/morozov/resources/config.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader
                 (pathToConfig))) {
@@ -57,8 +53,6 @@ public class ConfigReader {
             workers = getIntValue("Workers=");
             dealers = getIntValue("Dealers=");
             logSale = getBooleanValue("LogSale=");
-        } catch (IOException e) {
-            frame.showConfigNoFindMessage();
         }
     }
 

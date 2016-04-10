@@ -7,6 +7,7 @@ import ru.courses.morozov.model.spares.Engine;
 import ru.courses.morozov.model.threads.*;
 import ru.courses.morozov.view.FactoryFrame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,7 +62,7 @@ public class FactoryManager {
         accessoriesProducedCount = 0;
         carBoughtCount = 0;
 
-        configReader = new ConfigReader(frame);
+        configReader = new ConfigReader();
         setFactoryOptions();
 
         bodyStorage = new Storage<>(bodyStorageCapacity, bodyStorageLock);
@@ -110,13 +111,13 @@ public class FactoryManager {
         frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
     }
 
-    public void addToEngineStorage(Engine engine) throws InterruptedException{
+    public void addToEngineStorage(Engine engine) throws InterruptedException {
         engineStorage.putSpare(engine);
         frame.setEngineProducedText(Integer.toString(engineStorage.getProducedCount()));
         frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
     }
 
-    public void addToAccessoriesStorage() throws InterruptedException{
+    public void addToAccessoriesStorage() throws InterruptedException {
         accessoriesStorage.putSpare(new Accessory(accessoryID));
         ++accessoriesProducedCount;
         ++accessoryID;
@@ -124,7 +125,7 @@ public class FactoryManager {
         frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
     }
 
-    public Car getCarFromStorage() throws InterruptedException{
+    public Car getCarFromStorage() throws InterruptedException {
         synchronized (carStorageLock) {
             while (carStorage.size() == 0) {
                 carStorageLock.wait();
@@ -138,7 +139,7 @@ public class FactoryManager {
         }
     }
 
-    public void createCar() throws InterruptedException{
+    public void createCar() throws InterruptedException {
         Body body;
         Engine engine;
         Accessory accessory;
@@ -165,12 +166,12 @@ public class FactoryManager {
         }
     }
 
-    public void requestToFactory() throws InterruptedException{
+    public void requestToFactory() throws InterruptedException {
         synchronized (carStorageLock) {
             while (carStorage.size() >= carStorageCapacity) {
                 carStorageLock.wait();
             }
-            while (countOfRequests  + carStorage.size() < carStorageCapacity) {
+            while (countOfRequests + carStorage.size() < carStorageCapacity) {
                 executorService.submit(new Worker(this));
                 ++countOfRequests;
                 frame.setInProductionText(Integer.toString(countOfRequests));
@@ -198,7 +199,11 @@ public class FactoryManager {
     }
 
     public void setFactoryOptions() {
-        configReader.read();
+        try {
+            configReader.read();
+        } catch (IOException e) {
+            frame.showConfigNoFindMessage();
+        }
         bodyStorageCapacity = configReader.getBodyStorageCapacity();
         engineStorageCapacity = configReader.getEngineStorageCapacity();
         accessoriesStorageCapacity = configReader.getAccessoryStorageCapacity();
