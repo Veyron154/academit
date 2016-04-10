@@ -20,12 +20,10 @@ public class EngineProvider implements Runnable {
     }
 
     public void run() {
-        int engineID = 1;
         while (true) {
             try {
                 Thread.sleep(preparationTime);
                 manager.addToEngineStorage(new Engine(idCreator.getId()));
-                ++engineID;
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 return;

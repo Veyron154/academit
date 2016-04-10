@@ -8,7 +8,6 @@ import ru.courses.morozov.model.threads.*;
 import ru.courses.morozov.view.FactoryFrame;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -18,11 +17,13 @@ public class FactoryManager {
 
     private final Object carStorageLock;
     private final Object accessoriesProvidersLock;
+    private final Object workersLock;
+    private final Object dealersLock;
 
     private Storage<Body> bodyStorage;
     private Storage<Engine> engineStorage;
     private Storage<Accessory> accessoriesStorage;
-    private ArrayList<Car> carStorage;
+    private Storage<Car> carStorage;
 
     private ExecutorService executorService;
 
@@ -34,7 +35,6 @@ public class FactoryManager {
     private int countOfWorkers;
     private int countOfDealers;
 
-    private int carID;
     private int countOfRequests;
     private int carBoughtCount;
 
@@ -52,8 +52,9 @@ public class FactoryManager {
 
         carStorageLock = new Object();
         accessoriesProvidersLock = new Object();
+        workersLock = new Object();
+        dealersLock = new Object();
 
-        carID = 1;
         countOfRequests = 0;
         carBoughtCount = 0;
 
@@ -63,7 +64,7 @@ public class FactoryManager {
         bodyStorage = new Storage<>(bodyStorageCapacity);
         engineStorage = new Storage<>(engineStorageCapacity);
         accessoriesStorage = new Storage<>(accessoriesStorageCapacity);
-        carStorage = new ArrayList<>();
+        carStorage = new Storage<>(carStorageCapacity);
 
         IdCreator accessoryIdCreator = new IdCreator();
 
@@ -124,55 +125,39 @@ public class FactoryManager {
         }
     }
 
+    public void addToCarStorage(Car car) throws InterruptedException {
+        synchronized (workersLock) {
+            carStorage.putSpare(car);
+            --countOfRequests;
+            frame.setInProductionText(Integer.toString(countOfRequests));
+            frame.setDealersStorageText(Integer.toString(carStorage.getSize()));
+            carStorageLock.notifyAll();
+        }
+    }
+
     public Car getCarFromStorage() throws InterruptedException {
-        synchronized (carStorageLock) {
-            while (carStorage.size() == 0) {
-                carStorageLock.wait();
-            }
-            Car boughtCar = carStorage.remove(carStorage.size() - 1);
+        synchronized (dealersLock) {
+            Car boughtCar = carStorage.getSpare();
             ++carBoughtCount;
             frame.setDealersBoughtText(Integer.toString(carBoughtCount));
-            frame.setDealersStorageText(Integer.toString(carStorage.size()));
-            carStorageLock.notifyAll();
+            frame.setDealersStorageText(Integer.toString(carStorage.getSize()));
             return boughtCar;
         }
     }
 
-    public void createCar() throws InterruptedException {
-        Body body;
-        Engine engine;
-        Accessory accessory;
-        body = bodyStorage.getSpare();
-        frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
-        engine = engineStorage.getSpare();
-        frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
-        accessory = accessoriesStorage.getSpare();
-        frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
-        synchronized (carStorageLock) {
-            while (carStorage.size() >= carStorageCapacity) {
-                try {
-                    carStorageLock.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            carStorage.add(new Car(body, engine, accessory, carID));
-            ++carID;
-            --countOfRequests;
-            frame.setInProductionText(Integer.toString(countOfRequests));
-            frame.setDealersStorageText(Integer.toString(carStorage.size()));
-            carStorageLock.notifyAll();
-        }
-    }
 
     public void requestToFactory() throws InterruptedException {
         synchronized (carStorageLock) {
-            while (carStorage.size() >= carStorageCapacity) {
+            while (carStorage.getSize() >= carStorageCapacity) {
                 carStorageLock.wait();
             }
-            while (countOfRequests + carStorage.size() < carStorageCapacity) {
-                executorService.submit(new Worker(this));
+            while (countOfRequests + carStorage.getSize() < carStorageCapacity) {
+                executorService.submit(new Worker(this, bodyStorage.getSpare(), engineStorage.getSpare(),
+                        accessoriesStorage.getSpare(), new IdCreator()));
                 ++countOfRequests;
+                frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
+                frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
+                frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
                 frame.setInProductionText(Integer.toString(countOfRequests));
                 carStorageLock.notifyAll();
             }
