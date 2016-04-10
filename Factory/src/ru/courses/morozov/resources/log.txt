@@ -40,3 +40,7 @@
 10.04.2016 05.49.32, Dealer 3, Auto 4 (Body 6, Engine 4, Accessory 35)
 10.04.2016 05.49.42, Dealer 4, Auto 6 (Body 10, Engine 6, Accessory 37)
 10.04.2016 05.49.42, Dealer 1, Auto 5 (Body 8, Engine 5, Accessory 36)
+10.04.2016 05.55.34, Dealer 3, Auto 2 (Body 3, Engine 2, Accessory 3)
+10.04.2016 05.55.34, Dealer 1, Auto 3 (Body 4, Engine 3, Accessory 31)
+10.04.2016 05.55.34, Dealer 2, Auto 1 (Body 1, Engine 1, Accessory 2)
+10.04.2016 05.55.39, Dealer 4, Auto 4 (Body 6, Engine 4, Accessory 34)

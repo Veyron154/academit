@@ -17,6 +17,7 @@ public class FactoryManager {
     private FactoryFrame frame;
 
     private final Object carStorageLock;
+    private final Object accessoriesProvidersLock;
 
     private Storage<Body> bodyStorage;
     private Storage<Engine> engineStorage;
@@ -50,6 +51,7 @@ public class FactoryManager {
         frame = new FactoryFrame(this);
 
         carStorageLock = new Object();
+        accessoriesProvidersLock = new Object();
 
         carID = 1;
         countOfRequests = 0;
@@ -115,7 +117,7 @@ public class FactoryManager {
     }
 
     public void addToAccessoriesStorage(Accessory accessory) throws InterruptedException {
-        synchronized (new Object()) {
+        synchronized (accessoriesProvidersLock) {
             accessoriesStorage.putSpare(accessory);
             frame.setAccessoriesProducedText(Integer.toString(accessoriesStorage.getProducedCount()));
             frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
