@@ -5,11 +5,10 @@ import ru.courses.morozov.model.spares.Body;
 import ru.courses.morozov.model.spares.Car;
 import ru.courses.morozov.model.spares.Engine;
 import ru.courses.morozov.model.threads.*;
+import ru.courses.morozov.threadPool.ThreadPool;
 import ru.courses.morozov.view.FactoryFrame;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class FactoryManager {
@@ -25,7 +24,7 @@ public class FactoryManager {
     private Storage<Accessory> accessoriesStorage;
     private Storage<Car> carStorage;
 
-    private ExecutorService executorService;
+    private ThreadPool threadPool;
 
     private int bodyStorageCapacity;
     private int engineStorageCapacity;
@@ -37,6 +36,7 @@ public class FactoryManager {
 
     private int countOfRequests;
     private int carBoughtCount;
+    private IdCreator carIdCreator;
 
     private BodyProvider bodyProvider;
     private EngineProvider engineProvider;
@@ -67,6 +67,7 @@ public class FactoryManager {
         carStorage = new Storage<>(carStorageCapacity);
 
         IdCreator accessoryIdCreator = new IdCreator();
+        carIdCreator = new IdCreator();
 
         bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()),
                 new IdCreator());
@@ -77,7 +78,7 @@ public class FactoryManager {
         dealers = new Dealer[countOfDealers];
         controller = new Controller(this);
 
-        executorService = Executors.newFixedThreadPool(countOfWorkers);
+        threadPool = new ThreadPool(countOfWorkers);
     }
 
     public void start() {
@@ -131,7 +132,6 @@ public class FactoryManager {
             --countOfRequests;
             frame.setInProductionText(Integer.toString(countOfRequests));
             frame.setDealersStorageText(Integer.toString(carStorage.getSize()));
-            carStorageLock.notifyAll();
         }
     }
 
@@ -152,8 +152,8 @@ public class FactoryManager {
                 carStorageLock.wait();
             }
             while (countOfRequests + carStorage.getSize() < carStorageCapacity) {
-                executorService.submit(new Worker(this, bodyStorage.getSpare(), engineStorage.getSpare(),
-                        accessoriesStorage.getSpare(), new IdCreator()));
+                threadPool.addTask(new Worker(this, bodyStorage.getSpare(), engineStorage.getSpare(),
+                        accessoriesStorage.getSpare(), carIdCreator));
                 ++countOfRequests;
                 frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
                 frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));

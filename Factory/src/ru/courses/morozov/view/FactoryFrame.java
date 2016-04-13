@@ -43,7 +43,7 @@ public class FactoryFrame {
         int border = 5;
         elementsBorder = new EmptyBorder(border, border, border, border);
         defaultValueOfBodySlider = 3;
-        defaultValueOfEngineSlider = 5;
+        defaultValueOfEngineSlider = 4;
         defaultValueOfAccessoriesSlider = 10;
         defaultValueOfDealersSlider = 15;
         panelBorder = 10;
