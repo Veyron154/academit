@@ -30,7 +30,7 @@ public class ThreadPool {
             while (taskQueue.isEmpty()) {
                 lock.wait();
             }
+            return taskQueue.remove();
         }
-        return taskQueue.remove();
     }
 }
