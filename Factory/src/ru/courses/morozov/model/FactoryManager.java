@@ -66,7 +66,6 @@ public class FactoryManager {
         accessoriesStorage = new Storage<>(accessoriesStorageCapacity);
         carStorage = new Storage<>(carStorageCapacity);
 
-        IdCreator accessoryIdCreator = new IdCreator();
         carIdCreator = new IdCreator();
 
         bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()),
@@ -74,7 +73,7 @@ public class FactoryManager {
         engineProvider = new EngineProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfEngineSlider()),
                 new IdCreator());
         accessoryProvider = new AccessoryProvider(this,
-                TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfAccessoriesSlider()), accessoryIdCreator);
+                TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfAccessoriesSlider()), new IdCreator());
         dealers = new Dealer[countOfDealers];
         controller = new Controller(this);
 
