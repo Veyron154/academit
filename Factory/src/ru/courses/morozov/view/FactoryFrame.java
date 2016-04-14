@@ -1,6 +1,7 @@
 package ru.courses.morozov.view;
 
-import ru.courses.morozov.model.FactoryManager;
+import ru.courses.morozov.contracts.ModelInterface;
+import ru.courses.morozov.contracts.ViewInterface;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -9,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-public class FactoryFrame {
+public class FactoryFrame implements ViewInterface {
     private JFrame frame;
     private Border elementsBorder;
 
@@ -35,10 +36,10 @@ public class FactoryFrame {
     private final int defaultValueOfAccessoriesSlider;
     private final int defaultValueOfDealersSlider;
 
-    private FactoryManager manager;
+    private ModelInterface model;
 
-    public FactoryFrame(FactoryManager manager) {
-        this.manager = manager;
+    public FactoryFrame(ModelInterface model) {
+        this.model = model;
         frame = new JFrame("Фабрика");
         int border = 5;
         elementsBorder = new EmptyBorder(border, border, border, border);
@@ -84,21 +85,21 @@ public class FactoryFrame {
         bodySlider.addChangeListener(e -> {
             if (!bodySlider.getValueIsAdjusting()) {
                 int preparationTime = bodySlider.getValue() * 1000;
-                manager.setBodyProviderPreparationTime(preparationTime);
+                model.setBodyProviderPreparationTime(preparationTime);
             }
         });
         engineSlider = createSlider(defaultValueOfEngineSlider);
         engineSlider.addChangeListener(e -> {
             if (!engineSlider.getValueIsAdjusting()) {
                 int preparationTime = engineSlider.getValue() * 1000;
-                manager.setEngineProviderPreparationTime(preparationTime);
+                model.setEngineProviderPreparationTime(preparationTime);
             }
         });
         accessoriesSlider = createSlider(defaultValueOfAccessoriesSlider);
         accessoriesSlider.addChangeListener(e -> {
             if (!accessoriesSlider.getValueIsAdjusting()) {
                 int preparationTime = accessoriesSlider.getValue() * 1000;
-                manager.setAccessoryProviderPreparationTime(preparationTime);
+                model.setAccessoryProviderPreparationTime(preparationTime);
             }
         });
 
@@ -162,7 +163,7 @@ public class FactoryFrame {
         dealersSlider.addChangeListener(e -> {
             if (!dealersSlider.getValueIsAdjusting()) {
                 int purchaseTime = dealersSlider.getValue() * 1000;
-                manager.setDealerPurchaseTime(purchaseTime);
+                model.setDealerPurchaseTime(purchaseTime);
             }
         });
 

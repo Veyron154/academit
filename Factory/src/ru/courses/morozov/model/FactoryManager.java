@@ -1,5 +1,7 @@
 package ru.courses.morozov.model;
 
+import ru.courses.morozov.contracts.ModelInterface;
+import ru.courses.morozov.contracts.ViewInterface;
 import ru.courses.morozov.model.spares.Accessory;
 import ru.courses.morozov.model.spares.Body;
 import ru.courses.morozov.model.spares.Car;
@@ -11,8 +13,8 @@ import ru.courses.morozov.view.FactoryFrame;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-public class FactoryManager {
-    private FactoryFrame frame;
+public class FactoryManager implements ModelInterface {
+    private ViewInterface view;
 
     private final Object carStorageLock;
     private final Object accessoriesProvidersLock;
@@ -48,7 +50,7 @@ public class FactoryManager {
     private boolean logRecording;
 
     public FactoryManager() {
-        frame = new FactoryFrame(this);
+        view = new FactoryFrame(this);
 
         carStorageLock = new Object();
         accessoriesProvidersLock = new Object();
@@ -68,12 +70,12 @@ public class FactoryManager {
 
         carIdCreator = new IdCreator();
 
-        bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfBodySlider()),
+        bodyProvider = new BodyProvider(this, TimeUnit.SECONDS.toMillis(view.getDefaultValueOfBodySlider()),
                 new IdCreator());
-        engineProvider = new EngineProvider(this, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfEngineSlider()),
+        engineProvider = new EngineProvider(this, TimeUnit.SECONDS.toMillis(view.getDefaultValueOfEngineSlider()),
                 new IdCreator());
         accessoryProvider = new AccessoryProvider(this,
-                TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfAccessoriesSlider()), new IdCreator());
+                TimeUnit.SECONDS.toMillis(view.getDefaultValueOfAccessoriesSlider()), new IdCreator());
         dealers = new Dealer[countOfDealers];
         controller = new Controller(this);
 
@@ -81,7 +83,7 @@ public class FactoryManager {
     }
 
     public void start() {
-        frame.start();
+        view.start();
 
         Thread bodyProviderThreat = new Thread(bodyProvider);
         bodyProviderThreat.start();
@@ -95,7 +97,7 @@ public class FactoryManager {
         }
 
         for (int i = 0; i < countOfDealers; ++i) {
-            dealers[i] = new Dealer(this, i + 1, TimeUnit.SECONDS.toMillis(frame.getDefaultValueOfDealerSlider()),
+            dealers[i] = new Dealer(this, i + 1, TimeUnit.SECONDS.toMillis(view.getDefaultValueOfDealerSlider()),
                     logRecording);
             Thread dealerThread = new Thread(dealers[i]);
             dealerThread.start();
@@ -107,21 +109,21 @@ public class FactoryManager {
 
     public void addToBodyStorage(Body body) throws InterruptedException {
         bodyStorage.putSpare(body);
-        frame.setBodyProducedText(Integer.toString(bodyStorage.getProducedCount()));
-        frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
+        view.setBodyProducedText(Integer.toString(bodyStorage.getProducedCount()));
+        view.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
     }
 
     public void addToEngineStorage(Engine engine) throws InterruptedException {
         engineStorage.putSpare(engine);
-        frame.setEngineProducedText(Integer.toString(engineStorage.getProducedCount()));
-        frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
+        view.setEngineProducedText(Integer.toString(engineStorage.getProducedCount()));
+        view.setEngineStorageText(Integer.toString(engineStorage.getSize()));
     }
 
     public void addToAccessoriesStorage(Accessory accessory) throws InterruptedException {
         synchronized (accessoriesProvidersLock) {
             accessoriesStorage.putSpare(accessory);
-            frame.setAccessoriesProducedText(Integer.toString(accessoriesStorage.getProducedCount()));
-            frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
+            view.setAccessoriesProducedText(Integer.toString(accessoriesStorage.getProducedCount()));
+            view.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
         }
     }
 
@@ -129,8 +131,8 @@ public class FactoryManager {
         synchronized (workersLock) {
             carStorage.putSpare(car);
             --countOfRequests;
-            frame.setInProductionText(Integer.toString(countOfRequests));
-            frame.setDealersStorageText(Integer.toString(carStorage.getSize()));
+            view.setInProductionText(Integer.toString(countOfRequests));
+            view.setDealersStorageText(Integer.toString(carStorage.getSize()));
         }
     }
 
@@ -138,8 +140,8 @@ public class FactoryManager {
         synchronized (dealersLock) {
             Car boughtCar = carStorage.getSpare();
             ++carBoughtCount;
-            frame.setDealersBoughtText(Integer.toString(carBoughtCount));
-            frame.setDealersStorageText(Integer.toString(carStorage.getSize()));
+            view.setDealersBoughtText(Integer.toString(carBoughtCount));
+            view.setDealersStorageText(Integer.toString(carStorage.getSize()));
             return boughtCar;
         }
     }
@@ -154,10 +156,10 @@ public class FactoryManager {
                 threadPool.addTask(new Worker(this, bodyStorage.getSpare(), engineStorage.getSpare(),
                         accessoriesStorage.getSpare(), carIdCreator));
                 ++countOfRequests;
-                frame.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
-                frame.setEngineStorageText(Integer.toString(engineStorage.getSize()));
-                frame.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
-                frame.setInProductionText(Integer.toString(countOfRequests));
+                view.setBodyStorageText(Integer.toString(bodyStorage.getSize()));
+                view.setEngineStorageText(Integer.toString(engineStorage.getSize()));
+                view.setAccessoriesStorageText(Integer.toString(accessoriesStorage.getSize()));
+                view.setInProductionText(Integer.toString(countOfRequests));
                 carStorageLock.notifyAll();
             }
         }
@@ -185,7 +187,7 @@ public class FactoryManager {
         try {
             configReader.read();
         } catch (IOException e) {
-            frame.showConfigNoFindMessage();
+            view.showConfigNoFindMessage();
         }
         bodyStorageCapacity = configReader.getBodyStorageCapacity();
         engineStorageCapacity = configReader.getEngineStorageCapacity();
