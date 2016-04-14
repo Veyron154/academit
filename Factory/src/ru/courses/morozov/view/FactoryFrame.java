@@ -238,8 +238,8 @@ public class FactoryFrame {
     }
 
     private JSlider createSlider(int defaultValue) {
-        JSlider slider = new JSlider(0, 20, defaultValue);
-        slider.setMajorTickSpacing(10);
+        JSlider slider = new JSlider(1, 20, defaultValue);
+        slider.setMajorTickSpacing(19);
         slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
