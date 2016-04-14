@@ -7,20 +7,30 @@ public class ThreadPool {
     private Queue<Runnable> taskQueue;
     private final Object lock;
 
-    public ThreadPool (int poolSize){
+    public ThreadPool(int poolSize) {
         this.taskQueue = new LinkedList<>();
         this.lock = new Object();
 
-        for (int i = 0; i < poolSize; ++i){
-            PooledThread pooledThread = new PooledThread(taskQueue, lock);
-            pooledThread.start();
+        for (int i = 0; i < poolSize; ++i) {
+            PooledTask pooledTask = new PooledTask(this);
+            Thread newThread = new Thread(pooledTask);
+            newThread.start();
         }
     }
 
-    public void addTask (Runnable task){
+    public void addTask(Runnable task) {
         synchronized (lock) {
             taskQueue.add(task);
             lock.notifyAll();
         }
+    }
+
+    public Runnable getTask() throws InterruptedException {
+        synchronized (lock) {
+            while (taskQueue.isEmpty()) {
+                lock.wait();
+            }
+        }
+        return taskQueue.remove();
     }
 }
