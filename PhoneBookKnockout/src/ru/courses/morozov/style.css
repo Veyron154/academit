@@ -1,0 +1,65 @@
+h1 {
+    font-size: 25px;
+    margin: 10px 0 25px;
+}
+
+/* table */
+.first-column {
+    text-align: center;
+    width: 6%;
+}
+
+.second-column {
+    width: 6%;
+    text-align: center;
+}
+
+.third-column {
+    padding-left: 10px;
+    width: 27%;
+}
+
+.fourth-column {
+    padding-left: 10px;
+    width: 27%;
+}
+
+.fifth-column {
+    padding-left: 10px;
+    width: 27%;
+}
+
+.sixth-column {
+    text-align: center;
+    width: 7%;
+}
+
+.sixth-column button {
+    width: 40px;
+    vertical-align: middle;
+    border-radius: 0;
+}
+/* end table */
+
+/* form */
+.main form {
+    margin-left: 10px;
+}
+
+.submit {
+    margin: 2px 2px 2px 0;
+    cursor: pointer;
+}
+
+.form-inline {
+    margin-bottom: 15px;
+}
+
+.button-filter-ok, .button-filter-clear {
+    margin: 0 5px;
+}
+
+label {
+    margin: 0;
+}
+/* form */

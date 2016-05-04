@@ -1,0 +1,24 @@
+{
+  "name": "PhoneBookKnockout",
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.2",
+    "knockout": "^3.4.0",
+    "bootstrap": "^3.3.6",
+    "jquery-confirm": "^2.6.0",
+    "jquery-confirm2": "craftpip/jquery-confirm#^2.5.1"
+  }
+}
