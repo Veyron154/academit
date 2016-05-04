@@ -7,10 +7,10 @@ $(document).ready(function () {
 
         inputs.each(function () {
             if ($(this).val() == "") {
-                $(this).parents(".form-group").addClass("has-error");
+                $(this).parents(".form-inline").addClass("has-error");
                 isCorrect = false;
             } else {
-                $(this).parents(".form-group").removeClass("has-error");
+                $(this).parents(".form-inline").removeClass("has-error");
             }
         });
 
