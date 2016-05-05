@@ -14,10 +14,6 @@ function PhoneBookViewModel() {
     self.filterText = ko.observable("");
     self.needValidate = ko.observable(false);
 
-    self.surnameError = ko.observable("");
-    self.nameError = ko.observable("");
-    self.phoneError = ko.observable("");
-
     self.isTopChecked.subscribe(function (newValue) {
         _.each(self.tableItems(), function (item) {
             item.isChecked(newValue);
@@ -26,22 +22,8 @@ function PhoneBookViewModel() {
 
     self.addTableItem = function () {
         self.needValidate(true);
-        var isCorrect = true;
 
-        var checkCorrect = function (field, error) {
-            if (field() === "") {
-                error("has-error");
-                isCorrect = false;
-            } else {
-                error("");
-            }
-        };
-
-        checkCorrect(self.surname, self.surnameError);
-        checkCorrect(self.name, self.nameError);
-        checkCorrect(self.phone, self.phoneError);
-
-        if (!isCorrect) {
+        if (self.surname() === "" || self.name() === "" || self.phone() === "") {
             $.alert({
                 title: "Ошибка заполнения",
                 content: "Заполните выделенные поля",
