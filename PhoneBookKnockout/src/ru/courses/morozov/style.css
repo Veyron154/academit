@@ -1,6 +1,10 @@
+body {
+    margin-top: 40px;
+}
+
 h1 {
     font-size: 25px;
-    margin: 10px 0 25px;
+    margin: 35px 0 25px;
 }
 
 /* table */
@@ -39,6 +43,7 @@ h1 {
     vertical-align: middle;
     border-radius: 0;
 }
+
 /* end table */
 
 /* form */
@@ -55,6 +60,12 @@ h1 {
     margin-bottom: 15px;
 }
 
+@media screen and (max-width: 767px) {
+    .bottom-input {
+        margin-bottom: 0;
+    }
+}
+
 .button-filter-ok, .button-filter-clear {
     margin: 0 5px;
 }
@@ -62,4 +73,5 @@ h1 {
 label {
     margin: 0;
 }
+
 /* form */

@@ -6,29 +6,26 @@ $(document).ready(function () {
 function PhoneBookViewModel() {
     var self = this;
     self.tableItems = ko.observableArray([]);
+    self.visibleTableItems = ko.observableArray([]);
     self.name = ko.observable("");
     self.surname = ko.observable("");
     self.phone = ko.observable("");
     self.isTopChecked = ko.observable(false);
     self.filterText = ko.observable("");
+    self.needValidate = ko.observable(false);
 
     self.surnameError = ko.observable("");
     self.nameError = ko.observable("");
     self.phoneError = ko.observable("");
 
     self.isTopChecked.subscribe(function (newValue) {
-        for (var i = 0; i < self.tableItems().length; ++i) {
-            self.tableItems()[i].isChecked(newValue);
-        }
+        _.each(self.tableItems(), function (item) {
+            item.isChecked(newValue);
+        });
     });
 
-    var renumberRow = function () {
-        for (var i = 0; i < self.tableItems().length; ++i) {
-            self.tableItems()[i].index(i + 1);
-        }
-    };
-
     self.addTableItem = function () {
+        self.needValidate(true);
         var isCorrect = true;
 
         var checkCorrect = function (field, error) {
@@ -54,11 +51,11 @@ function PhoneBookViewModel() {
         }
 
         var isUniquePhone = true;
-        for (var i = 0; i < self.tableItems().length; ++i) {
-            if (self.tableItems()[i].itemPhone === self.phone()) {
+        _.each(self.tableItems(), function (item) {
+            if (item.itemPhone === self.phone()) {
                 isUniquePhone = false;
             }
-        }
+        });
 
         if (!isUniquePhone) {
             $.alert({
@@ -69,25 +66,27 @@ function PhoneBookViewModel() {
             return;
         }
 
-        self.tableItems.push(new TableItemsViewModel(self.name(), self.surname(), self.phone()));
-        renumberRow();
+        var addedItem = new TableItemsViewModel(self.name(), self.surname(), self.phone());
+        self.tableItems.push(addedItem);
+        self.visibleTableItems.push(addedItem);
 
         self.name("");
         self.surname("");
         self.phone("");
+        self.needValidate(false)
     };
 
     self.removeTableItem = function (item) {
         var rows = [];
-        for (var i = 0; i < self.tableItems().length; ++i) {
-            if (self.tableItems()[i].isChecked() === true && self.tableItems()[i].showRow() === true) {
-                rows.push(self.tableItems()[i]);
+        _.each(self.visibleTableItems(), function (item) {
+            if (item.isChecked() === true) {
+                rows.push(item);
             }
-        }
+        });
         var messageString = "следующие контакты? <br />";
-        for (var j = 0; j < rows.length; ++j) {
-            messageString += rows[j].itemSurname + "<br />";
-        }
+        _.each(rows, function (i) {
+            messageString += i.itemSurname + "<br />";
+        });
         if (rows.length === 0) {
             rows.push(item);
             messageString = "контакт: " + item.itemSurname + " ?";
@@ -99,27 +98,28 @@ function PhoneBookViewModel() {
             cancelButton: "Отмена",
             confirm: function () {
                 self.tableItems.removeAll(rows);
-                renumberRow();
+                self.visibleTableItems.removeAll(rows);
             }
         });
     };
 
     self.executeFilter = function () {
         var filter = self.filterText().toLowerCase();
-        for (var i = 0; i < self.tableItems().length; ++i) {
-            if (self.tableItems()[i].itemSurname.toLowerCase().indexOf(filter) === -1 &&
-                self.tableItems()[i].itemName.toLowerCase().indexOf(filter) === -1 &&
-                self.tableItems()[i].itemPhone.toLowerCase().indexOf(filter) === -1) {
-                self.tableItems()[i].showRow(false);
+        _.each(self.tableItems(), function (item) {
+            if (item.itemSurname.toLowerCase().indexOf(filter) === -1 &&
+                item.itemName.toLowerCase().indexOf(filter) === -1 &&
+                item.itemPhone.toLowerCase().indexOf(filter) === -1) {
+                self.visibleTableItems.remove(item);
             }
-        }
+        });
     };
 
     self.cancelFilter = function () {
         for (var i = 0; i < self.tableItems().length; ++i) {
-            self.tableItems()[i].showRow(true);
-            self.filterText("");
+            self.visibleTableItems()[i] = self.tableItems()[i];
         }
+        self.visibleTableItems.valueHasMutated();
+        self.filterText("");
     }
 }
 
@@ -130,9 +130,7 @@ function TableItemsViewModel(name, surname, phone) {
     self.itemSurname = surname;
     self.itemPhone = phone;
 
-    self.index = ko.observable();
-    self.isChecked = ko.observable();
-    self.showRow = ko.observable(true);
+    self.isChecked = ko.observable(false);
 }
 
 
