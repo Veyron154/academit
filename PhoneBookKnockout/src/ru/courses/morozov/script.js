@@ -1,7 +1,6 @@
 $(document).ready(function () {
     var vm = new PhoneBookViewModel();
     ko.applyBindings(vm);
-
 });
 
 function PhoneBookViewModel() {
@@ -13,15 +12,15 @@ function PhoneBookViewModel() {
     self.isTopChecked = ko.observable(false);
     self.filterText = ko.observable("");
 
+    self.surnameError = ko.observable("");
+    self.nameError = ko.observable("");
+    self.phoneError = ko.observable("");
+
     self.isTopChecked.subscribe(function (newValue) {
         for (var i = 0; i < self.tableItems().length; ++i) {
             self.tableItems()[i].isChecked(newValue);
         }
     });
-
-    self.surnameError = ko.observable("");
-    self.nameError = ko.observable("");
-    self.phoneError = ko.observable("");
 
     var renumberRow = function () {
         for (var i = 0; i < self.tableItems().length; ++i) {
