@@ -34,8 +34,8 @@ function PhoneBookViewModel() {
             return;
         }
 
-        var isUniquePhone = !_.some(self.tableItems(), function (item) {
-            return item.itemPhone === self.phone();
+        var isUniquePhone = _.every(self.tableItems(), function (item) {
+            return item.itemPhone !== self.phone();
         });
 
 
