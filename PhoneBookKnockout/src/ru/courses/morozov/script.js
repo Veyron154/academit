@@ -20,6 +20,8 @@ function PhoneBookViewModel() {
         });
     });
 
+    var isFiltered = false;
+
     self.addTableItem = function () {
         self.needValidate(true);
 
@@ -32,14 +34,12 @@ function PhoneBookViewModel() {
             return;
         }
 
-        var isUniquePhone = true;
-        _.each(self.tableItems(), function (item) {
-            if (item.itemPhone === self.phone()) {
-                isUniquePhone = false;
-            }
+        var isUniquePhone = _.some(self.tableItems(), function (item) {
+            return item.itemPhone === self.phone();
         });
 
-        if (!isUniquePhone) {
+
+        if (isUniquePhone) {
             $.alert({
                 title: "Ошибка заполнения",
                 content: "Контакт с номером " + self.phone() + " уже существует",
@@ -50,7 +50,12 @@ function PhoneBookViewModel() {
 
         var addedItem = new TableItemsViewModel(self.name(), self.surname(), self.phone());
         self.tableItems.push(addedItem);
-        self.visibleTableItems.push(addedItem);
+
+        if (isFiltered) {
+            self.executeFilter();
+        } else {
+            self.visibleTableItems(self.tableItems());
+        }
 
         self.name("");
         self.surname("");
@@ -60,15 +65,11 @@ function PhoneBookViewModel() {
 
     self.removeTableItem = function (item) {
         var rows = [];
-        _.each(self.visibleTableItems(), function (item) {
-            if (item.isChecked() === true) {
-                rows.push(item);
-            }
+        rows = _.filter(self.visibleTableItems(), function (item) {
+            return item.isChecked() === true;
         });
         var messageString = "следующие контакты? <br />";
-        _.each(rows, function (i) {
-            messageString += i.itemSurname + "<br />";
-        });
+        messageString += _.pluck(rows, "itemSurname").join("<br />");
         if (rows.length === 0) {
             rows.push(item);
             messageString = "контакт: " + item.itemSurname + " ?";
@@ -80,28 +81,25 @@ function PhoneBookViewModel() {
             cancelButton: "Отмена",
             confirm: function () {
                 self.tableItems.removeAll(rows);
-                self.visibleTableItems.removeAll(rows);
+                self.visibleTableItems(self.tableItems());
             }
         });
     };
 
     self.executeFilter = function () {
         var filter = self.filterText().toLowerCase();
-        _.each(self.tableItems(), function (item) {
-            if (item.itemSurname.toLowerCase().indexOf(filter) === -1 &&
-                item.itemName.toLowerCase().indexOf(filter) === -1 &&
-                item.itemPhone.toLowerCase().indexOf(filter) === -1) {
-                self.visibleTableItems.remove(item);
-            }
-        });
+        self.visibleTableItems(_.filter(self.tableItems(), function (item) {
+            return (item.itemSurname.toLowerCase().indexOf(filter) !== -1 ||
+            item.itemName.toLowerCase().indexOf(filter) !== -1 ||
+            item.itemPhone.toLowerCase().indexOf(filter) !== -1)
+        }));
+        isFiltered = true;
     };
 
     self.cancelFilter = function () {
-        for (var i = 0; i < self.tableItems().length; ++i) {
-            self.visibleTableItems()[i] = self.tableItems()[i];
-        }
-        self.visibleTableItems.valueHasMutated();
+        self.visibleTableItems(self.tableItems());
         self.filterText("");
+        isFiltered = false;
     }
 }
 
