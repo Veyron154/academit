@@ -34,12 +34,12 @@ function PhoneBookViewModel() {
             return;
         }
 
-        var isUniquePhone = _.some(self.tableItems(), function (item) {
+        var isUniquePhone = !_.some(self.tableItems(), function (item) {
             return item.itemPhone === self.phone();
         });
 
 
-        if (isUniquePhone) {
+        if (!isUniquePhone) {
             $.alert({
                 title: "Ошибка заполнения",
                 content: "Контакт с номером " + self.phone() + " уже существует",
@@ -64,8 +64,7 @@ function PhoneBookViewModel() {
     };
 
     self.removeTableItem = function (item) {
-        var rows = [];
-        rows = _.filter(self.visibleTableItems(), function (item) {
+        var rows = _.filter(self.visibleTableItems(), function (item) {
             return item.isChecked() === true;
         });
         var messageString = "следующие контакты? <br />";
