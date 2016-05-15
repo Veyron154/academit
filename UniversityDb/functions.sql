@@ -24,16 +24,16 @@ BEGIN
 	ON s.id = a.student_id;
 END//
 
-CREATE PROCEDURE get_students_with_grant (IN number_of_semester INT)
+CREATE PROCEDURE get_students_with_grant (IN number_of_semester INT, IN number_of_year INT)
 BEGIN
-	SELECT s.surname FROM student AS s
-	INNER JOIN (SELECT student_id, AVG(grade) AS ag FROM progress AS p
-	INNER JOIN (SELECT id FROM study_plan
-	WHERE semester = number_of_semester) AS q
-	ON p.discipline_id = q.id
-	GROUP BY student_id
-	HAVING ag >= 4.5) AS a
-	ON s.id = a.student_id;
+	SELECT s.surname FROM (progress AS p
+    INNER JOIN study_plan AS sp
+    ON p.discipline_id = sp.id
+    INNER JOIN student AS s
+    ON s.id = p.student_id)
+    WHERE sp.semester = ((number_of_year - s.entrance_year) * 2) + number_of_semester
+    GROUP BY s.id
+    HAVING AVG(grade) >= 4.5;
 END//
 
 CREATE PROCEDURE get_top_average_students ()
