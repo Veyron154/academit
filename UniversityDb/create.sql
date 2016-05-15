@@ -1,4 +1,4 @@
-DROP DATABASE university;
+DROP DATABASE IF EXISTS university;
 
 CREATE DATABASE university;
 
@@ -9,9 +9,9 @@ CREATE TABLE student
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	surname VARCHAR(50) NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	patronymic VARCHAR(50) NOT NULL,
+	patronymic VARCHAR(50),
 	entrance_year INT NOT NULL,
-	form_of_tuition VARCHAR(20) NOT NULL,
+	form_of_tuition ENUM('full_time', 'distance') NOT NULL,
 	group_id VARCHAR(20) NOT NULL,
 	student_id INT NOT NULL
 );
@@ -40,7 +40,7 @@ CREATE TABLE study_plan
     discipline VARCHAR(100) NOT NULL,
     semester INT NOT NULL,
     hours_quantity INT NOT NULL,
-    form_of_examination VARCHAR(50) NOT NULL
+    form_of_examination ENUM('exam', 'credit') NOT NULL
 );
 
 INSERT INTO study_plan (specialty, discipline, semester, hours_quantity, form_of_examination)
